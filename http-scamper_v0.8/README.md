@@ -7,7 +7,7 @@ Once configuration completes, then type:
 
 sudo make
 
-(If an error during make, please run *autoreconf -f -i*)
+( If an error during make, please run *autoreconf -f -i* )
 
 - **Pre-Requisites:**
 Before using the tool please setup IP table rules:  
