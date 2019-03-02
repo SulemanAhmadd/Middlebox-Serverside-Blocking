@@ -18,7 +18,7 @@ sudo iptables -A OUTPUT -p tcp --tcp-flags ALL RST,ACK -j DROP
 - **Usage:**
 For the purpose of this project only the following commands are important:
   - Run scamper on a list of commands:  
-      ./scamper -o [output-path] -O text -O cmdfile -f [input-command-path]
+      ./scamper -o [output-path] -O text -O cmdfile -f [input-command-file-path]
       
   - Run scamper for a single IP address:
       - TCP:  
