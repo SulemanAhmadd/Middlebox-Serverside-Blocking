@@ -1,9 +1,9 @@
 - **Installation:**
-Once inside the http scamper directory, open terminal and write:
+Once inside the *http-scamper* directory, open terminal and write:
 
 ./configure
 
-Onece configuration completes, then type:
+Once configuration completes, then type:
 
 sudo make
 
