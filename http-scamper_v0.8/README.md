@@ -10,9 +10,9 @@ sudo make
 (If an error during make, please run *autoreconf -f -i*)
 
 - **Pre-Requisites:**
-Before using the tool please setup IP table rules:
+Before using the tool please setup IP table rules:  
 
-sudo iptables -A OUTPUT -p tcp --tcp-flags ALL RST,RST -j DROP
+sudo iptables -A OUTPUT -p tcp --tcp-flags ALL RST,RST -j DROP  
 sudo iptables -A OUTPUT -p tcp --tcp-flags ALL RST,ACK -j DROP
 
 - **Usage:**
