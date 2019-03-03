@@ -13,7 +13,7 @@ This repository is storage for all our code for Internet Measurement Project (Se
 		UM4EZ49U1E  
 
 	- **Russia 2-core machine**:  
-		ssh root@91.128.115.15  
+		ssh root@91.218.115.15  
 		eUbGc8ICNA  
 
 	- **Pak machine (PI)**:  
