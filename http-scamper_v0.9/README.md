@@ -1,4 +1,12 @@
-#####################**Project Usage** #####################  
+
+#####################**Testing** #####################  
+
+For Testing (a sample of 100 IPs):  
+Go to directory - *cd http-scamper_v0.9/scamper/custom-files/Test-Run*  
+Make script executable - *chmod +x run-scamper-test.sh*  
+Then execute the shell script - *./run-scamper-test.sh*  
+
+#####################**Project Measurements** #####################  
 
 For **Pakistan** Machine:  
 Go to directory - *cd http-scamper_v0.9/scamper/custom-files/Pakistan*  
