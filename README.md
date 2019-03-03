@@ -12,7 +12,7 @@ This repository is storage for all our code for Internet Measurement Project (Se
 		ssh root@23.105.132.122  
 		UM4EZ49U1E  
 
-	- **US 1-core machine**:  
+	- **Russia 2-core machine**:  
 		ssh root@91.128.115.15  
 		eUbGc8ICNA  
 
