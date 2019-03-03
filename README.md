@@ -4,11 +4,17 @@ This repository is storage for all our code for Internet Measurement Project (Se
 
 - Vantage Points:  
 
-	- US 3-core machine:  
+	- **US 3-core machine**:  
 		ssh root@108.62.49.40  
 		&AYB&&D#H8#@  
 
-	- US 1-core machine:  
+	- **US 1-core machine**:  
 		ssh root@23.105.132.122  
 		UM4EZ49U1E  
+
+	- **US 1-core machine**:  
+		ssh root@91.128.115.15  
+		eUbGc8ICNA  
+
+	- **Pak machine (PI)**:  
 
