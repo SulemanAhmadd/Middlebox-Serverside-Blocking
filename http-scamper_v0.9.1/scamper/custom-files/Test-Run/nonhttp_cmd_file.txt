@@ -1,0 +1,300 @@
+trace -P TCP -s 20000 -d 80 216.58.207.14
+trace -P UDP-paris -d 53 216.58.207.14
+trace -P ICMP-paris 216.58.207.14
+trace -P TCP -s 20001 -d 80 172.217.19.14
+trace -P UDP-paris -d 53 172.217.19.14
+trace -P ICMP-paris 172.217.19.14
+trace -P TCP -s 20002 -d 80 31.13.75.36
+trace -P UDP-paris -d 53 31.13.75.36
+trace -P ICMP-paris 31.13.75.36
+trace -P TCP -s 20003 -d 80 220.181.57.216
+trace -P UDP-paris -d 53 220.181.57.216
+trace -P ICMP-paris 220.181.57.216
+trace -P TCP -s 20004 -d 80 103.102.166.224
+trace -P UDP-paris -d 53 103.102.166.224
+trace -P ICMP-paris 103.102.166.224
+trace -P TCP -s 20005 -d 80 111.161.64.40
+trace -P UDP-paris -d 53 111.161.64.40
+trace -P ICMP-paris 111.161.64.40
+trace -P TCP -s 20006 -d 80 72.30.35.9
+trace -P UDP-paris -d 53 72.30.35.9
+trace -P ICMP-paris 72.30.35.9
+trace -P TCP -s 20007 -d 80 140.205.94.189
+trace -P UDP-paris -d 53 140.205.94.189
+trace -P ICMP-paris 140.205.94.189
+trace -P TCP -s 20008 -d 80 140.205.130.99
+trace -P UDP-paris -d 53 140.205.130.99
+trace -P ICMP-paris 140.205.130.99
+trace -P TCP -s 20009 -d 80 176.32.103.205
+trace -P UDP-paris -d 53 176.32.103.205
+trace -P ICMP-paris 176.32.103.205
+trace -P TCP -s 20010 -d 80 104.244.42.193
+trace -P UDP-paris -d 53 104.244.42.193
+trace -P ICMP-paris 104.244.42.193
+trace -P TCP -s 20011 -d 80 221.179.177.36
+trace -P UDP-paris -d 53 221.179.177.36
+trace -P ICMP-paris 221.179.177.36
+trace -P TCP -s 20012 -d 80 204.79.197.212
+trace -P UDP-paris -d 53 204.79.197.212
+trace -P ICMP-paris 204.79.197.212
+trace -P TCP -s 20013 -d 80 52.5.5.38
+trace -P UDP-paris -d 53 52.5.5.38
+trace -P ICMP-paris 52.5.5.38
+trace -P TCP -s 20014 -d 80 5.255.255.88
+trace -P UDP-paris -d 53 5.255.255.88
+trace -P ICMP-paris 5.255.255.88
+trace -P TCP -s 20015 -d 80 202.108.33.107
+trace -P UDP-paris -d 53 202.108.33.107
+trace -P ICMP-paris 202.108.33.107
+trace -P TCP -s 20016 -d 80 114.134.80.162
+trace -P UDP-paris -d 53 114.134.80.162
+trace -P ICMP-paris 114.134.80.162
+trace -P TCP -s 20017 -d 80 120.52.148.118
+trace -P UDP-paris -d 53 120.52.148.118
+trace -P ICMP-paris 120.52.148.118
+trace -P TCP -s 20018 -d 80 36.110.213.49
+trace -P UDP-paris -d 53 36.110.213.49
+trace -P ICMP-paris 36.110.213.49
+trace -P TCP -s 20019 -d 80 47.88.135.251
+trace -P UDP-paris -d 53 47.88.135.251
+trace -P ICMP-paris 47.88.135.251
+trace -P TCP -s 20020 -d 80 151.101.193.140
+trace -P UDP-paris -d 53 151.101.193.140
+trace -P ICMP-paris 151.101.193.140
+trace -P TCP -s 20021 -d 80 172.217.19.9
+trace -P UDP-paris -d 53 172.217.19.9
+trace -P ICMP-paris 172.217.19.9
+trace -P TCP -s 20022 -d 80 108.174.10.10
+trace -P UDP-paris -d 53 108.174.10.10
+trace -P ICMP-paris 108.174.10.10
+trace -P TCP -s 20023 -d 80 34.253.104.7
+trace -P UDP-paris -d 53 34.253.104.7
+trace -P ICMP-paris 34.253.104.7
+trace -P TCP -s 20024 -d 80 172.217.19.163
+trace -P UDP-paris -d 53 172.217.19.163
+trace -P ICMP-paris 172.217.19.163
+trace -P TCP -s 20025 -d 80 183.79.135.206
+trace -P UDP-paris -d 53 183.79.135.206
+trace -P ICMP-paris 183.79.135.206
+trace -P TCP -s 20026 -d 80 47.95.164.112
+trace -P UDP-paris -d 53 47.95.164.112
+trace -P ICMP-paris 47.95.164.112
+trace -P TCP -s 20027 -d 80 66.254.114.41
+trace -P UDP-paris -d 53 66.254.114.41
+trace -P ICMP-paris 66.254.114.41
+trace -P TCP -s 20028 -d 80 151.101.66.167
+trace -P UDP-paris -d 53 151.101.66.167
+trace -P ICMP-paris 151.101.66.167
+trace -P TCP -s 20029 -d 80 52.178.167.109
+trace -P UDP-paris -d 53 52.178.167.109
+trace -P ICMP-paris 52.178.167.109
+trace -P TCP -s 20030 -d 80 198.11.132.250
+trace -P UDP-paris -d 53 198.11.132.250
+trace -P ICMP-paris 198.11.132.250
+trace -P TCP -s 20031 -d 80 94.100.180.200
+trace -P UDP-paris -d 53 94.100.180.200
+trace -P ICMP-paris 94.100.180.200
+trace -P TCP -s 20032 -d 80 47.246.16.234
+trace -P UDP-paris -d 53 47.246.16.234
+trace -P ICMP-paris 47.246.16.234
+trace -P TCP -s 20033 -d 80 216.58.207.3
+trace -P UDP-paris -d 53 216.58.207.3
+trace -P ICMP-paris 216.58.207.3
+trace -P TCP -s 20034 -d 80 110.75.139.5
+trace -P UDP-paris -d 53 110.75.139.5
+trace -P ICMP-paris 110.75.139.5
+trace -P TCP -s 20035 -d 80 87.240.131.132
+trace -P UDP-paris -d 53 87.240.131.132
+trace -P ICMP-paris 87.240.131.132
+trace -P TCP -s 20036 -d 80 40.76.4.15
+trace -P UDP-paris -d 53 40.76.4.15
+trace -P ICMP-paris 40.76.4.15
+trace -P TCP -s 20037 -d 80 104.244.42.197
+trace -P UDP-paris -d 53 104.244.42.197
+trace -P ICMP-paris 104.244.42.197
+trace -P TCP -s 20038 -d 80 180.240.134.85
+trace -P UDP-paris -d 53 180.240.134.85
+trace -P ICMP-paris 180.240.134.85
+trace -P TCP -s 20039 -d 80 66.135.209.52
+trace -P UDP-paris -d 53 66.135.209.52
+trace -P ICMP-paris 66.135.209.52
+trace -P TCP -s 20040 -d 80 204.79.197.200
+trace -P UDP-paris -d 53 204.79.197.200
+trace -P ICMP-paris 204.79.197.200
+trace -P TCP -s 20041 -d 80 125.209.222.141
+trace -P UDP-paris -d 53 125.209.222.141
+trace -P ICMP-paris 125.209.222.141
+trace -P TCP -s 20042 -d 80 104.27.242.176
+trace -P UDP-paris -d 53 104.27.242.176
+trace -P ICMP-paris 104.27.242.176
+trace -P TCP -s 20043 -d 80 109.71.161.200
+trace -P UDP-paris -d 53 109.71.161.200
+trace -P ICMP-paris 109.71.161.200
+trace -P TCP -s 20044 -d 80 52.119.164.121
+trace -P UDP-paris -d 53 52.119.164.121
+trace -P ICMP-paris 52.119.164.121
+trace -P TCP -s 20045 -d 80 192.30.253.112
+trace -P UDP-paris -d 53 192.30.253.112
+trace -P ICMP-paris 192.30.253.112
+trace -P TCP -s 20046 -d 80 52.94.225.248
+trace -P UDP-paris -d 53 52.94.225.248
+trace -P ICMP-paris 52.94.225.248
+trace -P TCP -s 20047 -d 80 52.108.240.70
+trace -P UDP-paris -d 53 52.108.240.70
+trace -P ICMP-paris 52.108.240.70
+trace -P TCP -s 20048 -d 80 13.82.28.61
+trace -P UDP-paris -d 53 13.82.28.61
+trace -P ICMP-paris 13.82.28.61
+trace -P TCP -s 20049 -d 80 151.101.1.69
+trace -P UDP-paris -d 53 151.101.1.69
+trace -P ICMP-paris 151.101.1.69
+trace -P TCP -s 20050 -d 80 185.88.181.9
+trace -P UDP-paris -d 53 185.88.181.9
+trace -P ICMP-paris 185.88.181.9
+trace -P TCP -s 20051 -d 80 172.217.19.3
+trace -P UDP-paris -d 53 172.217.19.3
+trace -P ICMP-paris 172.217.19.3
+trace -P TCP -s 20052 -d 80 64.4.250.37
+trace -P UDP-paris -d 53 64.4.250.37
+trace -P ICMP-paris 64.4.250.37
+trace -P TCP -s 20053 -d 80 192.0.78.17
+trace -P UDP-paris -d 53 192.0.78.17
+trace -P ICMP-paris 192.0.78.17
+trace -P TCP -s 20054 -d 80 184.173.147.39
+trace -P UDP-paris -d 53 184.173.147.39
+trace -P ICMP-paris 184.173.147.39
+trace -P TCP -s 20055 -d 80 17.172.224.47
+trace -P UDP-paris -d 53 17.172.224.47
+trace -P ICMP-paris 17.172.224.47
+trace -P TCP -s 20056 -d 80 88.208.29.180
+trace -P UDP-paris -d 53 88.208.29.180
+trace -P ICMP-paris 88.208.29.180
+trace -P TCP -s 20057 -d 80 151.101.40.193
+trace -P UDP-paris -d 53 151.101.40.193
+trace -P ICMP-paris 151.101.40.193
+trace -P TCP -s 20058 -d 80 61.244.33.181
+trace -P UDP-paris -d 53 61.244.33.181
+trace -P ICMP-paris 61.244.33.181
+trace -P TCP -s 20059 -d 80 172.217.19.3
+trace -P UDP-paris -d 53 172.217.19.3
+trace -P ICMP-paris 172.217.19.3
+trace -P TCP -s 20060 -d 80 216.58.207.99
+trace -P UDP-paris -d 53 216.58.207.99
+trace -P ICMP-paris 216.58.207.99
+trace -P TCP -s 20061 -d 80 192.147.130.204
+trace -P UDP-paris -d 53 192.147.130.204
+trace -P ICMP-paris 192.147.130.204
+trace -P TCP -s 20062 -d 80 52.95.120.34
+trace -P UDP-paris -d 53 52.95.120.34
+trace -P ICMP-paris 52.95.120.34
+trace -P TCP -s 20063 -d 80 151.101.64.84
+trace -P UDP-paris -d 53 151.101.64.84
+trace -P ICMP-paris 151.101.64.84
+trace -P TCP -s 20064 -d 80 151.101.128.194
+trace -P UDP-paris -d 53 151.101.128.194
+trace -P ICMP-paris 151.101.128.194
+trace -P TCP -s 20065 -d 80 172.217.19.3
+trace -P UDP-paris -d 53 172.217.19.3
+trace -P ICMP-paris 172.217.19.3
+trace -P TCP -s 20066 -d 80 202.108.119.193
+trace -P UDP-paris -d 53 202.108.119.193
+trace -P ICMP-paris 202.108.119.193
+trace -P TCP -s 20067 -d 80 162.125.248.1
+trace -P UDP-paris -d 53 162.125.248.1
+trace -P ICMP-paris 162.125.248.1
+trace -P TCP -s 20068 -d 80 54.239.34.171
+trace -P UDP-paris -d 53 54.239.34.171
+trace -P ICMP-paris 54.239.34.171
+trace -P TCP -s 20069 -d 80 31.13.75.36
+trace -P UDP-paris -d 53 31.13.75.36
+trace -P ICMP-paris 31.13.75.36
+trace -P TCP -s 20070 -d 80 66.6.32.31
+trace -P UDP-paris -d 53 66.6.32.31
+trace -P ICMP-paris 66.6.32.31
+trace -P TCP -s 20071 -d 80 121.42.17.239
+trace -P UDP-paris -d 53 121.42.17.239
+trace -P ICMP-paris 121.42.17.239
+trace -P TCP -s 20072 -d 80 52.95.120.67
+trace -P UDP-paris -d 53 52.95.120.67
+trace -P ICMP-paris 52.95.120.67
+trace -P TCP -s 20073 -d 80 34.234.29.67
+trace -P UDP-paris -d 53 34.234.29.67
+trace -P ICMP-paris 34.234.29.67
+trace -P TCP -s 20074 -d 80 216.58.207.3
+trace -P UDP-paris -d 53 216.58.207.3
+trace -P ICMP-paris 216.58.207.3
+trace -P TCP -s 20075 -d 80 118.89.204.192
+trace -P UDP-paris -d 53 118.89.204.192
+trace -P ICMP-paris 118.89.204.192
+trace -P TCP -s 20076 -d 80 220.181.163.1
+trace -P UDP-paris -d 53 220.181.163.1
+trace -P ICMP-paris 220.181.163.1
+trace -P TCP -s 20077 -d 80 184.168.221.27
+trace -P UDP-paris -d 53 184.168.221.27
+trace -P ICMP-paris 184.168.221.27
+trace -P TCP -s 20078 -d 80 118.89.206.145
+trace -P UDP-paris -d 53 118.89.206.145
+trace -P ICMP-paris 118.89.206.145
+trace -P TCP -s 20079 -d 80 172.217.19.163
+trace -P UDP-paris -d 53 172.217.19.163
+trace -P ICMP-paris 172.217.19.163
+trace -P TCP -s 20080 -d 80 216.58.207.3
+trace -P UDP-paris -d 53 216.58.207.3
+trace -P ICMP-paris 216.58.207.3
+trace -P TCP -s 20081 -d 80 42.121.252.58
+trace -P UDP-paris -d 53 42.121.252.58
+trace -P ICMP-paris 42.121.252.58
+trace -P TCP -s 20082 -d 80 5.57.16.220
+trace -P UDP-paris -d 53 5.57.16.220
+trace -P ICMP-paris 5.57.16.220
+trace -P TCP -s 20083 -d 80 103.23.108.107
+trace -P UDP-paris -d 53 103.23.108.107
+trace -P ICMP-paris 103.23.108.107
+trace -P TCP -s 20084 -d 80 172.217.19.3
+trace -P UDP-paris -d 53 172.217.19.3
+trace -P ICMP-paris 172.217.19.3
+trace -P TCP -s 20085 -d 80 185.147.178.11
+trace -P UDP-paris -d 53 185.147.178.11
+trace -P ICMP-paris 185.147.178.11
+trace -P TCP -s 20086 -d 80 151.101.129.67
+trace -P UDP-paris -d 53 151.101.129.67
+trace -P ICMP-paris 151.101.129.67
+trace -P TCP -s 20087 -d 80 104.25.184.17
+trace -P UDP-paris -d 53 104.25.184.17
+trace -P ICMP-paris 104.25.184.17
+trace -P TCP -s 20088 -d 80 151.101.128.81
+trace -P UDP-paris -d 53 151.101.128.81
+trace -P ICMP-paris 151.101.128.81
+trace -P TCP -s 20089 -d 80 96.43.144.26
+trace -P UDP-paris -d 53 96.43.144.26
+trace -P ICMP-paris 96.43.144.26
+trace -P TCP -s 20090 -d 80 203.190.242.211
+trace -P UDP-paris -d 53 203.190.242.211
+trace -P ICMP-paris 203.190.242.211
+trace -P TCP -s 20091 -d 80 151.101.0.81
+trace -P UDP-paris -d 53 151.101.0.81
+trace -P ICMP-paris 151.101.0.81
+trace -P TCP -s 20092 -d 80 223.31.160.61
+trace -P UDP-paris -d 53 223.31.160.61
+trace -P ICMP-paris 223.31.160.61
+trace -P TCP -s 20093 -d 80 204.74.99.100
+trace -P UDP-paris -d 53 204.74.99.100
+trace -P ICMP-paris 204.74.99.100
+trace -P TCP -s 20094 -d 80 72.21.206.80
+trace -P UDP-paris -d 53 72.21.206.80
+trace -P ICMP-paris 72.21.206.80
+trace -P TCP -s 20095 -d 80 124.225.65.154
+trace -P UDP-paris -d 53 124.225.65.154
+trace -P ICMP-paris 124.225.65.154
+trace -P TCP -s 20096 -d 80 52.19.59.175
+trace -P UDP-paris -d 53 52.19.59.175
+trace -P ICMP-paris 52.19.59.175
+trace -P TCP -s 20097 -d 80 216.18.168.1
+trace -P UDP-paris -d 53 216.18.168.1
+trace -P ICMP-paris 216.18.168.1
+trace -P TCP -s 20098 -d 80 185.88.181.58
+trace -P UDP-paris -d 53 185.88.181.58
+trace -P ICMP-paris 185.88.181.58
+trace -P TCP -s 20099 -d 80 133.237.61.176
+trace -P UDP-paris -d 53 133.237.61.176
+trace -P ICMP-paris 133.237.61.176
