@@ -1,21 +1,21 @@
+#####################**Project Usage** #####################  
 
-#################################### ** Project Usage ** #################################################
-For Pakistan Machine:  
-Go to directory - * http-scamper_v0.9/scamper/custom-files *  
-Type the following on terminal -  * chmod +x run-scamper-pk.sh*  
+For **Pakistan** Machine:  
+Go to directory - *cd http-scamper_v0.9/scamper/custom-files/Pakistan*  
+Make script executable - * chmod +x run-scamper-pk.sh*  
 Then execute the shell script - * ./run-scamper-pk.sh*  
 
-For Russia Machine:  
-Go to directory - * http-scamper_v0.9/scamper/custom-files *  
-Type the following on terminal -  * chmod +x run-scamper-ru.sh*  
+For **Russia** Machine:  
+Go to directory - *cd http-scamper_v0.9/scamper/custom-files/Russia*  
+Make script executable -  * chmod +x run-scamper-ru.sh*  
 Then execute the shell script - * ./run-scamper-ru.sh*  
 
-For US Machine:  
-Go to directory - * http-scamper_v0.9/scamper/custom-files *  
-Type the following on terminal -  * chmod +x run-scamper-us.sh*  
+For **US** Machine:  
+Go to directory - *cd http-scamper_v0.9/scamper/custom-files/US*  
+Make script executable -  * chmod +x run-scamper-us.sh*  
 Then execute the shell script - * ./run-scamper-us.sh*  
 
-#################################### ** General Usage ** #################################################
+##################### **General Usage** #####################
 
 - **Installation:**
 Once inside the *http-scamper* directory, open terminal and write:
