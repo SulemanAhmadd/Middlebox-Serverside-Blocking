@@ -1,3 +1,14 @@
 # Middlebox-Serverside-Blocking
 
 This repository is storage for all our code for Internet Measurement Project (Server Side Vs Middle Box Blocking)
+
+- Vantage Points:  
+
+	- US 3-core machine:  
+		ssh root@108.62.49.40  
+		&AYB&&D#H8#@  
+
+	- US 1-core machine:  
+		ssh root@23.105.132.122  
+		UM4EZ49U1E  
+
