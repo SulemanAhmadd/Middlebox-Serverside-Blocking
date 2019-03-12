@@ -1738,8 +1738,11 @@ static int handleicmp_trace(scamper_task_t *task,
 	      return 0;
     }
 
-  trace->server_try = 1;
-  trace->tp_ttl++;
+  if(trace->http_string != NULL)
+  {
+	  trace->server_try = 1;
+	  trace->tp_ttl++;
+  }
 
   trace->hop_count++;
   state->ttl++; 
