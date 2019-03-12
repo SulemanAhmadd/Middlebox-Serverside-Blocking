@@ -3316,7 +3316,7 @@ static void do_trace_handle_dl(scamper_task_t *task, scamper_dl_rec_t *dl)
         /* Stop only if non syn-ack tcp packets from server*/
         else if (scamper_addr_raw_cmp(trace->dst, dl->dl_ip_src) == 0)
         {
-          trace->server_try == 1;
+          trace->server_try = 1;
           handletp_func[probe->mode](task, dl, probe);
 	      trace->server_reached_flag = 1;
 	      return;
@@ -3324,7 +3324,7 @@ static void do_trace_handle_dl(scamper_task_t *task, scamper_dl_rec_t *dl)
     	/* If someone else replies with tcp packet, also stop*/
     	else
     	{
-    	  trace->server_try == 1; 
+    	  trace->server_try = 1; 
     	  handletp_func[probe->mode](task, dl, probe);
     	  trace->server_reached_flag = 1;
     	  return;
