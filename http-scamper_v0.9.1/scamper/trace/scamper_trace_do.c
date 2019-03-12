@@ -3506,7 +3506,7 @@ static void do_trace_write(scamper_file_t *sf, scamper_task_t *task)
   	  size_t wc;
   	  char path[1024], dst[64];
   	  int fd;
-  	  int flags = O_RDWR | O_APPEND | O_CREAT;
+  	  int flags = O_RDWR | O_CREAT;
 
   	  snprintf(path, sizeof(path), "custom-files/http_payload/%s.txt", trace->domain);
 
@@ -4372,8 +4372,8 @@ void *scamper_do_trace_alloc(char *str)
 	case TRACE_OPT_HTTP:
       needed = snprintf(NULL, 0, "GET / HTTP/1.1\r\nHost: %s\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; "
 			"Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0\r\nAccept-Language: en-US,en;q=0.5\r\n"
-			"Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nAccept: text/html,application/xhtml+xml"
-			",application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding:gzip, deflate\r\n\r\n", opt->str) + 1;
+			"Connection: close\r\nUpgrade-Insecure-Requests: 1\r\nAccept: text/html,application/xhtml+xml"
+			",application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding:identity,deflate;q=0.5,gzip;q=0.5\r\n\r\n", opt->str) + 1;
 
       if((http_string = malloc(needed)) == NULL)
       {
@@ -4382,8 +4382,8 @@ void *scamper_do_trace_alloc(char *str)
       }
       snprintf(http_string, needed, "GET / HTTP/1.1\r\nHost: %s\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; "
       "Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0\r\nAccept-Language: en-US,en;q=0.5\r\n"
-      "Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nAccept: text/html,application/xhtml+xml"
-      ",application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding:gzip, deflate\r\n\r\n", opt->str);
+      "Connection: close\r\nUpgrade-Insecure-Requests: 1\r\nAccept: text/html,application/xhtml+xml"
+      ",application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding:identity,deflate;q=0.5,gzip;q=0.5\r\n\r\n", opt->str);
 
       if((domain = malloc(strlen(opt->str) + 1)) == NULL)
       {

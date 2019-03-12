@@ -2099,7 +2099,7 @@ int scamper_dl_init()
       return -1;
     }
 #elif defined(__linux__)
-  readbuf_len = 1024;
+  readbuf_len = 131072;
   if((readbuf = malloc_zero(readbuf_len)) == NULL)
     {
       printerror(__func__, "could not malloc readbuf");
