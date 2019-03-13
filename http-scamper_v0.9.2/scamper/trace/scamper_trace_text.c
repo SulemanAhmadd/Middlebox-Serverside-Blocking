@@ -199,7 +199,7 @@ static char *icmp_tostr(const scamper_trace_hop_t *hop,
  */
 static char *header_tostr(const scamper_trace_t *trace)
 {
-  char src[64], dst[64], header[192];
+  char src[64], dst[64], header[225];
 
   if(trace->dst == NULL)
     return NULL;
@@ -216,7 +216,7 @@ static char *header_tostr(const scamper_trace_t *trace)
       else if(SCAMPER_TRACE_TYPE_IS_TCP(trace) && trace->http_string == NULL)
         {snprintf(header, sizeof(header), "tcp-traceroute from %s to %s", src, dst);}
       else
-        {snprintf(header, sizeof(header), "http-traceroute from %s to %s", src, dst);}
+        {snprintf(header, sizeof(header), "http-traceroute from %s to %s-%s", src, dst, trace->domain);}
     }
   else
     {

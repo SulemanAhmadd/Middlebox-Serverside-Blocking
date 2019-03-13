@@ -7,7 +7,7 @@ input_file.close()
 
 
 restricted_address = ['127.0.0.1', '255.255.255.255', '0.0.0.0', '0.0.0.1']
-
+unique_ips = set()
 
 sport = 20000;
 with open("nonhttp_cmd_file.txt", "a+") as non_http_cmd, open("http_cmd_file.txt", "a+") as http_cmd, open("invalid.txt", "a+") as invalid:
@@ -21,7 +21,11 @@ with open("nonhttp_cmd_file.txt", "a+") as non_http_cmd, open("http_cmd_file.txt
 
 		if ip in restricted_address:
 			invalid.write('%s %s\n' %(domain, ip))
-			
+		
+		elif ip in unique_ips:
+			http_cmd.write('trace -P TCP -s %s -d 80 -F -H %s %s\n' % (str(sport), domain, ip))
+			sport += 1
+
 		else:
 			non_http_cmd.write('trace -P TCP -s %s -d 80 %s\n' % (str(sport), ip))
 			non_http_cmd.write('trace -P UDP-paris -d 53 %s\n' % (ip))
@@ -29,4 +33,5 @@ with open("nonhttp_cmd_file.txt", "a+") as non_http_cmd, open("http_cmd_file.txt
 
 			http_cmd.write('trace -P TCP -s %s -d 80 -F -H %s %s\n' % (str(sport), domain, ip))
 
-			sport += 1;
+			sport += 1
+			unique_ips.add(ip)
