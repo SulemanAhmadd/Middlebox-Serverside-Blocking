@@ -10,30 +10,12 @@ PAYLOAD_FILE = 'http_payload'
 vantage_point_dic = {}
 
 '''
-{VP: {190.190.190.190: [http-trace, udp-trace, icmp-trace, tcp-trace]}, ...}
+Prev:
+{VP: {dest: [http-trace, udp-trace, icmp-trace, tcp-trace]}, ...}
 
-Later:
-{VP: {domain: [http-trace, udp-trace, icmp-trace, tcp-trace]}, ...}
+Now:
+{VP: {http: {dest:[trace]}, icmp:{dest:[trace,...]}, ... }}
 '''
-
-def make_dest_dict(http_traces, nonhttp_traces):
-	traces_dict = {}
-	for http_trace in http_traces:
-
-		traces = []
-		destination = http_trace.get_destination()
-		traces.append(http_trace)
-
-		if destination in traces_dict: # Remove after domain addition
-			continue;
-
-		for nonhttp_trace in nonhttp_traces: # can be improved n^2 for now
-			if nonhttp_trace.get_destination() == destination:
-				traces.append(nonhttp_trace)
-
-		traces_dict[destination] = traces
-
-	return traces_dict
 
 def process_line(input_line):
 	return [x for x in input_line.strip().split(' ') if x]
@@ -52,9 +34,17 @@ def get_trace_type(line):
 			sys.exit('Cannot understand trace')
 	return ''
 
-def parse_traces(filename):
+def add_dest_to_dict(traces_dict, trace_object):
 
-	trace_objects = []
+	inner_dict = traces_dict[trace_object.trace_type]
+
+	if trace_object.get_destination() in inner_dict:
+		inner_dict[trace_object.get_destination()].append(trace_object)
+	else:
+		inner_dict[trace_object.get_destination()] = [trace_object]
+
+def parse_traces(filename, traces_dict):
+
 	trace = []; trace_type = '';
 	with open(filename, 'r') as traces_file:
 
@@ -62,13 +52,14 @@ def parse_traces(filename):
 			line = process_line(line)
 
 			if 'traceroute' in line[0] and trace:
-				trace_objects.append(Trace(trace_type, trace))
+				add_dest_to_dict(traces_dict, Trace(trace_type, trace))
 				trace = []; trace_type = '';
 
 			trace_type += get_trace_type(line)
 			trace.append(line)
 
-	return trace_objects
+		# Add the last traceroute of file
+		add_dest_to_dict(traces_dict, Trace(trace_type, trace))
 
 def main():
 
@@ -77,8 +68,14 @@ def main():
 	'''
 	Data Parsing
 	'''
-
 	for vantage_point in next(os.walk(root_directory))[1]:
+
+		traces_dict = {
+			'http' : {},
+			'tcp'  : {},
+			'icmp' : {},
+			'udp'  : {}
+		}
 
 		vantage_point_dir = os.path.join(root_directory, vantage_point)
 
@@ -86,14 +83,13 @@ def main():
 		nonhttp_trace_file = os.path.join(vantage_point_dir, NONHTTP_RESULT_FILE)
 		raw_html_file = os.path.join(vantage_point_dir, PAYLOAD_FILE)
 
-		http_traces = parse_traces(http_trace_file) # returns a list of trae objects
-		nonhttp_traces = parse_traces(nonhttp_trace_file)
+		parse_traces(http_trace_file, traces_dict) # returns a list of trace objects
+		parse_traces(nonhttp_trace_file, traces_dict)
 		'''
 		# TODO: HTML Parsing
 		'''
-
-		traces_dict = make_dest_dict(http_traces, nonhttp_traces) # merge both trace lists based on common dest ip
 		vantage_point_dic[vantage_point] = traces_dict # Update dict of vantage point 
+		break
 
 	'''
 	Data Analysis
@@ -104,7 +100,7 @@ def main():
 	'''
 
 	analysis = Analysis()
-	analysis.get_total_traceroutes_completed()
+	analysis.get_total_traceroutes_not_initialized(vantage_point_dic)
 
 if __name__ == '__main__':
 	main()
