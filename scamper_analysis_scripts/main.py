@@ -89,7 +89,6 @@ def main():
 		# TODO: HTML Parsing
 		'''
 		vantage_point_dic[vantage_point] = traces_dict # Update dict of vantage point 
-		break
 
 	'''
 	Data Analysis
