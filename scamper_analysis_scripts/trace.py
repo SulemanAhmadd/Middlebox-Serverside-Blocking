@@ -80,8 +80,8 @@ class Trace(object):
         self.src_addr = header[2]
         self.dest_addr = header[4]
 
-        #if self.trace_type == 'http':
-            #self.domain_name = header[5]
+        if self.trace_type == 'http':
+            self.domain_name = header[5]
 
         routes = trace[1:]
         self.path_length = len(routes)
@@ -110,7 +110,6 @@ class Trace(object):
             self.path_hops.append(hop)
 
     def get_destination(self):
-        # return self.domain_name
         return self.dest_addr
 
     def p_print(self):

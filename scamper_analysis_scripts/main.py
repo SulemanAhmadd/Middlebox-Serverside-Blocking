@@ -1,11 +1,13 @@
 from trace import Trace
 from analysis import Analysis
+import cPickle as pickle
 import sys
 import os
 
 HTTP_RESULT_FILE = 'http-results.txt'
 NONHTTP_RESULT_FILE = 'nonhttp-results.txt'
 PAYLOAD_FILE = 'http_payload'
+CACHE_DIR = './cache'
 
 vantage_point_dic = {}
 
@@ -15,6 +17,7 @@ Prev:
 
 Now:
 {VP: {http: {dest:[trace]}, icmp:{dest:[trace,...]}, ... }}
+
 '''
 
 def process_line(input_line):
@@ -61,6 +64,21 @@ def parse_traces(filename, traces_dict):
 		# Add the last traceroute of file
 		add_dest_to_dict(traces_dict, Trace(trace_type, trace))
 
+def exists_cache_json(vantage_point):
+	return os.path.exists(os.path.join(CACHE_DIR, vantage_point))
+
+def save_cache_json(vantage_point, traces_dict):
+
+	if not os.path.exists(CACHE_DIR):
+	    os.mkdir(CACHE_DIR)
+
+	with open(os.path.join(CACHE_DIR, vantage_point), 'wb') as handle:
+		pickle.dump(traces_dict, handle)
+
+def load_cache_json(vantage_point, traces_dict):
+	with open('file.txt', 'rb') as handle:
+		traces_dict = pickle.loads(handle.read())
+
 def main():
 
 	root_directory = os.getcwd()
@@ -70,6 +88,9 @@ def main():
 	'''
 	for vantage_point in next(os.walk(root_directory))[1]:
 
+		if vantage_point == CACHE_DIR:
+			continue
+
 		traces_dict = {
 			'http' : {},
 			'tcp'  : {},
@@ -77,18 +98,27 @@ def main():
 			'udp'  : {}
 		}
 
-		vantage_point_dir = os.path.join(root_directory, vantage_point)
+		if not exists_cache_json(vantage_point):
 
-		http_trace_file = os.path.join(vantage_point_dir, HTTP_RESULT_FILE)
-		nonhttp_trace_file = os.path.join(vantage_point_dir, NONHTTP_RESULT_FILE)
-		raw_html_file = os.path.join(vantage_point_dir, PAYLOAD_FILE)
+			vantage_point_dir = os.path.join(root_directory, vantage_point)
 
-		parse_traces(http_trace_file, traces_dict) # returns a list of trace objects
-		parse_traces(nonhttp_trace_file, traces_dict)
+			http_trace_file = os.path.join(vantage_point_dir, HTTP_RESULT_FILE)
+			nonhttp_trace_file = os.path.join(vantage_point_dir, NONHTTP_RESULT_FILE)
+			raw_html_file = os.path.join(vantage_point_dir, PAYLOAD_FILE)
+
+			parse_traces(http_trace_file, traces_dict) # returns a list of trace objects
+			parse_traces(nonhttp_trace_file, traces_dict)
+
+			# save_cache_json(vantage_point, traces_dict) <-- disabled for now
+		else:
+
+			load_cache_json(vantage_point, traces_dict)
+
+		vantage_point_dic[vantage_point] = traces_dict # Update dict of vantage point 
+
 		'''
 		# TODO: HTML Parsing
 		'''
-		vantage_point_dic[vantage_point] = traces_dict # Update dict of vantage point 
 
 	'''
 	Data Analysis
@@ -97,7 +127,6 @@ def main():
 	2. How many traceroutes completed
 	3. How many http responses
 	'''
-
 	analysis = Analysis()
 	analysis.get_total_traceroutes_not_initialized(vantage_point_dic)
 
