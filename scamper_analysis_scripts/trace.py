@@ -59,7 +59,7 @@ class Trace(object):
         # Header Fields
         self.src_addr = ""              # source ip address     
         self.dest_addr = ""             # destination ip address
-        self.domain_name = ""           # domain name of dest 
+        self.domain_name = ""           # domain name of dest (can be multiple due to cdns)
 
         # Path Fields
         self.path_hops = []             # list of hop objects in trace
@@ -84,11 +84,17 @@ class Trace(object):
             self.domain_name = header[5]
 
         routes = trace[1:]
-        self.path_length = len(routes)
+
         self.parse_hops(routes)
+        self.path_length = len(routes)
 
         if not self.path_length:
             return
+
+        for hop in reversed(self.path_hops):
+            if hop.reply_recv:
+                break
+            self.path_length -= 1
 
         self.trace_started = True
         self.reply_hop = self.path_hops[-1]
@@ -110,7 +116,7 @@ class Trace(object):
             self.path_hops.append(hop)
 
     def get_destination(self):
-        return self.dest_addr
+        return self.domain_name
 
     def p_print(self):
         print ("*****************************************************************************")

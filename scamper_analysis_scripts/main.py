@@ -1,4 +1,5 @@
 from trace import Trace
+from webpage import Webpage
 from analysis import Analysis
 import cPickle as pickle
 import sys
@@ -9,15 +10,17 @@ NONHTTP_RESULT_FILE = 'nonhttp-results.txt'
 PAYLOAD_FILE = 'http_payload'
 CACHE_DIR = './cache'
 
-vantage_point_dic = {}
+vantage_point_trace_dict = {}
+vantage_point_webpage_dict = {}
+domain_ip_map = {}
 
 '''
-Prev:
-{VP: {dest: [http-trace, udp-trace, icmp-trace, tcp-trace]}, ...}
+Data structures
 
-Now:
-{VP: {http: {dest:[trace]}, icmp:{dest:[trace,...]}, ... }}
+Traces Dict:
+{VP: {http: {domain: trace}, icmp:{domain: trace}, ... }}
 
+{VP: {domain: webpage, domain2: webpage}}
 '''
 
 def process_line(input_line):
@@ -41,10 +44,18 @@ def add_dest_to_dict(traces_dict, trace_object):
 
 	inner_dict = traces_dict[trace_object.trace_type]
 
-	if trace_object.get_destination() in inner_dict:
-		inner_dict[trace_object.get_destination()].append(trace_object)
+	if trace_object.trace_type == 'http':
+
+		if trace_object.dest_addr in domain_ip_map:
+			domain_ip_map[trace_object.dest_addr].append(trace_object.domain_name)
+		else:
+			domain_ip_map[trace_object.dest_addr] = [trace_object.domain_name]
+
+		inner_dict[trace_object.domain_name] = trace_object
 	else:
-		inner_dict[trace_object.get_destination()] = [trace_object]
+
+		for domain in domain_ip_map[trace_object.dest_addr]:
+			inner_dict[domain] = trace_object
 
 def parse_traces(filename, traces_dict):
 
@@ -53,6 +64,7 @@ def parse_traces(filename, traces_dict):
 
 		for line in traces_file:
 			line = process_line(line)
+			if not line: continue;
 
 			if 'traceroute' in line[0] and trace:
 				add_dest_to_dict(traces_dict, Trace(trace_type, trace))
@@ -61,8 +73,17 @@ def parse_traces(filename, traces_dict):
 			trace_type += get_trace_type(line)
 			trace.append(line)
 
-		# Add the last traceroute of file
+		# Adds the last traceroute of file
 		add_dest_to_dict(traces_dict, Trace(trace_type, trace))
+
+def parse_webpages(webpage_dir, webpage_dict):
+	for webpage in os.listdir(webpage_dir):
+		webpage_path = os.path.join(webpage_dir, webpage)
+
+		obj = Webpage(webpage_path)
+		obj.parse_webpage(webpage_path)
+
+		webpage_dict[webpage.strip('.txt')] = obj
 
 def exists_cache_json(vantage_point):
 	return os.path.exists(os.path.join(CACHE_DIR, vantage_point))
@@ -98,6 +119,8 @@ def main():
 			'udp'  : {}
 		}
 
+		webpages_dict = {}
+
 		if not exists_cache_json(vantage_point):
 
 			vantage_point_dir = os.path.join(root_directory, vantage_point)
@@ -109,26 +132,47 @@ def main():
 			parse_traces(http_trace_file, traces_dict) # returns a list of trace objects
 			parse_traces(nonhttp_trace_file, traces_dict)
 
+			parse_webpages(os.path.join(root_directory, vantage_point, PAYLOAD_FILE), webpages_dict)
+
 			# save_cache_json(vantage_point, traces_dict) <-- disabled for now
+			# save_cache_json(vantage_point + '.page', webpages_dict) <-- disabled for now
 		else:
 
 			load_cache_json(vantage_point, traces_dict)
+			load_cache_json(vantage_point + '.page', webpages_dict)
 
-		vantage_point_dic[vantage_point] = traces_dict # Update dict of vantage point 
+		domain_ip_map.clear()
 
-		'''
-		# TODO: HTML Parsing
-		'''
+		vantage_point_trace_dict[vantage_point] = traces_dict # Update dict of vantage point traces
+		vantage_point_webpage_dict[vantage_point] = webpages_dict # Update dict of vantage point webpages
 
 	'''
 	Data Analysis
 
-	1. Three hop difference analysis
-	2. How many traceroutes completed
-	3. How many http responses
 	'''
 	analysis = Analysis()
-	analysis.get_total_traceroutes_not_initialized(vantage_point_dic)
+
+	print('> Failed Initilizations per VP')
+	analysis.get_total_traceroutes_not_initialized(vantage_point_trace_dict)
+	print('\n')
+	print('> Hop Count Difference')
+	analysis.compare_hops_for_n_hop_diff(vantage_point_trace_dict, 3)
+	print('\n')
+	print('> Status codes per VP without externel crawler')
+	analysis.get_status_codes(vantage_point_webpage_dict)
+	print('\n')
+	print('> Complete Webpages')
+	analysis.get_total_complete_webpages(vantage_point_webpage_dict)
+	print('\n')
+	print('> Replacing Invalid wepages')
+	analysis.replace_webpages_using_external_crawler(vantage_point_webpage_dict)
+	print('\n')
+	print('> Status codes per VP after externel crawler')
+	analysis.get_status_codes(vantage_point_webpage_dict)
+	print('\n')
+	print('> Complete Webpages after externel crawler')
+	analysis.get_total_complete_webpages(vantage_point_webpage_dict)
+	print('\n')
 
 if __name__ == '__main__':
 	main()
