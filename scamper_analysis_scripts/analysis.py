@@ -44,7 +44,7 @@ class Analysis(object):
 
 	def get_total_traceroutes_lasthop_analysis(self, _vantage_point_dic):
 
-		print ("Format - type: [reply-received, spoof-dest-reply, [spoof-reply-domains]]")
+		print ("Format - type: [reply-received, diff-dest-reply, [diff-reply-domains]]")
 		for vantage_point in _vantage_point_dic:
 
 			trace_dict_initalize_count = {
@@ -60,14 +60,12 @@ class Analysis(object):
 
 					trace = _vantage_point_dic[vantage_point][protocol][dest_addr]
 
-					if trace.trace_started:
+					if trace.trace_started and trace.reply_hop.reply_recv:
+						trace_dict_initalize_count[trace.trace_type][0] += 1
 
-						if trace.reply_hop.reply_recv:
-							trace_dict_initalize_count[trace.trace_type][0] += 1
-
-							if not trace.dest_replied and verify_reponse_type(trace.reply_hop, trace.trace_type):
-								trace_dict_initalize_count[trace.trace_type][1] += 1
-								trace_dict_initalize_count[trace.trace_type][2].append(dest_addr)
+						if not trace.dest_replied and verify_reponse_type(trace.reply_hop, trace.trace_type):
+							trace_dict_initalize_count[trace.trace_type][1] += 1
+							trace_dict_initalize_count[trace.trace_type][2].append(dest_addr)
 
 			print (vantage_point, trace_dict_initalize_count)
 
