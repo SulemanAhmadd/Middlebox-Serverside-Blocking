@@ -55,7 +55,13 @@ class Webpage(object):
 		
 		if not self.webpage_complete or self.status_code == '300':
 
-			response = requests.get('https://' + self.domain_name, headers=headers)
+			response = None
+			try:
+				response = requests.get('https://' + self.domain_name, headers=headers)
+			except KeyboardInterrupt:
+				exit()
+			except:
+				return
 
 			self.status_code = str(response.status_code)
 			self.webpage_complete = True

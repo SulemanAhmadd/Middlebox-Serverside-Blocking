@@ -26,7 +26,7 @@ class Analysis(object):
 
 	def get_total_traceroutes_lasthop_analysis(self, _vantage_point_dic):
 
-		print ("Format - type: [reply-received, true-dest-reply, [spoof-reply-domains]]")
+		print ("Format - type: [reply-received, spoof-dest-reply, [spoof-reply-domains]]")
 		for vantage_point in _vantage_point_dic:
 
 			trace_dict_initalize_count = {
@@ -106,7 +106,7 @@ class Analysis(object):
 				if webpage.webpage_complete:
 					complete += 1
 
-		print (str(complete) + '/' + str(len(_vantage_point_webpage_dict[vantage_point].keys())))
+			print (vantage_point, str(complete) + '/' + str(len(_vantage_point_webpage_dict[vantage_point].keys())))
 
 	def replace_webpages_using_external_crawler(self, _vantage_point_webpage_dict):
 
