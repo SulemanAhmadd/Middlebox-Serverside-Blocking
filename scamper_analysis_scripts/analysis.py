@@ -1,5 +1,23 @@
 #import matplotlib as plt
 
+def verify_reponse_type(reply_hop, trace_type):
+	for resp_ip in reply_hop.dest_resps.keys():
+
+		for resp_type in reply_hop.dest_resps[resp_ip]:
+
+			if trace_type == 'http' and 'TCP' in resp_type:
+				return True
+
+			elif trace_type == 'udp' and '' in resp_type:
+				return True
+
+			elif trace_type == 'tcp' and ('TCP' in resp_type or 'SYN' in resp_type):
+				return True
+
+			elif trace_type == 'icmp':
+				return True
+	return False
+
 
 class Analysis(object):
 
@@ -47,9 +65,9 @@ class Analysis(object):
 						if trace.reply_hop.reply_recv:
 							trace_dict_initalize_count[trace.trace_type][0] += 1
 
-							if trace.dest_addr not in trace.reply_hop.reply_addrs:
+							if not trace.dest_replied and verify_reponse_type(trace.reply_hop, trace.trace_type):
 								trace_dict_initalize_count[trace.trace_type][1] += 1
-								trace_dict_initalize_count[trace.trace_type][2].append(trace.domain_name)
+								trace_dict_initalize_count[trace.trace_type][2].append(dest_addr)
 
 			print (vantage_point, trace_dict_initalize_count)
 
