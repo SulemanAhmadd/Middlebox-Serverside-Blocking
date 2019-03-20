@@ -85,7 +85,7 @@ class Analysis(object):
 				for protocol in trace_dict_initalize_count.keys():
 					nontrace = _vantage_point_dic[vantage_point][protocol][dest_addr]
 
-					if http_trace.path_length < nontrace.path_length - n:
+					if http_trace.path_length < nontrace.path_length - n and http_trace.trace_started:
 						trace_dict_initalize_count[protocol] += 1
 
 			print (vantage_point, trace_dict_initalize_count)
