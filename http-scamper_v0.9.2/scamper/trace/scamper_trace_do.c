@@ -99,7 +99,7 @@ static const char rcsid[] =
 #define SCAMPER_DO_TRACE_HOLDTIME_MAX  255
 
 #define SCAMPER_DO_TRACE_HOPLIMIT_MIN  0
-#define SCAMPER_DO_TRACE_HOPLIMIT_DEF  0
+#define SCAMPER_DO_TRACE_HOPLIMIT_DEF  25
 #define SCAMPER_DO_TRACE_HOPLIMIT_MAX  255
 
 #define SCAMPER_DO_TRACE_LOOPS_MIN     0
@@ -4394,7 +4394,7 @@ void *scamper_do_trace_alloc(char *str)
         goto err;
       }
       snprintf(domain, strlen(opt->str) + 1, opt->str);
-
+      hoplimit = 0;
       gaplimit = 25;
 	  break;
 

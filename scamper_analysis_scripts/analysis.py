@@ -44,7 +44,7 @@ class Analysis(object):
 
 	def get_total_traceroutes_lasthop_analysis(self, _vantage_point_dic):
 
-		print ("Format - type: [reply-received, diff-dest-reply, [diff-reply-domains]]")
+		print ("Format - protocol: [reply-received, diff-dest-reply, [diff-reply-domains]]")
 		for vantage_point in _vantage_point_dic:
 
 			trace_dict_initalize_count = {
@@ -69,26 +69,48 @@ class Analysis(object):
 
 			print (vantage_point, trace_dict_initalize_count)
 
-	def compare_hops_for_n_hop_diff(self, _vantage_point_dic, n):
+	def compare_for_n_hop_diff_and_avg_pathlen(self, _vantage_point_dic, n, inverse):
 
 		for vantage_point in _vantage_point_dic:
 
 			trace_dict_initalize_count = {
-			'tcp'  : 0,
-			'icmp' : 0,
-			'udp'  : 0
+			'tcp'  : [0, 0],
+			'icmp' : [0, 0],
+			'udp'  : [0, 0]
 			}
-			
+
+			avg_http_pathlength = 0; http_count = 0;
 			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
 
 				http_trace = _vantage_point_dic[vantage_point]['http'][dest_addr]
 				for protocol in trace_dict_initalize_count.keys():
 					nontrace = _vantage_point_dic[vantage_point][protocol][dest_addr]
 
-					if http_trace.path_length < nontrace.path_length - n and http_trace.trace_started:
-						trace_dict_initalize_count[protocol] += 1
+					if not inverse and http_trace.path_length < (nontrace.path_length - n) and http_trace.trace_started:
+						trace_dict_initalize_count[protocol][0] += 1
+						trace_dict_initalize_count[protocol][1] += nontrace.path_length
+						avg_http_pathlength += http_trace.path_length; http_count += 1
 
+					elif inverse and http_trace.path_length > (nontrace.path_length + n) and http_trace.trace_started:
+						trace_dict_initalize_count[protocol][0] += 1
+						trace_dict_initalize_count[protocol][1] += nontrace.path_length
+						avg_http_pathlength += http_trace.path_length; http_count += 1
+
+			if trace_dict_initalize_count['tcp'][0]:
+				trace_dict_initalize_count['tcp'][1] = trace_dict_initalize_count['tcp'][1] / float(trace_dict_initalize_count['tcp'][0])
+			
+			if trace_dict_initalize_count['icmp'][0]:
+				trace_dict_initalize_count['icmp'][1] = trace_dict_initalize_count['icmp'][1] / float(trace_dict_initalize_count['icmp'][0])
+			
+			if trace_dict_initalize_count['udp'][0]:
+				trace_dict_initalize_count['udp'][1] = trace_dict_initalize_count['udp'][1] / float(trace_dict_initalize_count['udp'][0])
+			
+			if http_count:
+				avg_http_pathlength = avg_http_pathlength/float(http_count)
+
+			print ("Format - protocol : [count, average-path-length]")
 			print (vantage_point, trace_dict_initalize_count)
+			print (vantage_point, 'HTTP', avg_http_pathlength)
 
 	def get_status_codes(self, _vantage_point_webpage_dict):
 
@@ -119,7 +141,7 @@ class Analysis(object):
 
 				webpage = _vantage_point_webpage_dict[vantage_point][dest_addr]
 
-				if webpage.webpage_complete:
+				if webpage.webpage_complete: # TODO: Add external crawler webpage count as well
 					complete += 1
 
 			print (vantage_point, str(complete) + '/' + str(len(_vantage_point_webpage_dict[vantage_point].keys())))

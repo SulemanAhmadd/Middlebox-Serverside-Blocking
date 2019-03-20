@@ -37,7 +37,7 @@ class Webpage(object):
 			page = file.readlines()
 			page = ''.join(page)
 
-			self.webpage_complete = True if '</html>' in page else False
+			self.webpage_complete = True if (('<html>' in page) and ('</html>' in page)) else False
 
 			if status_code_200.match(page):
 				self.status_code = '200'
@@ -57,7 +57,7 @@ class Webpage(object):
 
 			response = None
 			try:
-				response = requests.get('https://' + self.domain_name, headers=headers)
+				response = requests.get('https://' + self.domain_name, headers=headers) #TODO make threaded 
 			except KeyboardInterrupt:
 				exit()
 			except:
