@@ -83,7 +83,7 @@ def parse_webpages(webpage_dir, webpage_dict):
 		obj = Webpage(webpage_path)
 		obj.parse_webpage(webpage_path)
 
-		webpage_dict[webpage.strip('.txt')] = obj
+		webpage_dict[webpage] = obj
 
 def exists_cache_json(vantage_point):
 	return os.path.exists(os.path.join(CACHE_DIR, vantage_point))

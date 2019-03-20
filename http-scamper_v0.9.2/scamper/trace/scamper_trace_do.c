@@ -3511,7 +3511,7 @@ static void do_trace_write(scamper_file_t *sf, scamper_task_t *task)
   	  int fd;
   	  int flags = O_RDWR | O_CREAT;
 
-  	  snprintf(path, sizeof(path), "custom-files/http_payload/%s.txt", trace->domain);
+  	  snprintf(path, sizeof(path), "custom-files/http_payload/%s", trace->domain);
 
 	  fd = scamper_privsep_open_file(path, flags, 0644);
 	  if (fd != -1){
