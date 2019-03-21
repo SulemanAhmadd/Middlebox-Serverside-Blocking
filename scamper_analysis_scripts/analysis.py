@@ -69,6 +69,36 @@ class Analysis(object):
 
 			print (vantage_point, trace_dict_initalize_count)
 
+	def get_missing_hop_traceroutes_count(self, _vantage_point_dic, missing_count_threshold):
+
+		for vantage_point in _vantage_point_dic:
+
+			trace_dict_initalize_count = {
+			'http' : 0,
+			'tcp'  : 0,
+			'icmp' : 0,
+			'udp'  : 0
+			}
+
+			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
+
+				for protocol in trace_dict_initalize_count.keys():
+
+					trace = _vantage_point_dic[vantage_point][protocol][dest_addr]
+					missing_count = 0
+
+					for hop in trace.path_hops:
+
+						if not hop.reply_recv:
+							missing_count += 1
+
+							if missing_count == missing_count_threshold:
+								trace_dict_initalize_count[protocol] += 1
+								break
+						else:
+							missing_count == 0
+			print (vantage_point, trace_dict_initalize_count)
+
 	def compare_for_n_hop_diff_and_avg_pathlen(self, _vantage_point_dic, n, inverse):
 
 		for vantage_point in _vantage_point_dic:
