@@ -361,7 +361,7 @@ typedef struct scamper_trace
   /* payload */
   uint8_t               *payload;
   uint16_t               payload_len;
-  uint16_t               bytes_copied;
+  size_t               	 bytes_copied;
 
   /* Custom paramters */
   char*                  http_string; // payload

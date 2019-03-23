@@ -3515,7 +3515,7 @@ static void do_trace_write(scamper_file_t *sf, scamper_task_t *task)
 
 	  fd = scamper_privsep_open_file(path, flags, 0644);
 	  if (fd != -1){
-	  	write_wrap(fd, trace->payload, &wc, strlen(trace->payload));
+	  	write_wrap(fd, trace->payload, &wc, trace->bytes_copied);
 	  	close(fd);
 	  }
   }
