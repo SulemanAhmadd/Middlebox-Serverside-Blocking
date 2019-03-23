@@ -1,4 +1,5 @@
-#import matplotlib as plt
+import threading
+import thread
 
 def verify_reponse_type(reply_hop, trace_type):
 	for resp_ip in reply_hop.dest_resps.keys():
@@ -61,7 +62,8 @@ class Analysis(object):
 					trace = _vantage_point_dic[vantage_point][protocol][dest_addr]
 
 					if trace.trace_started and trace.reply_hop.reply_recv:
-						trace_dict_initalize_count[trace.trace_type][0] += 1
+						if trace.dest_replied: # reply from server in question
+							trace_dict_initalize_count[trace.trace_type][0] += 1
 
 						if not trace.dest_replied and verify_reponse_type(trace.reply_hop, trace.trace_type):
 							trace_dict_initalize_count[trace.trace_type][1] += 1
@@ -87,16 +89,17 @@ class Analysis(object):
 					trace = _vantage_point_dic[vantage_point][protocol][dest_addr]
 					missing_count = 0
 
-					for hop in trace.path_hops:
+					if trace.trace_started and trace.dest_replied:
+						for hop in trace.path_hops:
 
-						if not hop.reply_recv:
-							missing_count += 1
+							if not hop.reply_recv:
+								missing_count += 1
 
-							if missing_count == missing_count_threshold:
-								trace_dict_initalize_count[protocol] += 1
-								break
-						else:
-							missing_count == 0
+								if missing_count == missing_count_threshold:
+									trace_dict_initalize_count[protocol] += 1
+									break
+							else:
+								missing_count == 0
 			print (vantage_point, trace_dict_initalize_count)
 
 	def compare_for_n_hop_diff_and_avg_pathlen(self, _vantage_point_dic, n, inverse):
@@ -176,11 +179,29 @@ class Analysis(object):
 
 			print (vantage_point, str(complete) + '/' + str(len(_vantage_point_webpage_dict[vantage_point].keys())))
 
+	def threaded_webpage_replacement(self, vantage_point , _vantage_point_webpage_dict, domain_chunk):
+		
+		for dest_addr in domain_chunk:
+
+			_vantage_point_webpage_dict[vantage_point][dest_addr].replace_corrupt_page()
+
 	def replace_webpages_using_external_crawler(self, _vantage_point_webpage_dict):
 
 		for vantage_point in _vantage_point_webpage_dict:
 
+			threads_list = []
 			for dest_addr in _vantage_point_webpage_dict[vantage_point].keys():
 
 				_vantage_point_webpage_dict[vantage_point][dest_addr].replace_corrupt_page()
+
+			for start_chunk in range(0, len(_vantage_point_webpage_dict[vantage_point].keys()), 50):
+				domain_chunk = _vantage_point_webpage_dict[vantage_point].keys()[start_chunk: start_chunk + 50]
+
+				child = threading.Thread(target = self.threaded_webpage_replacement, args = (vantage_point, _vantage_point_webpage_dict, domain_chunk,))
+				child.start()
+
+				threads_list.append(child)
+
+			for t in threads_list:
+				t.join()
 

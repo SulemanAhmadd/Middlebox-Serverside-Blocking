@@ -99,7 +99,7 @@ class Trace(object):
         self.trace_started = True
         self.reply_hop = self.path_hops[-1]
 
-        if self.dest_addr in self.reply_hop.dest_resps:
+        if self.dest_addr in self.reply_hop.reply_addrs:
             self.dest_replied = True
 
             if self.trace_type == 'udp':

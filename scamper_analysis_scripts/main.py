@@ -163,7 +163,7 @@ def main():
 	print('\n')
 	print('> Last Hop Analysis')
 	analysis.get_total_traceroutes_lasthop_analysis(vantage_point_trace_dict)
-	print('\n') get_missing_hop_traceroutes_count
+	print('\n')
 	print('> Missing Hops Analysis')
 	analysis.get_missing_hop_traceroutes_count(vantage_point_trace_dict, missing_count_threshold=3)
 	print('\n')	
