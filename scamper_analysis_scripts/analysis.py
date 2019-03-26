@@ -190,9 +190,9 @@ class Analysis(object):
 		for vantage_point in _vantage_point_webpage_dict:
 
 			threads_list = []
-			for dest_addr in _vantage_point_webpage_dict[vantage_point].keys():
+			# for dest_addr in _vantage_point_webpage_dict[vantage_point].keys():
 
-				_vantage_point_webpage_dict[vantage_point][dest_addr].replace_corrupt_page()
+			# 	_vantage_point_webpage_dict[vantage_point][dest_addr].replace_corrupt_page()
 
 			for start_chunk in range(0, len(_vantage_point_webpage_dict[vantage_point].keys()), 50):
 				domain_chunk = _vantage_point_webpage_dict[vantage_point].keys()[start_chunk: start_chunk + 50]
