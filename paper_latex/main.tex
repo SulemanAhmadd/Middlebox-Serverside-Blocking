@@ -1,0 +1,102 @@
+\documentclass[sigconf, table, anonymous]{acmart}
+\usepackage{graphicx,balance,multirow,xspace,subcaption,longtable}
+\usepackage{makecell}
+\usepackage[font={small}, textfont=md]{caption}
+\usepackage[T1]{fontenc}
+\usepackage[draft,inline,nomargin,index]{fixme}
+% \usepackage[utf8]{inputenc}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{hyperref}
+\urlstyle{tt}
+\newcolumntype{P}[1]{>{\arraybackslash}p{#1}}
+\newcolumntype{X}[1]{>{\centering\arraybackslash}p{#1}}
+
+\fxsetup{theme=colorsig,mode=multiuser,inlineface=\itshape,envface=\itshape}
+% \FXRegisterAuthor{sa}{asa}{Suleman}
+
+\newcommand\fulltitle{Differentiating Middle Box Blocking from Server Side Blocking}
+
+\definecolor{linkColor}{RGB}{6,125,233}
+\hypersetup{%
+  pdftitle={\fulltitle},
+  pdfauthor={},
+  pdfkeywords={},
+  bookmarksnumbered,
+  pdfstartview={FitH},
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=linkColor,
+  breaklinks=true,
+  hypertexnames=false
+}
+
+\newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
+\newcommand\clearrow{\global\let\rowmac\relax}
+
+\clubpenalty=10000
+\widowpenalty=10000
+
+\newcommand{\para}[1]{{\vspace{4pt} \bf \noindent #1 \hspace{10pt}}}
+
+\newenvironment{packed_itemize}{
+\begin{itemize}
+  \setlength{\itemsep}{2pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+  \setlength{\topsep}{2pt}
+}{\end{itemize}}
+
+\newenvironment{packed_enumerate}{
+\begin{enumerate}
+  \setlength{\itemsep}{2pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+  \setlength{\topsep}{2pt}
+}{\end{enumerate}}
+
+\renewcommand{\footnotesize}{\scriptsize}
+\newcommand{\etc}{etc.}
+\newcommand{\eg}{e.g.,\ }
+\newcommand{\etal}{et al.\xspace}
+\newcommand{\ie}{i.e.,\ }
+\newcommand{\re}{r.e.\ }
+\newcommand{\aka}{a.k.a.\ }
+
+% \copyrightyear{2019} 
+% \acmYear{2019} 
+% \setcopyright{acmlicensed}
+% \acmConference[IMC '19]{acm}{imc}
+% \acmBooktitle{title}
+% \acmPrice{price}
+% \acmDOI{doi}
+% \acmISBN{isbc}
+
+\begin{document}
+
+
+\renewcommand{\sectionautorefname}{\S}
+\renewcommand{\subsectionautorefname}{\S}
+\renewcommand{\subsubsectionautorefname}{\S}
+
+\title{\fulltitle}
+\title[\fulltitle]{\fulltitle}
+
+\maketitle
+\sloppy
+\input{abstract}
+\input{introduction}
+\input{background}
+\input{methodology}
+\input{results}
+\input{analysis}
+\input{discussion}
+\input{conclusions}
+
+%\balance
+%\footnotesize
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+\end{document}
+
