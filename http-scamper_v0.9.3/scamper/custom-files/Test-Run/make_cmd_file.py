@@ -28,7 +28,6 @@ with open("nonhttp_cmd_file.txt", "a+") as non_http_cmd, open("http_cmd_file.txt
 
 		else:
 			non_http_cmd.write('trace -P TCP -s %s -d 80 %s\n' % (str(sport), ip))
-			non_http_cmd.write('trace -P UDP-paris -d 53 %s\n' % (ip))
 			non_http_cmd.write('trace -P ICMP-paris %s\n' % (ip))
 
 			http_cmd.write('trace -P TCP -s %s -d 80 -F -H %s %s\n' % (str(sport), domain, ip))

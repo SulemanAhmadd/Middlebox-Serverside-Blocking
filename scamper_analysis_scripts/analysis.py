@@ -1,24 +1,6 @@
 import threading
 import thread
-
-def verify_reponse_type(reply_hop, trace_type):
-	for resp_ip in reply_hop.dest_resps.keys():
-
-		for resp_type in reply_hop.dest_resps[resp_ip]:
-
-			if trace_type == 'http' and 'TCP' in resp_type:
-				return True
-
-			elif trace_type == 'udp' and '' in resp_type:
-				return True
-
-			elif trace_type == 'tcp' and ('TCP' in resp_type or 'SYN' in resp_type):
-				return True
-
-			elif trace_type == 'icmp':
-				return True
-	return False
-
+import utilities as ut
 
 class Analysis(object):
 
@@ -65,7 +47,7 @@ class Analysis(object):
 						if trace.dest_replied: # reply from server in question
 							trace_dict_initalize_count[trace.trace_type][0] += 1
 
-						if not trace.dest_replied and verify_reponse_type(trace.reply_hop, trace.trace_type):
+						if not trace.dest_replied and ut.verify_reponse_type(trace.reply_hop, trace.trace_type):
 							trace_dict_initalize_count[trace.trace_type][1] += 1
 							trace_dict_initalize_count[trace.trace_type][2].append(dest_addr)
 
@@ -99,8 +81,54 @@ class Analysis(object):
 									trace_dict_initalize_count[protocol] += 1
 									break
 							else:
-								missing_count == 0
+								missing_count = 0
 			print (vantage_point, trace_dict_initalize_count)
+
+	def get_missing_hop_icmp_plot(self, _vantage_point_dic):
+
+		threshold = 2
+		for vantage_point in _vantage_point_dic:
+
+			missing_hops_dict = {}
+
+			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
+
+				trace = _vantage_point_dic[vantage_point]['icmp'][dest_addr]
+				missing_count = 0
+
+				if trace.trace_started and trace.dest_replied:
+
+					terminate = False
+					for hop in trace.path_hops[::-1]:
+
+						if not hop.reply_recv:
+							missing_count += 1
+
+							if missing_count >= threshold:
+								terminate = True
+
+						elif terminate:
+							break
+
+						else:
+							missing_count = 0
+
+					if missing_count < threshold:
+						continue
+						
+					if missing_count in missing_hops_dict:
+						missing_hops_dict[missing_count] += missing_count
+					else:
+						missing_hops_dict[missing_count] = missing_count
+
+			missing_list = []
+			keys = missing_hops_dict.keys()
+			keys.sort()
+			for key in keys:
+				for i in [key] * missing_hops_dict[key]:
+					missing_list.append(i)
+
+			ut.plot_cdf(missing_list, "Number of Missing Hops", vantage_point + ": IMCP - Potential Hop Count Inflation")
 
 	def compare_for_n_hop_diff_and_avg_pathlen(self, _vantage_point_dic, n, inverse):
 
@@ -144,6 +172,76 @@ class Analysis(object):
 			print ("Format - protocol : [count, average-path-length]")
 			print (vantage_point, trace_dict_initalize_count)
 			print (vantage_point, 'HTTP', avg_http_pathlength)
+
+	def icmp_shorter_path_length_analysis(self, _vantage_point_dic): # Path length must be complete
+
+		for vantage_point in _vantage_point_dic:
+
+			trace_reasons_dict = {
+				'1': 0, # When server replies after a certain TTL value
+				'2': 0, # Server itself or the server network blocking ICMP packets
+				'3': [0, 0], # When icmp paths follow a completely different path: (count, average diverging hop number)
+				'4': 0 # ICMP error codes
+			}
+			
+			for domain in _vantage_point_dic[vantage_point]['http'].keys():
+
+				http_trace = _vantage_point_dic[vantage_point]['http'][domain]
+				icmp_trace = _vantage_point_dic[vantage_point]['icmp'][domain]
+
+				if http_trace.trace_started and http_trace.path_length > icmp_trace.path_length and icmp_trace.reply_hop.reply_recv:
+
+					diverging_hop_num = ut.compare_path_similiarity(icmp_trace.path_hops, http_trace.path_hops)
+
+					if ut.compare_hops(http_trace.path_hops[http_trace.path_length - 1].reply_addrs, http_trace.path_hops[http_trace.path_length - 2].reply_addrs):
+						trace_reasons_dict['1'] += 1
+
+					elif http_trace.reply_hop.reply_recv and not icmp_trace.reply_hop.reply_recv:
+						trace_reasons_dict['2'] += 1
+
+					elif ut.detect_icmp_error_code(icmp_trace):
+						trace_reasons_dict['4'] += 1
+
+					elif (diverging_hop_num) != -1:
+
+						trace_reasons_dict['3'][0] += 1
+						trace_reasons_dict['3'][1] += diverging_hop_num
+
+					else:
+						print ("Case not handled %s" % domain)
+
+			trace_reasons_dict['3'][1] = trace_reasons_dict['3'][1] / float(trace_reasons_dict['3'][0])
+			print (vantage_point, trace_reasons_dict)
+
+	def get_icmp_lasthop_subnet_analysis(self, _vantage_point_dic):
+
+		for vantage_point in _vantage_point_dic:
+
+			icmp_subnet_dict = {}
+			overlap_list = []
+
+			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
+
+				icmp_trace = _vantage_point_dic[vantage_point]['icmp'][dest_addr]
+				last_responsive_hop_ip = icmp_trace.path_hops[icmp_trace.path_length - 1].reply_addrs[0]
+				dest_ip = icmp_trace.dest_addr
+
+				if icmp_trace.trace_started and not icmp_trace.reply_hop.reply_recv:
+
+					overlap = ut.compute_subnet_overlap(last_responsive_hop_ip, dest_ip)
+
+					if overlap in icmp_subnet_dict:
+						icmp_subnet_dict[overlap] += 1
+					else:
+						icmp_subnet_dict[overlap] = 1	
+
+			keys = icmp_subnet_dict.keys()
+			keys.sort()
+			for key in keys:
+				for i in [key] * icmp_subnet_dict[key]:
+					overlap_list.append(i)
+
+			ut.plot_cdf(overlap_list, "Subnet Mask /n", vantage_point + ": IMCP - Subnet Overlap of Destination IP and Last Responsive IP")
 
 	def get_status_codes(self, _vantage_point_webpage_dict):
 

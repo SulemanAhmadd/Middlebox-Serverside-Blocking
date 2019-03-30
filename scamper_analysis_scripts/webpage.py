@@ -37,7 +37,7 @@ class Webpage(object):
 			page = file.readlines()
 			page = ''.join(page)
 
-			self.webpage_complete = True if (('<html>' in page) and ('</html>' in page)) else False
+			self.webpage_complete = True if (('<html' in page) and ('</html>' in page)) else False
 
 			if status_code_200.match(page):
 				self.status_code = '200'
