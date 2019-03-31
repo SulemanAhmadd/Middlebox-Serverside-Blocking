@@ -16,5 +16,11 @@ This repository is storage for all our code for Internet Measurement Project (Se
 		ssh root@91.218.115.15  
 		eUbGc8ICNA  
 
-	- **Pak machine (PI)**:  
+	- **Turkey machine**:  
+		ssh root@185.123.101.107
+		EHfdwZA6Td
+
+	- **Chine Machine**:
+		ssh root@47.92.165.158
+		qafgu1-jynmeC-xaztod
 
