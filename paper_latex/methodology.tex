@@ -1,1 +1,99 @@
-\section*{Methodology}\label{sec:methodology}
+\section{Methodology}\label{sec:methodology}
+We build on the technique proposed by Halderman (ref to the initial paper that
+proposed this).
+\textbf{ discuss basic idea of the approach and add a summary of shortcomings
+of that approach; what practicalities does it ignore?} 
+
+\subsection{Dealing with Multiple Paths}
+Because load-balancers can affect our measurements and conclusions, we fix the
+paths our probes take in the following fashion (in line with the literature):
+\begin{itemize}
+    \item For ICMP:
+    \item For DNS:
+    \item For TCP/HTTP:
+\end{itemize}
+\textbf{Do our probes across different protocols take wildly different paths?
+We need some validation on this, and may need a strategy to identify and filter
+the cases that do not.}
+
+\subsection{Reference (ICMP) Path Validation}
+\begin{itemize}
+    \item So and so papers have shown that routers and servers can block ICMP
+        probes.  We first establish the rate of such blocking (manifested by
+        incomplete paths).
+     \item Experiment: For a sample of top Alexa websites (10K), check
+         reachability (path completeness and path inflation) to their
+         authoritative name-servers and webservers over ICMP.  
+     \item \textit{Path inflation:} Mention how we discover it: we started with
+         TTL of 25 and were getting a high percentage of incomplete paths.
+         Increasing the TTL to 64, increases the coverage of complete paths,
+         but inflates it.
+     \item Show empirical results and build an argument for discarding
+         incomplete and inflated paths.
+     \item Confirm that this happens from all vantage points.
+\end{itemize}
+
+
+\begin{table*}
+\small
+
+    \begin{center}
+
+    \begin{tabular}{|l|r|r|r|r|r|r|r|r|} \hline
+        \multirow{4}*{Vantage Point} &
+        \multicolumn{4}{c|}{Authoritative Nameservers Reachability} 
+         &
+        \multicolumn{4}{c|}{Webservers Reachability}
+         \\ \cline{2-9}
+        & 
+        \multicolumn{2}{c|}{\% Complete Paths} 
+        &
+        \multicolumn{2}{c|}{\% Possible Inflated Paths}
+        &
+        \multicolumn{2}{c|}{\% Complete Paths} 
+        &
+        \multicolumn{2}{c|}{\% Possible Inflated Paths}
+        \\ \cline{2-9}
+
+
+
+        & \multirow{2}*{TTL=25} &
+          \multirow{2}*{TTL=64} &
+          \multirow{2}*{TTL=25} &
+          \multirow{2}*{TTL=64} &
+          \multirow{2}*{TTL=25} &
+          \multirow{2}*{TTL=64} &
+          \multirow{2}*{TTL=25} &
+          \multirow{2}*{TTL=64} 
+
+                        \\ 
+                        
+        &&&&&&&& \\  \hline
+
+        Russia
+        &&&&&&&&
+             \\ \hline
+
+        China
+        &&&&&&&&
+             \\ \hline
+
+        Pakistan
+        &&&&&&&&
+             \\ \hline
+        
+        USA
+        &&&&&&&&
+             \\ \hline
+
+    \end{tabular}
+
+    \caption{ICMP reachability for Y websites. We start with the
+        Alexa top 10,000.  Filter down to the set that have the same
+        authoritative name server from all vantage points, resulting in n =  X.
+        We further filter down to the set that have the same webserver across
+    all vantage points, resulting in n = Y.}
+    \label{tab:pathvalidation}
+
+    \end{center}
+\end{table*}
