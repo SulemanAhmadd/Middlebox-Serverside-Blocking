@@ -113,8 +113,6 @@ def main():
 				merge_output_files()
 				print_completed_trace_count()
 
-				exit()
-
 	print ("Total HTTP destination addrs: %d" % http_count)
 	print ("Total Non-HTTP destination addrs: %d" % nonhttp_count)
 
