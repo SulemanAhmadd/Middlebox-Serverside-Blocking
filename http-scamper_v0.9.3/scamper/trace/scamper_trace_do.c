@@ -4395,7 +4395,6 @@ void *scamper_do_trace_alloc(char *str)
       }
       snprintf(domain, strlen(opt->str) + 1, opt->str);
       hoplimit = 0;
-      gaplimit = 25;
 	  break;
 
 	case TRACE_OPT_LOOPS:
