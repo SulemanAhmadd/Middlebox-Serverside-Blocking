@@ -33,6 +33,43 @@ the cases that do not.}
      \item Confirm that this happens from all vantage points.
 \end{itemize}
 
+\subsection{Path Validation Data Collection}
+We decided to use Alexa Top 1M list, and randomly selected top 1000 domains from 100000 top domains. We did this to ensure that our current sample has sufficient variability with respect to where the servers are hosted, and who these servers belong to. For example, there a lot of www.google.** domains in top Alexa domains.
+
+
+We firstly resolve those 1000 domains using a custom resolver code[Link code's repo]. We used, this custom script and not the local resolver to make sure that the authoritative server of that domain replies to our IP rather than our local resolver's IP which move out of our domain of control. So this step was taken to ensure repeatability. This resolver code takes in a list of of domains and returns a file which has data in the following format. \\ 
+\begin{center}
+   domain, cname, authserverIP, webserverIP \\    
+\end{center}
+We then divide the list into two sets, one set contains the list of domain and its corresponding authserverIP and the second set contains the list of domain and its corresponding webserverIP. We currently have rented four servers located at following locations: \\
+1. USA\\
+2. Russia\\
+3. Turkey\\
+4. China\\
+
+Unfortunately we were unable to run any measurement beyond resolution on Chinese machine primarily because its a CentOS machine and we had to recompile a lot of scripts for that particular environment. With that said, we were able to resolve and run measurements from those three vantage points and collect data. 
+
+We ran a couple of preliminary measurements and found out that a lot of ICMP probes were not reaching the server, so our primary hypothesis was that most of the path were getting inflated because of IDS. So proposed way to measure this was to send ICMP packets with a higher TTL value so that IDS cases get eliminated and we have a solid set of paths onto which we can base our methodology. 
+
+
+So in this experiment, as mentioned earlier we would run two different set of traceroutes on different sets of resolved servers. For the Authoritative server we will send ICMP and UDP (DNS packets with query to get current bind version) probes. For Webservers we will send ICMP, TCP and HTTP packets. We set the intial TTL value to be default traceroute value which is 25, and then we collected the results and analyzed them and then ran the same experiment with TTL value of 64.
+
+We made a couple of assumptions in our analysis, first of all we assumed was in path inflation code. We assumed that if there are more than two non responding consecutive IPs in the traceroute we assumed that the path is inflated because of IDS. 
+
+Secondly, we are assuming that if there is no reply for fifteen consecutive hops then the server will not respond for the max ttl value either. Which essentially implies that IDS is completely blocking our access.
+
+Before we go into the analyzing the results, we will first enlist the base numbers to give weight to the percentages. \\
+
+In Russia there were a total of 805 unique webserver, and 869 unique authservers.
+In USA there were a total of 793 unique webserver, and 871 unique authservers.
+In Turkey there were a total of 788 unique webserver, and 867 unique authservers.
+
+
+On a very high level, the results show a difference in percentage of ICMP probes that reach the server. On average around 85 percent of ICMP probes with TTL 25, and 98 percent ICMP probes when TTL value is 64, reach authoritative servers. Similarly, for in case of webservers we saw roughly equal reach-ability of about 75 percent for both 25 and 64 TTL. 
+
+There was a significantly higher path length inflation in ICMP paths to authservers compared to webservers (average of 25 percent vs 10 percent). 
+
+Broadly speaking, the TTL configuration of 64 with 15 gap limit would be ideal way to probe both webservers and authoritative servers, however there is a much higher incidence of ICMP blocking around webservers compared to authservers. In worst case we would be dropping around 20 percent of ICMP probes (if we dont fix the path inflation) for webservers and around 35 percent in case of authservers.
 
 \begin{table*}
 \small
@@ -71,19 +108,19 @@ the cases that do not.}
         &&&&&&&& \\  \hline
 
         Russia
-        &&&&&&&&
+        & 87.2 & 98.3 & 23.2 & 23.5 & 75.1 & 75.8 & 10.7 & 11.1
              \\ \hline
 
-        China
-        &&&&&&&&
+        Turkey
+        & 84.3 & 99.5 & 33.2 & 36.5 & 75.6 & 78.0 & 9.9 & 11.9 
              \\ \hline
 
-        Pakistan
-        &&&&&&&&
+        USA
+        & 84.7 & 98.6 & 22.8 & 25.1 & 73.7 & 76.5 & 7.1 & 9.5
              \\ \hline
         
-        USA
-        &&&&&&&&
+        China
+        & NA & NA & NA & NA & NA & NA & NA & NA
              \\ \hline
 
     \end{tabular}

@@ -23,7 +23,7 @@ def main():
 
 	count = 0
 
-	with open('scamper-input-dns.txt', 'a+') as outfile:
+	with open('scamper-input-dns.txt', 'wb') as outfile:
 		for dest_addr in inputlist:
 
 			domain, ip = parse_input_line(dest_addr)

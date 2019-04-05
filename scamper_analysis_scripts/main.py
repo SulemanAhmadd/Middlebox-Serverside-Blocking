@@ -57,6 +57,7 @@ def add_dest_to_dict(traces_dict, trace_object):
 		for domain in domain_ip_map[trace_object.dest_addr]:
 			inner_dict[domain] = trace_object
 
+
 def parse_traces(filename, traces_dict):
 
 	trace = []; trace_type = '';
@@ -186,6 +187,8 @@ def main():
 	# analysis.get_total_complete_webpages(vantage_point_webpage_dict)
 	# print('\n')
 
+	analysis.dump_incomplete_icmp_ips(vantage_point_trace_dict, 125)
+	#analysis.get_inflated_dest_count(vantage_point_trace_dict, 2)
 	
 if __name__ == '__main__':
 	main()

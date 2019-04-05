@@ -113,6 +113,16 @@ def main():
 				merge_output_files()
 				print_completed_trace_count()
 
+	if len(domain_batch_list):
+
+		run_scamper(domain_batch_list, 1)
+
+		domain_batch_list = []
+		remove_input_files()
+		merge_output_files()
+		print_completed_trace_count()
+
+
 	print ("Total HTTP destination addrs: %d" % http_count)
 	print ("Total Non-HTTP destination addrs: %d" % nonhttp_count)
 

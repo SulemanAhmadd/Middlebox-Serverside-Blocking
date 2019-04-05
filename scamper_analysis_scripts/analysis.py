@@ -84,9 +84,45 @@ class Analysis(object):
 								missing_count = 0
 			print (vantage_point, trace_dict_initalize_count)
 
-	def get_missing_hop_icmp_plot(self, _vantage_point_dic):
+	def get_inflated_dest_count(self, _vantage_point_dic, threshold=2):
 
-		threshold = 2
+		missing_hops_dict = {}
+		for vantage_point in _vantage_point_dic:
+
+			seen = []
+			missing_hops_dict[vantage_point] = 0
+			
+			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
+
+				trace = _vantage_point_dic[vantage_point]['icmp'][dest_addr]
+
+				if trace.dest_addr in seen:
+					continue
+
+				missing_count = 0
+				seen.append(trace.dest_addr)
+
+				if trace.trace_started and trace.dest_replied:
+
+					for hop in trace.path_hops[::-1]:
+
+						if not hop.reply_recv:
+							missing_count += 1
+
+							if missing_count > threshold:
+								break
+						else:
+							missing_count = 0
+
+					if missing_count < threshold:
+						continue
+						
+					missing_hops_dict[vantage_point] += 1
+		
+		print (missing_hops_dict)
+
+	def get_missing_hop_icmp_plot(self, _vantage_point_dic, threshold=2):
+
 		for vantage_point in _vantage_point_dic:
 
 			missing_hops_dict = {}
@@ -94,6 +130,7 @@ class Analysis(object):
 			for dest_addr in _vantage_point_dic[vantage_point]['http'].keys():
 
 				trace = _vantage_point_dic[vantage_point]['icmp'][dest_addr]
+
 				missing_count = 0
 
 				if trace.trace_started and trace.dest_replied:
@@ -243,6 +280,22 @@ class Analysis(object):
 
 			ut.plot_cdf(overlap_list, "Subnet Mask /n", vantage_point + ": IMCP - Subnet Overlap of Destination IP and Last Responsive IP")
 
+	def dump_incomplete_icmp_ips(self, _vantage_point_dic, threshold):
+
+		for vantage_point in _vantage_point_dic:
+
+			seen = []
+			for dest_addr in _vantage_point_dic[vantage_point]['icmp'].keys():
+				icmp_trace = _vantage_point_dic[vantage_point]['icmp'][dest_addr]
+
+				if icmp_trace.dest_addr not in seen:
+
+					if (len(icmp_trace.path_hops) <= threshold) and not icmp_trace.reply_hop.reply_recv:
+
+						ut.write_to_file(vantage_point, dest_addr, icmp_trace.dest_addr)
+
+					seen.append(icmp_trace.dest_addr)
+
 	def get_status_codes(self, _vantage_point_webpage_dict):
 
 		for vantage_point in _vantage_point_webpage_dict:
@@ -302,4 +355,3 @@ class Analysis(object):
 
 			for t in threads_list:
 				t.join()
-

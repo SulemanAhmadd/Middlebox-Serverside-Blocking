@@ -131,24 +131,10 @@ def plot_cdf(data, x_label, title):
     plt.plot(x, y)
     plt.show()
 
-'''
-1) Redo measurements for whole icmp traceroute
-from all vps (25) 
+def write_to_file(filename, domain, ip):
+	
+	filename = 'incomplete-icmp-' + filename + '.txt'
 
-2) ICMP
-Reached 25 hop but no sever reply
-then test again for maximum hop count
+	with open(filename, 'a+') as file:
+		file.write(domain + ' ' + ip + ',' + '\n')
 
-3) discarded data must be unreachable from all vantage points
-
-4) Abnormally short icmp path (see distribution) for middle box
-
-5) Distribution of TCP syn-ack halted (distriution from data)
-
-6) Changing source port or tcp syns and experiment if server behaviour changes 
-for if source prort is kept constant or not 
-
-dataset: same 10k
-for same syn packet count and ip addresses 
-
-'''

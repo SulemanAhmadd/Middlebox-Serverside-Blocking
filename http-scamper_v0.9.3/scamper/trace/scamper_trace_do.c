@@ -70,7 +70,7 @@ static const char rcsid[] =
 
 #define SCAMPER_DO_TRACE_HTTP_TTL_DEF  64
 #define SCAMPER_DO_TRACE_HTTP_WIN_DEF  8192
-#define SCAMPER_DO_TRACE_HOPCOUNT_DEF  25
+#define SCAMPER_DO_TRACE_HOPCOUNT_DEF  64
 #define SCAMPER_DO_TRACE_SYN_RTRY_DEF  3
 #define SCAMPER_DO_TRACE_HTTP_RTRY_DEF 2
 
@@ -87,7 +87,7 @@ static const char rcsid[] =
 #define SCAMPER_DO_TRACE_FIRSTHOP_MAX  255
 
 #define SCAMPER_DO_TRACE_GAPLIMIT_MIN  1
-#define SCAMPER_DO_TRACE_GAPLIMIT_DEF  25
+#define SCAMPER_DO_TRACE_GAPLIMIT_DEF  15
 #define SCAMPER_DO_TRACE_GAPLIMIT_MAX  255
 
 #define SCAMPER_DO_TRACE_GAPACTION_MIN 1
@@ -99,7 +99,7 @@ static const char rcsid[] =
 #define SCAMPER_DO_TRACE_HOLDTIME_MAX  255
 
 #define SCAMPER_DO_TRACE_HOPLIMIT_MIN  0
-#define SCAMPER_DO_TRACE_HOPLIMIT_DEF  25
+#define SCAMPER_DO_TRACE_HOPLIMIT_DEF  64
 #define SCAMPER_DO_TRACE_HOPLIMIT_MAX  255
 
 #define SCAMPER_DO_TRACE_LOOPS_MIN     0
@@ -4394,7 +4394,6 @@ void *scamper_do_trace_alloc(char *str)
         goto err;
       }
       snprintf(domain, strlen(opt->str) + 1, opt->str);
-      hoplimit = 0;
 	  break;
 
 	case TRACE_OPT_LOOPS:
