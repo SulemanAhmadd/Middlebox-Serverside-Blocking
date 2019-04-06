@@ -134,3 +134,37 @@ Broadly speaking, the TTL configuration of 64 with 15 gap limit would be ideal w
 
     \end{center}
 \end{table*}
+
+
+\begin{table*}
+\small
+
+    \begin{center}
+
+    \begin{tabular}{|l|r|r|} \hline
+        Number of Vantage Points &
+        Authoritative Nameservers 
+        (n=) &
+        Webservers
+        (n=)
+
+        \\ \hline
+
+        None    &    &  \\ \hline
+        Only one &   & \\ \hline
+        Only two &   &  \\ \hline
+        All Three &  &  \\ \hline
+       
+       
+    \end{tabular}
+
+    \caption{ICMP reachability for Y websites using three back-to-back ICMP
+        probes (TTL = 64). We start with the
+        Alexa top 1,000.  Filter down to the set that have the same
+        authoritative name server from all vantage points, resulting in n =  X.
+        We further filter down to the set that have the same webserver across
+    all vantage points, resulting in n = Y.}
+    \label{tab:ICMPreachabilityacrossvantages}
+
+    \end{center}
+\end{table*}
