@@ -167,9 +167,9 @@ Broadly speaking, the TTL configuration of 64 with 15 gap limit would be ideal w
     \label{tab:ICMPreachabilityacrossvantages}
 
     \end{center}
-    Y= 565
-    X=520
+    X=520\\
+    Y=565
     
 \end{table*}
 
-From a high level view, the data shows that there were roughly half the number of vantage points who had same Server replying to all the vantage points, this counters the previously made assumption regarding the prevalence of CDNs in the list. With that said, there was a roughly equal number of servers that were doing some degree of ICMP blocking based on the geo-location 11 in Authservers and 12 in Webservers.
+From a high level view, the data shows that there were roughly half the number of vantage points who had same server replying to all the vantage points, this counters the previously made assumption regarding the prevalence of CDNs in the list (at least for the vantage points we currently have). With that said, there was a roughly equal number of servers that were doing some degree of ICMP blocking based on the geo-location 11 in Authservers and 12 in Webservers. The non replying servers across the VPs suggest that we have ICMP blocking implemented at those servers and they should be filtered before we start our actual measurement phase.
