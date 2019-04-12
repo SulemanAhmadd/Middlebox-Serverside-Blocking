@@ -16,6 +16,12 @@ paths our probes take in the following fashion (in line with the literature):
 We need some validation on this, and may need a strategy to identify and filter
 the cases that do not.}
 
+We sampled a set of 1000 domains from Alexa top 1M list. This sample was resolved from three vantage points Turkey, USA and Russia, and the resulting ip addresses were traceroute using TCP, ICMP and HTTP protocols, using an upper hop count threshold of 25. (All of these measurements were already completed previously)
+Using our custom analysis script, the common webservers across the vantage points and their corresponding traceroutes were then extracted and the rest of the data was discarded. This resulted in 504 common webservers. Then another level of filtering was applied, which was to only consider those webservers for which we received a reply and that to from the server in question, for all of the three protocols.
+This resulted in vantage point specific filtered list, due to our 25 hop threshold, not every common webserver in the list was reachable from all the vantage points. Therefore, for each list we computed for how many webservers the path lengths of protocol X and Y are exactly same: for example, X=ICMP and Y=TCP path length were exactly same (labeled as ICMP-TCP in Table~\ref{tab:samepathvalidation}) for Russia, 206 times out of 296 successful traceroutes. The last column represents count of same path length for all three protocols combined.
+
+From a high level view, Table~\ref{tab:samepathvalidation} represents ICMP and HTTP path lengths differ more as compared to ICMP-TCP or HTTP-TCP. The difference in HTTP-TCP path length is mostly due to receiving RST packets from the server during HTTP traceroute, which would terminate it prematurely. Same logic is applicable for ICMP-TCP path lengths being more similar (having a higher count in table) than the ICMP-HTTP path lengths. On average ~65\% of the times all three protocol path lengths were exactly same, according to the last column of the table.
+
 \subsection{Reference (ICMP) Path Validation}
 \begin{itemize}
     \item So and so papers have shown that routers and servers can block ICMP
@@ -174,4 +180,52 @@ Broadly speaking, the TTL configuration of 64 with 15 gap limit would be ideal w
 
 From a high level view, the data shows that there were roughly half the number of vantage points who had same server replying to all the vantage points, this counters the previously made assumption regarding the prevalence of CDNs in the list (at least for the vantage points we currently have). With that said, there was a roughly equal number of servers that were doing some degree of ICMP blocking based on the geo-location 11 in Authservers and 12 in Webservers. The non replying servers across the VPs suggest that we have ICMP blocking implemented at those servers and they should be filtered before we start our actual measurement phase.
 
-While analyzing the IPs reachable from one or two vantage points, first major observation was that these IPs were reachable using traceroutes and not using ZMap. This is counter-intuitive because scamper's probes are under more restrictions compared to ZMap's probes (15 gap limit). The second major observation was that even for some cases even if the ICMP probes were not reaching the end host, the TCP probes were reaching the end host. Specifically in case of russian vantage point, in which the TCP packets were getting intercepted by a server close by (6th hop from the VP) and the ICMP probes were reaching on average thirteen hops before getting lost in the abyss (INTERNET IS AN ABYSSS!!). 
+While analyzing the IPs reachable from one or two vantage points, first major observation was that these IPs were reachable using traceroutes and not using ZMap. This is counter-intuitive because scamper's probes are under more restrictions compared to ZMap's probes (15 gap limit). The second major observation was that even for some cases even if the ICMP probes were not reaching the end host, the TCP probes were reaching the end host. Specifically in case of russian vantage point, in which the TCP packets were getting intercepted by a server close by (6th hop from the VP) and the ICMP probes were reaching on average thirteen hops before getting lost in the abyss. 
+
+\begin{table*}
+\small
+
+    \begin{center}
+
+    \begin{tabular}{|l|r|r|r|r|} \hline
+        \multirow{2}*{Vantage Point} &
+        \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
+         \\ \cline{2-5}
+        & ICMP-TCP &
+          HTTP-TCP &
+          ICMP-HTTP &
+          ICMP-HTTP-TCP\\ \hline
+                        
+        Russia ($Z_{r}$=296)
+        & 206 & 236 & 178 & 172   
+             \\ \hline
+
+        Turkey ($Z_{t}$=269)
+        & 227 & 221 & 192 & 190 
+             \\ \hline
+
+        USA ($Z_{u}$=281) 
+        & 225 & 245 & 199 & 197 
+             \\ \hline
+
+    \end{tabular}
+
+    \caption{Started with a random sample of
+        Alexa 1000. Filtered down to the set that have the same webservers from all vantage points resulting in n = Y. Further filtered down the set of webservers for which the server in question replied, for all protocols, resulting in $Z_{i}$, specific to each vantage point. Protocol A - Protocol B label represents the number of traceroutes which have same path length, in Y, for both protocol A and protocol B.}
+    \label{tab:samepathvalidation}
+
+    \end{center}
+    Y = 504\\
+\end{table*}
+
+\begin{figure*}[!h]
+\centering
+  \includegraphics[width=\linewidth]{figures/missing-hops-cdf.png}
+  \caption{Distribution of path length inflation at \textit{n} non-responding hops for 504 common webservers across all vantage points.}
+  \label{fig:inflated-path-cdf}
+\end{figure*}
+
+\subsection{Inflated Paths - Missing hops}
+Figure~\ref{fig:inflated-path-cdf} shows the distribution of inflated paths for ICMP traceroutes that appear complete (we can reach server in question), but responses between hops are missing. The analysis has been carried on the list of webservers that were common for all vantage points.
+
+The results significantly vary among the vantage points due to the differences in path length in reaching the same server. For example, if a webserver 'X' is 8 hops away from our vantage point in Russia and 12 hops away from our vantage point in USA. And an IDS is situated on path to the server which does not allow packets with lower than 14 ttl value to pass, then traceroute from Russia  will have 6 missing hops whereas traceroute from USA will have 2 missing hop, for the same webserver. This variance in path length is contributing towards the variation in CDF across vantage points.
