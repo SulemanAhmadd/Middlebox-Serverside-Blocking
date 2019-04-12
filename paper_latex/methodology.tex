@@ -10,7 +10,7 @@ paths our probes take in the following fashion (in line with the literature):
 \begin{itemize}
     \item For ICMP:
     \item For DNS:
-    \item For TCP/HTTP:
+    \item For TCP/HTTP: Unlike the above two protocols, only source and destination ports are the determinants for flow identifiers for TCP. Our destination port is fixed to 80, for probing the webservers in our dataset. The value for source port is randomly sampled from 20000-40000 range, which is kept consistent for all probes targeted towards a particular webserver. This makes sure for a particular webserver our port numbers stay same and hence the flow of probes remain consistent. As HTTP probes are built on our TCP probes, the same argument hold true for them.  
 \end{itemize}
 \textbf{Do our probes across different protocols take wildly different paths?
 We need some validation on this, and may need a strategy to identify and filter
@@ -18,7 +18,7 @@ the cases that do not.}
 
 We sampled a set of 1000 domains from Alexa top 1M list. This sample was resolved from three vantage points Turkey, USA and Russia, and the resulting ip addresses were traceroute using TCP, ICMP and HTTP protocols, using an upper hop count threshold of 25. (All of these measurements were already completed previously)
 Using our custom analysis script, the common webservers across the vantage points and their corresponding traceroutes were then extracted and the rest of the data was discarded. This resulted in 504 common webservers. Then another level of filtering was applied, which was to only consider those webservers for which we received a reply and that to from the server in question, for all of the three protocols.
-This resulted in vantage point specific filtered list, due to our 25 hop threshold, not every common webserver in the list was reachable from all the vantage points. Therefore, for each list we computed for how many webservers the path lengths of protocol X and Y are exactly same: for example, X=ICMP and Y=TCP path length were exactly same (labeled as ICMP-TCP in Table~\ref{tab:samepathvalidation}) for Russia, 206 times out of 296 successful traceroutes. The last column represents count of same path length for all three protocols combined.
+This resulted in vantage point specific filtered list, due to our 25 hop threshold, not every common webserver in the list was reachable from all the vantage points. Therefore, for each list we computed for how many webservers the path lengths of protocol X and Y are exactly same (when probing the same server in question): for example, X=ICMP and Y=TCP path length were exactly same (labeled as ICMP-TCP in Table~\ref{tab:samepathvalidation}) for Russia, 206 times out of 296 successful traceroutes. The last column represents count of same path length for all three protocols combined.
 
 From a high level view, Table~\ref{tab:samepathvalidation} represents ICMP and HTTP path lengths differ more as compared to ICMP-TCP or HTTP-TCP. The difference in HTTP-TCP path length is mostly due to receiving RST packets from the server during HTTP traceroute, which would terminate it prematurely. Same logic is applicable for ICMP-TCP path lengths being more similar (having a higher count in table) than the ICMP-HTTP path lengths. On average ~65\% of the times all three protocol path lengths were exactly same, according to the last column of the table.
 
@@ -211,7 +211,7 @@ While analyzing the IPs reachable from one or two vantage points, first major ob
     \end{tabular}
 
     \caption{Started with a random sample of
-        Alexa 1000. Filtered down to the set that have the same webservers from all vantage points resulting in n = Y. Further filtered down the set of webservers for which the server in question replied, for all protocols, resulting in $Z_{i}$, specific to each vantage point. Protocol A - Protocol B label represents the number of traceroutes which have same path length, in Y, for both protocol A and protocol B.}
+        Alexa 1000. Filtered down to the set that have the same webservers from all vantage points resulting in n = Y. Further filtered down the set of webservers for which the server in question replied, for all protocols, resulting in $Z_{i}$, specific to each vantage point.\\ \textit{Protocol A-Protocol B} column label represents the number of traceroutes which have same path length, in Y, for both protocol A and protocol B traceroutes for same webserver.}
     \label{tab:samepathvalidation}
 
     \end{center}
