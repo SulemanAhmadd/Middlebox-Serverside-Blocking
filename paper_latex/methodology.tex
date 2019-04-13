@@ -6,11 +6,11 @@ of that approach; what practicalities does it ignore?}
 
 \subsection{Dealing with Multiple Paths}
 Because load-balancers can affect our measurements and conclusions, we fix the
-paths our probes take in the following fashion (in line with the literature):
+paths our probes take by initially keeping TOS, Protocol, Source Address and Destination Address fields of IP header constant for all the probes and then keeping certain fields of transport layer header constant in the following fashion (in line with the literature):
 \begin{itemize}
-    \item For ICMP:
-    \item For DNS:
-    \item For TCP/HTTP: Unlike the above two protocols, only source and destination ports are the determinants for flow identifiers for TCP. Our destination port is fixed to 80, for probing the webservers in our dataset. The value for source port is randomly sampled from 20000-40000 range, which is kept consistent for all probes targeted towards a particular webserver. This makes sure for a particular webserver our port numbers stay same and hence the flow of probes remain consistent. As HTTP probes are built on our TCP probes, the same argument hold true for them.  
+    \item For ICMP: ICMP Code and Checksum fields of ICMP echo header are kept constant for all ICMP probes sent towards one end-host.
+    \item For UDP/DNS: Source port and Destination port fields are kept constant for each nameserver, as they are used to determine flow identifier for the probes. Destination port is fixed to port 53 for DNS service, whereas source port is randomly sampled from 20000-40000 range for each nameserver in the dataset.
+    \item For TCP and HTTP: Just like DNS, only source and destination ports are the determinants for flow identifiers for TCP. Our destination port is fixed to 80, for probing the webservers. The value for source port is randomly sampled from 20000-40000 range, which is kept consistent for all probes targeted towards a particular webserver. This makes sure for a particular webserver our port numbers stay same and hence the flow of probes remain consistent. As HTTP probes are built on our TCP probes, the same argument hold true for them.  
 \end{itemize}
 \textbf{Do our probes across different protocols take wildly different paths?
 We need some validation on this, and may need a strategy to identify and filter
