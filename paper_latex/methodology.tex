@@ -221,8 +221,20 @@ While analyzing the IPs reachable from one or two vantage points, first major ob
 \begin{figure*}[!h]
 \centering
   \includegraphics[width=\linewidth]{figures/missing-hops-cdf.png}
-  \caption{Distribution of path length inflation at \textit{n} non-responding hops for 504 common webservers across all vantage points.}
+  \caption{Distribution of path length inflation at \textit{n} non-responding hops for 504 common webservers across all vantage points. Following is the breakdown of number of webservers for each vantage point:}
   \label{fig:inflated-path-cdf}
+  
+  US = 16\\
+  Turkey = 18\\
+  Russia = 47\\
+  
+\end{figure*}
+
+\begin{figure*}[!h]
+\centering
+  \includegraphics[width=\linewidth]{figures/missing-hops-bar.png}
+  \caption{Bar plot of path length inflation in ICMP traceroutes for 504 common webservers across all vantage points. The x-axis represents the number of consecutive non-responding hops \textit{n} and the y-axis shows the frequency of ICMP-traceroutes which have those \textit{n} length non-responding hops.}
+  \label{fig:inflated-path-bar}
 \end{figure*}
 
 \subsection{Inflated Paths - Missing hops}
