@@ -180,9 +180,9 @@ From a high level view, the data shows that there were roughly half the number o
 While analyzing the IPs reachable from one or two vantage points, first major observation was that these IPs were reachable using traceroutes and not using ZMap. This is counter-intuitive because scamper's probes are under more restrictions compared to ZMap's probes (15 gap limit). The second major observation was that even for some cases even if the ICMP probes were not reaching the end host, the TCP probes were reaching the end host. Specifically in case of russian vantage point, in which the TCP packets were getting intercepted by a server close by (6th hop from the VP) and the ICMP probes were reaching on average thirteen hops before getting lost in the abyss. 
 
 \subsection{Inflated Paths - Missing hops}
-Figure~\ref{fig:inflated-path-cdf} shows the distribution of inflated paths for ICMP traceroutes that appear complete (we can reach server in question), but responses between hops are missing. The analysis has been carried on the list of webservers that were common for all vantage points.
+Figure~\ref{fig:inflated-path-cdf} shows the distribution of inflated paths for ICMP traceroutes that appear complete (we can reach server in question), but responses between hops are missing. The analysis has been carried on the list of nameservers that were common for all vantage points.
 
-The results significantly vary among the vantage points due to the differences in path length in reaching the same server. For example, if a webserver 'X' is 8 hops away from our vantage point in Russia and 12 hops away from our vantage point in USA. And an IDS is situated on path to the server which does not allow packets with lower than 14 ttl value to pass, then traceroute from Russia  will have 6 missing hops whereas traceroute from USA will have 2 missing hop, for the same webserver. This variance in path length is contributing towards the variation in CDF across vantage points.
+The results significantly vary among the vantage points due to the differences in path length in reaching the same server. For example, if a nameserver 'X' is 8 hops away from our vantage point in Russia and 12 hops away from our vantage point in USA. And an IDS is situated on path to the server which does not allow packets with lower than 14 ttl value to pass, then traceroute from Russia  will have 6 missing hops whereas traceroute from USA will have 2 missing hop, for the same nameserver. This variance in path length is contributing towards the variation in CDF across vantage points.
 
 
 \newpage
@@ -190,30 +190,29 @@ The results significantly vary among the vantage points due to the differences i
 \begin{table*}
 \small
 
-    \caption*{Started with a random sample of
-        Alexa 1000. Filtered down to the set that have the same webservers from all vantage points resulting in n = Y. Further filtered down the set of webservers for which the server in question replied, for all protocols, resulting in $Z_{i}$, specific to each vantage point.\\ \textit{Protocol A-Protocol B} column label represents the number of traceroutes which have same path length, in Y, for both protocol A and protocol B traceroutes for same webserver.\\ \textbf{Y=565}. The following tables are for 64 tll hop limit and 15 hop gap limit.}
-    \caption {Same Path Length}
+    \caption {Path Length Analysis}
     \begin{center}
 
-    \begin{tabular}{|l|r|r|r|r|} \hline
+    \begin{tabular}{|l|r|r|r|r|r|} \hline
         \multirow{2}*{Vantage Point} &
-        \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
-         \\ \cline{2-5}
-        & ICMP-TCP &
-          HTTP-TCP &
-          ICMP-HTTP &
-          ICMP-HTTP-TCP\\ \hline
+        \multicolumn{5}{c|}{Common Nameservers across VPs (Y)}
+         \\ \cline{2-6}
+        & Same Length &
+          One Hop Difference &
+          Two Hop Difference &
+          Three Hop Difference &
+          > Three Difference\\ \hline
                         
-        Russia ($Z_{r}$=340)
-        & 241 & 270 & 199 & 197   
+        Russia ($Z_{r}$=15)
+        & 15 & 0 & 0 & 0 & 0
              \\ \hline
 
-        Turkey ($Z_{t}$=345)
-        & 270 & 283 & 232 & 229 
+        Turkey ($Z_{t}$=15)
+        & 11 & 2 & 1 & 0 & 0
              \\ \hline
 
-        USA ($Z_{u}$=345) 
-        & 275 & 303 & 244 & 242 
+        USA ($Z_{u}$=15) 
+        & 10 & 4 & 1 & 0 & 0
              \\ \hline
 
     \end{tabular}
@@ -221,113 +220,115 @@ The results significantly vary among the vantage points due to the differences i
     \label{tab:samepathvalidation}
 
     \end{center}
+        \caption*{Started with a random sample of
+        Alexa 1000. Filtered down to the set that have the same nameservers from all vantage points resulting in n = Y. Further filtered down the set of nameservers for which the server in question replied, for both udp and icmp, resulting in $Z_{i}$, specific to each vantage point.\\ \textbf{Y=520}. The following tables are for 64 tll hop limit and 15 hop gap limit.\\ \textbf{495} common nameservers did not send a response for udp-traceroute.}
 \end{table*}
 
-\begin{table*}
-\small
-    \caption {One Hop Difference}
-    \begin{center}
+% \begin{table*}
+% \small
+%     \caption {One Hop Difference}
+%     \begin{center}
 
-    \begin{tabular}{|l|r|r|r|r|} \hline
-        \multirow{2}*{Vantage Point} &
-        \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
-         \\ \cline{2-5}
-        & ICMP-TCP &
-          HTTP-TCP &
-          ICMP-HTTP &
-          ICMP-HTTP-TCP\\\hline
+%     \begin{tabular}{|l|r|r|r|r|} \hline
+%         \multirow{2}*{Vantage Point} &
+%         \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
+%          \\ \cline{2-5}
+%         & ICMP-TCP &
+%           HTTP-TCP &
+%           ICMP-HTTP &
+%           ICMP-HTTP-TCP\\\hline
                         
-        Russia ($Z_{r}$=340)
-        & 34 & 22 & 42 & X
-             \\ \hline
+%         Russia ($Z_{r}$=340)
+%         & 34 & 22 & 42 & X
+%              \\ \hline
 
-        Turkey ($Z_{t}$=345)
-        & 43 & 15 & 39 & X
-             \\ \hline
+%         Turkey ($Z_{t}$=345)
+%         & 43 & 15 & 39 & X
+%              \\ \hline
 
-        USA ($Z_{u}$=345) 
-        & 50 & 18 & 60 & X
-             \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table*}
+%         USA ($Z_{u}$=345) 
+%         & 50 & 18 & 60 & X
+%              \\ \hline
+%     \end{tabular}
+%     \end{center}
+% \end{table*}
 
-\begin{table*}
-\small
-    \caption {Two Hop Difference}
-    \begin{center}
+% \begin{table*}
+% \small
+%     \caption {Two Hop Difference}
+%     \begin{center}
 
-    \begin{tabular}{|l|r|r|r|r|} \hline
-        \multirow{2}*{Vantage Point} &
-        \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
-         \\ \cline{2-5}
-        & ICMP-TCP &
-          HTTP-TCP &
-          ICMP-HTTP &
-          ICMP-HTTP-TCP\\ \hline
+%     \begin{tabular}{|l|r|r|r|r|} \hline
+%         \multirow{2}*{Vantage Point} &
+%         \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
+%          \\ \cline{2-5}
+%         & ICMP-TCP &
+%           HTTP-TCP &
+%           ICMP-HTTP &
+%           ICMP-HTTP-TCP\\ \hline
                         
-        Russia ($Z_{r}$=340)
-        & 29 & 4 & 29 & X   
-             \\ \hline
+%         Russia ($Z_{r}$=340)
+%         & 29 & 4 & 29 & X   
+%              \\ \hline
 
-        Turkey ($Z_{t}$=345)
-        & 12 & 4 & 14 & X
-             \\ \hline
+%         Turkey ($Z_{t}$=345)
+%         & 12 & 4 & 14 & X
+%              \\ \hline
 
-        USA ($Z_{u}$=345) 
-        & 10 & 5 & 11 & X 
-             \\ \hline
+%         USA ($Z_{u}$=345) 
+%         & 10 & 5 & 11 & X 
+%              \\ \hline
 
-    \end{tabular}
-    \end{center}
-\end{table*}
+%     \end{tabular}
+%     \end{center}
+% \end{table*}
 
-\begin{table*}
-\small
-    \caption {Three Hop Difference}
-    \begin{center}
+% \begin{table*}
+% \small
+%     \caption {Three Hop Difference}
+%     \begin{center}
 
-    \begin{tabular}{|l|r|r|r|r|} \hline
-        \multirow{2}*{Vantage Point} &
-        \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
-         \\ \cline{2-5}
-        & ICMP-TCP &
-          HTTP-TCP &
-          ICMP-HTTP &
-          ICMP-HTTP-TCP\\ \hline
+%     \begin{tabular}{|l|r|r|r|r|} \hline
+%         \multirow{2}*{Vantage Point} &
+%         \multicolumn{4}{c|}{Common Webservers across VPs - Path Length Analysis (Y)}
+%          \\ \cline{2-5}
+%         & ICMP-TCP &
+%           HTTP-TCP &
+%           ICMP-HTTP &
+%           ICMP-HTTP-TCP\\ \hline
                         
-        Russia ($Z_{r}$=340)
-        & 20 & 1 & 16 & X   
-             \\ \hline
+%         Russia ($Z_{r}$=340)
+%         & 20 & 1 & 16 & X   
+%              \\ \hline
 
-        Turkey ($Z_{t}$=345)
-        & 6 & 1 & 5 & X
-             \\ \hline
+%         Turkey ($Z_{t}$=345)
+%         & 6 & 1 & 5 & X
+%              \\ \hline
 
-        USA ($Z_{u}$=345) 
-        & 2 & 0 & 3 & X 
-             \\ \hline
+%         USA ($Z_{u}$=345) 
+%         & 2 & 0 & 3 & X 
+%              \\ \hline
 
-    \end{tabular}
-    \end{center}
-\end{table*}
+%     \end{tabular}
+%     \end{center}
+% \end{table*}
 
 
 \begin{figure*}[!h]
 \centering
   \includegraphics[width=\linewidth]{figures/missing-hops-cdf.png}
-  \caption{Distribution of path length inflation at \textit{n} non-responding hops for 565 common webservers across all vantage points. Following is the breakdown of number of webservers for each vantage point:}
+  \caption{Distribution of path length inflation at \textit{n} non-responding hops for 520 common nameservers across all vantage points. Following is the breakdown of number of nameservers for each vantage point:}
   \label{fig:inflated-path-cdf}
   
-  US = 35\\
-  Turkey = 36\\
-  Russia = 49\\
+  US = 116\\
+  Turkey = 31\\
+  Russia = 73\\
   
 \end{figure*}
 
 \begin{figure*}[!h]
 \centering
   \includegraphics[width=\linewidth]{figures/missing-hops-bar.png}
-  \caption{Bar plot of path length inflation in ICMP traceroutes for 565 common webservers across all vantage points. The x-axis represents the number of consecutive non-responding hops \textit{n} and the y-axis shows the frequency of ICMP-traceroutes which have those \textit{n} length non-responding hops.}
+  \caption{Bar plot of path length inflation in ICMP traceroutes for 520 common nameservers across all vantage points. The x-axis represents the number of consecutive non-responding hops \textit{n} and the y-axis shows the frequency of ICMP-traceroutes which have those \textit{n} length non-responding hops.}
   \label{fig:inflated-path-bar}
 \end{figure*}
