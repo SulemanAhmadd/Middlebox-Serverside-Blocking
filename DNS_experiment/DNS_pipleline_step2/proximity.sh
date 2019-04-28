@@ -1,6 +1,9 @@
 cp /root/DNS_SCAMPER/scamper .
 apt-get install sshpass -y
 sshpass -p "&AYB&&D#H8#@" scp -o StrictHostKeyChecking=no root@108.62.49.40:/root/MDA_DNS_INPUT/transfer_to_us_blocked_domains_with_ns.txt .
+sleep 3
+sshpass -p "&AYB&&D#H8#@" scp -o StrictHostKeyChecking=no root@108.62.49.40:/root/DNS_SCAMPER/scamper .
+
 python find_commands.py
 number_of_sites=$( cat transfer_to_us_blocked_domains_with_ns.txt | wc -l )
 time="$((number_of_sites*3))"
