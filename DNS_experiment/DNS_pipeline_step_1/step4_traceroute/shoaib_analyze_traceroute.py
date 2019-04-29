@@ -41,11 +41,11 @@ for domain in domains:
 	#print dns_traceroute
 
 	if dns_server_found:
-		with open("../step_6_fill_table/DNS_path_completes",'a') as file:
+		with open("../step6_fill_table/DNS_path_completes",'a') as file:
 			file.write(domain+"\n")
 
 		if not SERVER_IP in icmp_reachable_auth_server_ips:
-			with open("../step_6_fill_table/set1_ip_not_icmp_reachable",'a') as file:
+			with open("../step6_fill_table/set1_ip_not_icmp_reachable",'a') as file:
 				file.write(domain+"\n")
 			continue
 
@@ -73,14 +73,14 @@ for domain in domains:
 			print ICMP_SERVER_HOP
 			print DNS_SERVER_HOP
 		if ICMP_SERVER_HOP-DNS_SERVER_HOP>3:
-			with open("../step_6_fill_table/set1_middlebox",'a') as file:
+			with open("../step6_fill_table/set1_middlebox",'a') as file:
 				print "yahan aya"
 				file.write(domain+"\n")
 		else:
-			with open("../step_6_fill_table/set1_server_side_blocking",'a') as file:
+			with open("../step6_fill_table/set1_server_side_blocking",'a') as file:
 				print "wahan gaya ",domain
 				file.write(domain+"\n")
 
 	else:
-		with open("../step_6_fill_table/DNS_path__does_not_complete",'a') as file:
+		with open("../step6_fill_table/DNS_path__does_not_complete",'a') as file:
 			file.write(domain+"\n")

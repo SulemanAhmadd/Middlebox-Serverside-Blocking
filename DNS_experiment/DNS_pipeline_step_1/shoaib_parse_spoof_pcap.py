@@ -12,5 +12,5 @@ for packet in packets:
 		if string_domain in spoofed_domains:
 			continue
 		spoofed_domains.append(string_domain)
-		with open("./step_6_fill_table/received_spoofed_response",'a') as file:
+		with open("./step6_fill_table/received_spoofed_response",'a') as file:
 			file.write(string_domain+"\n")
