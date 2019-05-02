@@ -14,19 +14,22 @@ def get_hex(domain):
 		complete_hex=complete_hex+length+hex_of_label
 
 	return "b77101200001000000000000"+complete_hex+"0000010001"
-
+ip_seen=[]
 for one_domain_ip in data:
 	if one_domain_ip=="":
 		continue
 	separate=one_domain_ip.split(" ")
 	domain=separate[0]
 	ip=separate[1]
+	if ip in ip_seen:
+		continue
+	ip_seen.append(ip)
 
 
 	domain_in_hex=get_hex(domain)
 	print domain_in_hex
 	print domain
-	new_command="tracelb -d 53 -p "+domain_in_hex+" -g 15 -H "+domain+" -P udp-sport "+ip
+	new_command="tracelb -d 53 -p "+domain_in_hex+" -g 7 -H "+domain+" -P udp-sport "+ip
 	print new_command
 	with open("scamper_commands.txt",'a') as file:
 		file.write(new_command+"\n")
