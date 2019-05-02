@@ -1,2 +1,4 @@
 change the path to find country.txt in DNS_pipeline step 2
 for spoofing tcpdump, make it generic to wait according to number of sites
+write mkdir commands because empty folders not going up in git
+

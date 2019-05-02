@@ -1,3 +1,7 @@
+mkdir ./process_parser/anomaly
+mkdir ./process_parser/traces
+mkdir ./process_parser/complete_stitched_paths
+mkdir ./process_parser/unreached
 apt-get install sshpass -y
 sshpass -p "&AYB&&D#H8#@" scp -o StrictHostKeyChecking=no root@108.62.49.40:/root/MDA_DNS_INPUT/transfer_to_us_blocked_domains_with_ns.txt .
 sleep 3

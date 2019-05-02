@@ -4,3 +4,10 @@ lists present in MDA_DNS_INPUT and GLOBAL_MDA folder
 step 2 : in one of control country, run DNS_pipeline_step2 by running "bash proximity.sh" in control country bundle
 
 step 3 : wait for a time until script completes. its a function of number of domains and gap limit
+
+step 4 : run bash data.sh in DNS_pipeline_step2 
+
+step 5 : in GLOBAL_MDA folder run command "cat *_final_log* > final_log" . This needs to be automated
+
+
+step 6 : in tukey run "data_processing.sh" in DNS_pipeline_step1 bundle 
