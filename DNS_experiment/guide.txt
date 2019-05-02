@@ -1,0 +1,2 @@
+step 1 : run DNS_pipeline in turkey after deleting old turkey folder and
+lists present in MDA_DNS_INPUT and GLOBAL_MDA folder
