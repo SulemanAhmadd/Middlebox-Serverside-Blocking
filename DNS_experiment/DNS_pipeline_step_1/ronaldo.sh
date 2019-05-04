@@ -35,7 +35,9 @@ cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{if($2!=""&& 
 cat ./step4_traceroute/blocked_domains_with_ns.txt |awk '{print$2}'| uniq| awk '{print"tracelb -d 53 -P udp-sport "$1}' > ./step5_run_in_us/run.txt
 dig +retry=5 +short myip.opendns.com @resolver1.opendns.com > ./step5_run_in_us/send_spoofed_packet_here.txt
 # suleman this is where automation part starts. line 38 open tcpdump in test country. line 39 transfer a folder in US. line 40 runs a script in that folder in US
-echo -e 'eUbGc8ICNA'|sudo -S timeout 300 tcpdump src 108.62.49.40 -w spoof_capture.pcap &
+number_of_sites=$( cat ./step5_run_in_us/transfer_to_us_blocked_domains_with_ns.txt | wc -l )
+time="$((number_of_sites*10))"
+echo -e 'eUbGc8ICNA'|sudo -S timeout $time tcpdump src 108.62.49.40 -w spoof_capture.pcap &
 expect test.exp 
 cat run_in_us.sh| sshpass -p "&AYB&&D#H8#@" ssh -o StrictHostKeyChecking=no root@108.62.49.40 &
 echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'

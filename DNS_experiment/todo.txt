@@ -1,4 +1,3 @@
-change the path to find country.txt in DNS_pipeline step 2
-for spoofing tcpdump, make it generic to wait according to number of sites
-write mkdir commands because empty folders not going up in git
-
+sed changes name of countries in sites list. fix it
+write automated rm rf and mkdir commands to clean automatically
+write that one of cat log command to join files file logs

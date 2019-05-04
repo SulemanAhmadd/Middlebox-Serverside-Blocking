@@ -6,6 +6,6 @@ python spoof.py
 echo "file should transfer. see for error below"
 ls /root/MDA_DNS_INPUT/
 echo 'see above files and then below'
-cp transfer_to_us_blocked_domains_with_ns.txt /root/MDA_DNS_INPUT/
+cat transfer_to_us_blocked_domains_with_ns.txt >> /root/MDA_DNS_INPUT/
 
 ls /root/MDA_DNS_INPUT/
