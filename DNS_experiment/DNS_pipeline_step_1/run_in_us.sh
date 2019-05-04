@@ -1,6 +1,5 @@
 echo "I am in this directory."
 pwd
-rm -rf /root/temp_country
 echo 'just deleted old directory'
 cd /root/temp_country
 python3 get_ip.py
