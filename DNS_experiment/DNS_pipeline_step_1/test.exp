@@ -1,5 +1,5 @@
 
-        spawn scp -pr -o StrictHostKeyChecking=no ./step5_run_in_us root@108.62.49.40:/root/pakistan 
+        spawn scp -pr -o StrictHostKeyChecking=no ./step5_run_in_us root@108.62.49.40:/root/temp_country 
         set pass "&AYB&&D#H8#@"
         expect {
         password: {send "$pass\r"; exp_continue}

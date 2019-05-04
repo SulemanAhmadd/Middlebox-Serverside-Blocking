@@ -1,5 +1,5 @@
 country=$( cat /root/country.txt )
-replace_string="s/pakistan/$country/g"
+replace_string="s/temp_country/$country/g"
 find ./ -type f -exec sed -i -e $replace_string {} \;
 echo -e 'eUbGc8ICNA'| sudo -S apt-get install sshpass -y
 echo -r 'eUbGc8ICNA'| sudo apt-get install expect -y 
@@ -36,7 +36,7 @@ cat ./step4_traceroute/blocked_domains_with_ns.txt |awk '{print$2}'| uniq| awk '
 dig +retry=5 +short myip.opendns.com @resolver1.opendns.com > ./step5_run_in_us/send_spoofed_packet_here.txt
 # suleman this is where automation part starts. line 38 open tcpdump in test country. line 39 transfer a folder in US. line 40 runs a script in that folder in US
 number_of_sites=$( cat ./step5_run_in_us/transfer_to_us_blocked_domains_with_ns.txt | wc -l )
-time="$((number_of_sites*10))"
+time="$((number_of_sites*60))"
 echo -e 'eUbGc8ICNA'|sudo -S timeout $time tcpdump src 108.62.49.40 -w spoof_capture.pcap &
 expect test.exp 
 cat run_in_us.sh| sshpass -p "&AYB&&D#H8#@" ssh -o StrictHostKeyChecking=no root@108.62.49.40 &
