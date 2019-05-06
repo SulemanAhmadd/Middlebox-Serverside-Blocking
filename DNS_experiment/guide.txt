@@ -1,5 +1,4 @@
-step 1 : run DNS_pipeline_step1 by running "bash ronaldo.sh" command in bundle in test country after deleting old test country folder in control and
-lists present in MDA_DNS_INPUT and GLOBAL_MDA folder
+step 1 : run DNS_pipeline_step1 by running "bash ronaldo.sh" command in bundle in test country lists present in MDA_DNS_INPUT and GLOBAL_MDA folder
 
 step 2 : in one of control country, run DNS_pipeline_step2 by running "bash proximity.sh" in control country bundle
 

