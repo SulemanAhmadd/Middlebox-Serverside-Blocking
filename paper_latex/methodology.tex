@@ -203,16 +203,16 @@ The results significantly vary among the vantage points due to the differences i
           Three Hop Difference &
           > Three Difference\\ \hline
                         
-        Russia ($Z_{r}$=15)
-        & 15 & 0 & 0 & 0 & 0
+        Russia ($Z_{r}$=37)
+        & 36 & 1 & 0 & 0 & 0
              \\ \hline
 
-        Turkey ($Z_{t}$=15)
-        & 11 & 2 & 1 & 0 & 0
+        Turkey ($Z_{t}$=23)
+        & 18 & 3 & 1 & 0 & 0
              \\ \hline
 
-        USA ($Z_{u}$=15) 
-        & 10 & 4 & 1 & 0 & 0
+        USA ($Z_{u}$=36) 
+        & 26 & 7 & 3 & 0 & 0
              \\ \hline
 
     \end{tabular}
@@ -220,8 +220,8 @@ The results significantly vary among the vantage points due to the differences i
     \label{tab:samepathvalidation}
 
     \end{center}
-        \caption*{Started with a random sample of
-        Alexa 1000. Filtered down to the set that have the same nameservers from all vantage points resulting in n = Y. Further filtered down the set of nameservers for which the server in question replied, for both udp and icmp, resulting in $Z_{i}$, specific to each vantage point.\\ \textbf{Y=520}. The following tables are for 64 tll hop limit and 15 hop gap limit.\\ \textbf{495} common nameservers did not send a response for udp-traceroute.}
+        \caption*{
+        Started with a random sample of Alexa domains and extracted their auth nameservers. Filtered down to the set that have the same nameservers from all vantage points resulting in n = Y. Further filtered down the set of nameservers for which the server in question replied, for both udp and icmp, resulting in $Z_{i}$, specific to each vantage point.\\ \textbf{Y=1000}. Using 64 tll hop limit and 15 hop gap limit, the traceroutes were carried out with scamper.\\ \textbf{962} nameservers in Turkey, \textbf{940} in Russia and \textbf{941} in US did not send a response for udp.}
 \end{table*}
 
 % \begin{table*}
