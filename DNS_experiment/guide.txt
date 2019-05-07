@@ -9,4 +9,4 @@ step 4 : run bash data.sh in DNS_pipeline_step2
 step 5 : in GLOBAL_MDA folder run command "cat *_final_log* > final_log" . This needs to be automated
 
 
-step 6 : in tukey run "data_processing.sh" in DNS_pipeline_step1 bundle 
+step 6 : in test_country run "data_processing.sh" in DNS_pipeline_step1 bundle 
