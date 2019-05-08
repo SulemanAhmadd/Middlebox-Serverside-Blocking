@@ -62,7 +62,7 @@ def one_fun(my_list,num):
 	
 
 
-N_THREADS = 100
+N_THREADS = 1
  
 domain_list=[]
 	
