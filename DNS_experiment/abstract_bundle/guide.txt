@@ -1,0 +1,14 @@
+#make sure there is a country.txt file is in /root directory of the machine
+where script is being run and it has country name in it. e.g country.txt for 
+australian machine will have australia written in it. 
+
+# run set_up_bind_server.sh
+
+step 1 : transfer abstract_bundle folder to australian machine
+
+step 2 : run "bash step1.sh"
+
+step 3 : go to US machine and in ACTIVE_DOMAIN_SET folder run 
+"cat *resolved* > active_domains.txt"
+
+step 4 : go back to Australian machine and run "bash step2.sh"
