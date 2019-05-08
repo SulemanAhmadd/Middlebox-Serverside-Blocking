@@ -1,3 +1,5 @@
+echo -e 'eUbGc8ICNA'| sudo -S apt-get install sshpass -y
+echo -r 'eUbGc8ICNA'| sudo apt-get install expect -y
 bash set_bind_server_up.sh
 country=$( cat /root/country.txt )
 python3 ./step1_resolve_here/my_bind.py
