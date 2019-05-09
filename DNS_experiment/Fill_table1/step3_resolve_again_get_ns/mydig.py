@@ -575,7 +575,7 @@ def alias(array):
 		start = time.time()
 		pass
 		signal.signal(signal.SIGALRM, handler)
-		signal.alarm(50)
+		signal.alarm(20)
 		myresponse = dns_resolver_3(hostname, rdtype, cnames,name_servers,name_servers_answered,response_code,thread_number)
 		signal.alarm(0)
 		elapsed = time.time() - start
