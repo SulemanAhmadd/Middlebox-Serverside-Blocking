@@ -35,12 +35,19 @@ def one_fun(my_list,num):
 
 			try:
 				resultDNS= res.query(domain, 'a')
-				answer=''
-				for item in resultDNS:
-					resultant_str = ','.join([str(item), answer])
 				with open(num+"_success.txt",'a') as file1:
-					file1.write(domain+" "+resultant_str+"\n")
+						file1.write(str(domain)+" ")
+				for i in resultDNS:
+					print("google's ans: " + str(i))
+					with open(num+"_success.txt",'a') as file1:
+						file1.write(str(i)+",")
+				answer=''
+				# for item in resultDNS:
+				# 	resultant_str = ','.join([str(item), answer])
+				with open(num+"_success.txt",'a') as file1:
+					file1.write("\n")
 				print(num," pass ",domain)
+			
 
 			except Exception as e:
 				fail_str=fail_str+domain+" "+str(e)+"\n"
@@ -72,10 +79,10 @@ with open("alexa.txt",'r') as file:
 THREAD_WORKLOAD = int(max(len(domain_list)/ N_THREADS, 1))
 count=0
 for thread_start_index in range(0, len(domain_list), THREAD_WORKLOAD):
-    thread_chunk = domain_list[thread_start_index: thread_start_index + THREAD_WORKLOAD]
-    p = Process(target=one_fun, args=(thread_chunk,count,))
-    count=count+1
-    p.start()
+	thread_chunk = domain_list[thread_start_index: thread_start_index + THREAD_WORKLOAD]
+	p = Process(target=one_fun, args=(thread_chunk,count,))
+	count=count+1
+	p.start()
 
 
  
