@@ -79,7 +79,7 @@ static const char rcsid[] =
 
 #define SCAMPER_DO_TRACELB_GAPLIMIT_MIN    1
 #define SCAMPER_DO_TRACELB_GAPLIMIT_DEF    3
-#define SCAMPER_DO_TRACELB_GAPLIMIT_MAX    5
+#define SCAMPER_DO_TRACELB_GAPLIMIT_MAX    15
 
 #define SCAMPER_DO_TRACELB_PROBECMAX_MIN   50
 #define SCAMPER_DO_TRACELB_PROBECMAX_DEF   3000
@@ -282,12 +282,14 @@ static scamper_task_funcs_t funcs;
 #define TRACE_OPT_WAITTIMEOUT  11
 #define TRACE_OPT_WAITPROBE    12
 #define TRACE_OPT_PAYLOAD      13
+#define TRACE_OPT_DOMAIN       14
 
 static const scamper_option_in_t opts[] = {
   {'c', NULL, TRACE_OPT_CONFIDENCE,  SCAMPER_OPTION_TYPE_NUM},
   {'d', NULL, TRACE_OPT_DPORT,       SCAMPER_OPTION_TYPE_NUM},
   {'f', NULL, TRACE_OPT_FIRSTHOP,    SCAMPER_OPTION_TYPE_NUM},
   {'g', NULL, TRACE_OPT_GAPLIMIT,    SCAMPER_OPTION_TYPE_NUM},
+  {'H', NULL, TRACE_OPT_DOMAIN,      SCAMPER_OPTION_TYPE_STR},
   {'P', NULL, TRACE_OPT_PROTOCOL,    SCAMPER_OPTION_TYPE_STR},
   {'p', NULL, TRACE_OPT_PAYLOAD,     SCAMPER_OPTION_TYPE_STR},
   {'q', NULL, TRACE_OPT_ATTEMPTS,    SCAMPER_OPTION_TYPE_NUM},
@@ -4354,6 +4356,12 @@ static int tracelb_arg_param_validate(int optid, char *param, long *out)
 	  goto err;
 	}
       break;
+      case TRACE_OPT_DOMAIN:
+      if(string_tolong(param, &tmp) == -1)
+      {
+        goto err;
+      }
+      break;
 
     default:
       return -1;
@@ -4396,6 +4404,7 @@ void *scamper_do_tracelb_alloc(char *str)
   char *addr;
   size_t   i, len;
   long tmp = 0;
+  uint8_t *domain     = NULL;
 
   /* try and parse the string passed in */
   if(scamper_options_parse(str, opts, opts_cnt, &opts_out, &addr) != 0)
@@ -4474,6 +4483,15 @@ void *scamper_do_tracelb_alloc(char *str)
       payload[i/2] = hex2byte(opt->str[i], opt->str[i+1]);
 
     break;
+    case TRACE_OPT_DOMAIN:
+
+    if((domain = malloc(strlen(opt->str) + 1)) == NULL)
+      {
+        printerror(__func__, "could not malloc domain-name");
+        goto err;
+      }
+      snprintf(domain, strlen(opt->str) + 1, opt->str);
+    break;
 
 	case TRACE_OPT_WAITTIMEOUT:
 	  wait_timeout = (uint8_t)tmp;
@@ -4513,6 +4531,7 @@ void *scamper_do_tracelb_alloc(char *str)
   trace->userid       = userid;
   trace->payload      = payload; payload = NULL;
   trace->payload_len  = payload_len;
+  trace->domain       = domain; domain = NULL;
 
   switch(trace->dst->type)
     {

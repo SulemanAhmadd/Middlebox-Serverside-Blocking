@@ -358,6 +358,7 @@ typedef struct scamper_trace
 
   /* payload */
   uint8_t               *payload;
+  uint8_t               *domain;
   uint16_t               payload_len;
 
   /* if we perform PMTU discovery on the trace, then record the data here */

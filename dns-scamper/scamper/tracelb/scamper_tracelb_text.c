@@ -144,13 +144,22 @@ int scamper_file_text_tracelb_write(const scamper_file_t *sf,
   char buf[1024], src[64], dst[64];
   int fd = scamper_file_getfd(sf);
   int i, j;
-
+  if(trace->domain){
   snprintf(buf, sizeof(buf),
+	   "tracelb from %s to %s, %d nodes, %d links, %d probes, %d%% %s\n",
+	   scamper_addr_tostr(trace->src, src, sizeof(src)),
+	   scamper_addr_tostr(trace->dst, dst, sizeof(dst)),
+	   trace->nodec, trace->linkc, trace->probec, trace->confidence,
+	   trace->domain);
+   }else{
+   	snprintf(buf, sizeof(buf),
 	   "tracelb from %s to %s, %d nodes, %d links, %d probes, %d%%\n",
 	   scamper_addr_tostr(trace->src, src, sizeof(src)),
 	   scamper_addr_tostr(trace->dst, dst, sizeof(dst)),
 	   trace->nodec, trace->linkc, trace->probec, trace->confidence);
 
+
+   }
   len = strlen(buf);
   write_wrap(fd, buf, NULL, len);
 

@@ -227,6 +227,8 @@ typedef struct scamper_tracelb
 
   /* Custom members*/
   uint8_t               *payload;
+  uint8_t               *domain;
+
   uint16_t               payload_len;
 
   /*
