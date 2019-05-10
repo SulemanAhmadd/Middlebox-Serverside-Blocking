@@ -197,7 +197,7 @@ for trace in arr:
 			break
 		else: 
 		#	print "hey"
-			if "-> * -> * -> * -> * -> * -> *" in one_hop:
+			if "-> * -> * -> * -> * -> *" in one_hop:
 		#		print "hey"
 				terminal_nodes.append(one_hop)
 				terminal_node_found=True
