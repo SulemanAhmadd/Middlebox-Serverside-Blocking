@@ -96,8 +96,7 @@ def main(input_filename):
 		mv_to_folders() # make folders and move
 		#run_parser() # Run helper script
 
-	print ("Total HTTP destination addrs: %d" % http_count)
-	print ("Total Non-HTTP destination addrs: %d" % nonhttp_count)
+	print ("Total MDA destination addrs: %d" % count)
 
 if __name__ == '__main__':
 
