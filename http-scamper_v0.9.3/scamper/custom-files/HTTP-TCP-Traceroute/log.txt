@@ -1,0 +1,2 @@
+Total HTTP-Traceroutes completed: 998
+Total nonHTTP-Traceroutes completed: 497

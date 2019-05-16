@@ -6,7 +6,7 @@ import sys
 import os
 
 if os.path.exists('./../http_payload'):
-	os.system('rm -r ./../http_payload')
+	os.system('rm -rf ./../http_payload')
 os.system('mkdir ./../http_payload/')
 
 def parse_input_line(line):
@@ -32,8 +32,8 @@ def merge_output_files():
 	os.system("cat output_http_* >> http-results.txt")
 	os.system("cat output_nonhttp_* >> nonhttp-results.txt")
 
-	os.system("rm output_http_*")
-	os.system("rm output_nonhttp_*")
+	os.system("rm -rf output_http_*")
+	os.system("rm -rf output_nonhttp_*")
 
 def run_parser():
 	os.system('python parser_scripts/helper_main.py')
@@ -55,8 +55,8 @@ def mv_to_folders():
 	os.system('mv ./../http_payload/ HTTP/')
 
 def remove_input_files():
-	os.system("rm input_nonhttp_*")
-	os.system("rm input_http_*")
+	os.system("rm -rf input_nonhttp_*")
+	os.system("rm -rf input_http_*")
 
 def run_scamper(domain_list, thread_id):
 
