@@ -1,5 +1,5 @@
 date
-cp ./../../../../dns-scamper/scamper/scamper .
+cp ./../../scamper .
 
 rm -rf invalid-ips.txt scamper_command.txt MDA_TCP_OUTPUT.txt
 sleep 5

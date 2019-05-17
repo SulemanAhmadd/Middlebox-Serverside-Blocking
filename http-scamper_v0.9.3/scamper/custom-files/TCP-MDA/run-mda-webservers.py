@@ -55,9 +55,10 @@ def main(input_filename):
 				invalid.write('%s %s\n' % (domain, ip))
 
 			elif ip not in unique_ips_set:
+				unique_ips_set.add(ip)
 				domain_batch_list.append((domain, ip))
 				with open("scamper_command.txt",'a') as file:
-					file.write("tracelb -P tcp-sport -d 80 -H "+domain+" "+ip+"\n")
+					file.write("tracelb -P tcp-sport -d 80 "+ip+"\n")
 				count += 1;
 
 
