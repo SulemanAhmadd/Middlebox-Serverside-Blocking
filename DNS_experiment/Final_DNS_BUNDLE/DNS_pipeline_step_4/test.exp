@@ -1,0 +1,6 @@
+
+        spawn scp -pr -o StrictHostKeyChecking=no ./step5_run_in_us root@85.209.163.15:/root/temp_country 
+        set pass "enterpr2se"
+        expect {
+        password: {send "$pass\r"; exp_continue}
+                  }
