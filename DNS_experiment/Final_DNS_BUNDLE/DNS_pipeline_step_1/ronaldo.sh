@@ -45,3 +45,4 @@ cat ./run3/blocked_domain_ns_info.txt | awk '{if($1!=""&& $1!="root"&& $1!="The"
 cat ./run3/blocked_domain_ns_info.txt | awk '{if($4!=""&& $1!="root" && $1!="The")print$1" "$6}' >./run3/have_auth_no_ip.txt
 echo "CONGRATSSSSSSSSSSS!!! its done!">> record.txt
 date >> record.txt
+python compare_across_three_runs.py

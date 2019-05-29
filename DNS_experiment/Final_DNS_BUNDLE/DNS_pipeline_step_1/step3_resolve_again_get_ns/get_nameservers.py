@@ -11,7 +11,7 @@ with open("server_side_blocked.txt",'r') as file:
 
 def spread_work(domain_list,count):
 	for domain in domain_list:
-		print(domain)
+		#print(domain)
 		if domain=="":
 			continue
 		mydig.alias([count,domain,"A"])

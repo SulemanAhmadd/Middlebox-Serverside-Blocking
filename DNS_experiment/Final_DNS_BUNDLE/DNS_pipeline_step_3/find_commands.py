@@ -1,5 +1,5 @@
 import sys
-with open("transfer_to_us_blocked_domains_with_ns.txt",'r') as file:
+with open("have_auth_no_ip_extended.common_three_runs.txt",'r') as file:
 	data=file.read().split("\n")
 
 
@@ -27,11 +27,11 @@ for one_domain_ip in data:
 
 
 	domain_in_hex=get_hex(domain)
-	print domain_in_hex
-	print domain
+	pass #print domain_in_hex
+	pass #print domain
 	new_command="tracelb -d 53 -p "+domain_in_hex+" -g 7 -H "+domain+" -P udp-sport "+ip
-	print new_command
+	pass #print new_command
 	with open("scamper_commands.txt",'a') as file:
 		file.write(new_command+"\n")
-	print "hey"
+	pass #print "hey"
 

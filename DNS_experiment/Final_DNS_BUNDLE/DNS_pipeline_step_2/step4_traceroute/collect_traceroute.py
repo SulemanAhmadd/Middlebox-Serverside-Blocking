@@ -36,7 +36,7 @@ def get_ip_list(domain_list):
 			one_domain_ip_dictionary["IP"]=dest_IP
 			domain_ip_list.append(one_domain_ip_dictionary)
 		except Exception as ex: 
-	#		print "!!!!!!!!!!!!!!!! \n\n  ",dest
+	#		pass #print "!!!!!!!!!!!!!!!! \n\n  ",dest
 		#	traceroute_type = get_failing_traceroute(traceback) 
 			with open("failed_traceroutes.txt",'a') as f:
 				f.write(dest + "\t" + str(type(ex).__name__) + "\tDetails: " +
@@ -100,32 +100,32 @@ def has_HTTP_layer(resp_packets):
 def get_raw_string(ICMP_ID):
 	empty_string="\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 	hex_string=hex(ICMP_ID)
-    # print " first half ",hex_string[:4],"  int ",int(hex_string[:4],0)," char ",chr((hex_string[:4]))
+    # pass #print " first half ",hex_string[:4],"  int ",int(hex_string[:4],0)," char ",chr((hex_string[:4]))
 	char_1=chr(int(hex_string[:4],0))
  #   temp="0x"+
 	char_2=chr(int("0x"+hex_string[4:],0))
 	complete_string=char_1+char_2+empty_string
 	 
-	#print repr(complete_string)
+	#pass #print repr(complete_string)
 	return (complete_string)
 
 def get_hex_num(ICMP_ID):
 	ones_complement=ICMP_ID^0xffff
 	without_overflow=ones_complement
 	with_overflow=int("0x1"+hex(ones_complement)[2:],0)-1
-   # print "- 1",hex(without_overflow)
-   # print "- 2",hex(with_overflow)
+   # pass #print "- 1",hex(without_overflow)
+   # pass #print "- 2",hex(with_overflow)
 	answer1=without_overflow-0x0800-ICMP_ID
 	answer2=with_overflow-0x0800-ICMP_ID
 
-	#print "answer 1",hex(answer1)
-	#print "answer 2",hex(answer2)
+	#pass #print "answer 1",hex(answer1)
+	#pass #print "answer 2",hex(answer2)
 
 	if (answer1>0):
-		#print "answer 1",hex(answer1)
+		#pass #print "answer 1",hex(answer1)
 		return answer1
 	else:
-	#	print "answer 2",hex(answer2)
+	#	pass #print "answer 2",hex(answer2)
 		return answer2
 def do_icmp_traceroute(dest,payload):
 	"""
@@ -360,7 +360,7 @@ def do_all_traceroutes(domain_list,payload_list):
 			 
 			do_icmp_traceroute(domain_list[index],payload_list[index])
 			do_dns_traceroute(domain_list[index],payload_list[index])
-		   # print "look at this ",domain_list[index]," ",payload_list[index]
+		   # pass #print "look at this ",domain_list[index]," ",payload_list[index]
 	         
 		#    do_http_traceroute_stateless(dest)
 		 #   do_http_traceroute_stateful(dest)
@@ -371,19 +371,19 @@ def do_all_traceroutes(domain_list,payload_list):
 						str(ex) + "\t" + traceroute_type + "\n")
 	
 def do_all_traceroutes1(domain_list,payload_list):
-  #  print "Time to give work to threads work i got ",domain_list
+  #  pass #print "Time to give work to threads work i got ",domain_list
 	N_THREADS1 = 2
 	THREAD_WORKLOAD1 = max(len(domain_list)/ N_THREADS1, 1)
 	for thread_start_index in range(0, len(domain_list), THREAD_WORKLOAD1):
-   #     print "-------------"
+   #     pass #print "-------------"
  		thread_chunk1=domain_list[thread_start_index: thread_start_index + THREAD_WORKLOAD1]
 		thread_chunk2=payload_list[thread_start_index: thread_start_index + THREAD_WORKLOAD1]
-		print "length of first Thread and second Second\n",len(thread_chunk1),"\n",len(thread_chunk2)
-		print(thread_chunk1[0])
-		print(thread_chunk2[0])
+		pass #print "length of first Thread and second Second\n",len(thread_chunk1),"\n",len(thread_chunk2)
+		pass #print(thread_chunk1[0])
+		pass #print(thread_chunk2[0])
 
-	 #   print "chunk gone 2 ",thread_chunk1
-	  #  print "at this time domain list",domain_list
+	 #   pass #print "chunk gone 2 ",thread_chunk1
+	  #  pass #print "at this time domain list",domain_list
 		child = threading.Thread(target = do_all_traceroutes, 
 								 args = (thread_chunk1,thread_chunk2,))
 		child.start()
@@ -391,7 +391,7 @@ def do_all_traceroutes1(domain_list,payload_list):
 
 
 
-  #  print " work given above was ",domain_list
+  #  pass #print " work given above was ",domain_list
 	
 	while 1:
 		pass
@@ -407,15 +407,15 @@ if __name__ == "__main__":
 	with open(sys.argv[1]) as f:
 		for line in f:
 			domain_list.append(line.strip())
-	#print domain_list
+	#pass #print domain_list
 	name_server_list=[i.split(" ")[1] for i in domain_list]
 	payload_list_list=[i.split(" ")[0] for i in domain_list]
 
-   # print payload_list_list
+   # pass #print payload_list_list
 	 
 	domain_ip_list=get_ip_list(name_server_list)
 	THREAD_WORKLOAD = max(len(domain_ip_list)/ N_THREADS, 1)
-	#print domain_ip_list
+	#pass #print domain_ip_list
 	
 	'''
 	input file 
@@ -425,23 +425,23 @@ if __name__ == "__main__":
 	2.2.2.2 is actual ip which we should not have
 	'''
 
-	print "length of domain ip list and payload list ",len(domain_ip_list),"\n",len(payload_list_list)
+	pass #print "length of domain ip list and payload list ",len(domain_ip_list),"\n",len(payload_list_list)
 
 	for i in range(len(domain_ip_list)):
-		print domain_ip_list[i]," ",payload_list_list[i]
+		pass #print domain_ip_list[i]," ",payload_list_list[i]
 
  
 	for thread_start_index in range(0, len(domain_ip_list), THREAD_WORKLOAD):
-	#    print thread_start_index, " start ind 1"
+	#    pass #print thread_start_index, " start ind 1"
 		thread_chunk1 = domain_ip_list[thread_start_index: thread_start_index + THREAD_WORKLOAD]
 		thread_chunk2 = payload_list_list[thread_start_index: thread_start_index + THREAD_WORKLOAD]
-	#	print "length of first chunk and second chunk\n",len(thread_chunk1),"\n",len(thread_chunk2)
-   #     print "chunk gone ",thread_chunk
+	#	pass #print "length of first chunk and second chunk\n",len(thread_chunk1),"\n",len(thread_chunk2)
+   #     pass #print "chunk gone ",thread_chunk
 		p = Process(target=do_all_traceroutes1, args=(thread_chunk1,thread_chunk2,))
 		p.start()
 
 	
-	print "I am done giving work to processes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"    
+	pass #print "I am done giving work to processes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"    
 
 	 
 	   

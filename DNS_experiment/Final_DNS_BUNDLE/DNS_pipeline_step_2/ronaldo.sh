@@ -20,7 +20,7 @@ echo -e 'eUbGc8ICNA'| sudo -S python ./step4_traceroute/collect_traceroute.py bl
 
 echo "hey collect_traceroute already started" 
 echo '*************************************************'
-cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{print$3" "$2}' >./step5_run_in_us/transfer_to_us_blocked_domains_with_ns.txt
+cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{print$1" "$2}' >./step5_run_in_us/transfer_to_us_blocked_domains_with_ns.txt
 
 dig +retry=5 +short myip.opendns.com @resolver1.opendns.com > ./step5_run_in_us/send_spoofed_packet_here.txt
 

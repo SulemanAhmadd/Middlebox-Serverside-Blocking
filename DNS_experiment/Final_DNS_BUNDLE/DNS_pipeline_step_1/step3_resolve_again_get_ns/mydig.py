@@ -83,15 +83,15 @@ def output(hostname, rdtype, myresponse, elapsed, cnames):
 	
 	string = first_line + second_line + third_line + forth_line
 	
-	print('\n')
-	print(string)
+	pass #print('\n')
+	pass #print(string)
 	
 	cache[hostname + ' ' + rdtype] = string  # insert into global cache
 	
 	msg_size = str(len(string.replace(' ', '')))
-	print('Query time: ' + str(int(elapsed * 1000)) + ' msec')
-	print('WHEN:', datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"))
-	print('MSG SIZE rcvd: ', msg_size, '\n')
+	pass #print('Query time: ' + str(int(elapsed * 1000)) + ' msec')
+	pass #print('WHEN:', datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"))
+	pass #print('MSG SIZE rcvd: ', msg_size, '\n')
 
 
 def get_cname_from_rrset(rrset):
@@ -107,7 +107,7 @@ def get_cname_from_rrset(rrset):
 		item = rrset.items[0]
 		return item.to_text()
 	except Exception as e:
-		print('Oops! Some issue with cname: ', e)
+		pass #print('Oops! Some issue with cname: ', e)
 
 
 def get_ip_from_rrset(rrset):
@@ -123,7 +123,7 @@ def get_ip_from_rrset(rrset):
 		item = rrset.items[0]
 		return item.to_text()
 	except Exception as e:
-		print('Oops! Some issue with ip: ', e)
+		pass #print('Oops! Some issue with ip: ', e)
 
 
 def get_ns_from_authority(response):
@@ -175,7 +175,7 @@ def single_iterate(hostname, rdtype, where, timeout=1, dnssec=False):
 	'''
 	a_query = dns.message.make_query(hostname, rdtype, want_dnssec=dnssec) 
 	try:
-		#print('single iterate: ', hostname, rdtype, where)
+		#pass #print('single iterate: ', hostname, rdtype, where)
 		response = dns.query.udp(a_query, where, timeout)
 		return response
 	except Exception as e:
@@ -225,8 +225,8 @@ def handler(signum, frame):
 	global timeout_flag
 	stop_flag=True
 	timeout_flag=True
-	print("Query timeout!!!!!!!!!!!")
-	print(timeout_flag)
+	pass #print("Query timeout!!!!!!!!!!!")
+	pass #print(timeout_flag)
 	raise Exception("Timeout")
 def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,response_code,thread_number):
 	''' My DNS resolver version 0.3
@@ -252,16 +252,16 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 				counter=counter+1
 				response = single_iterate(hostname, rdtype, root, timeout=0.5)
 				if "SOA" in str(response.authority[0]):
-					print("hey")
+					pass #print("hey")
 					stop_flag=True
 					response_code.append((" ".join(str(response).split("\n"))))
 					name_servers_answered.append((hostname,"root root root root "+str(root),"Could not get IP"))
 
 					return ""
-				print("!!!!----!!!")
+				pass #print("!!!!----!!!")
 				response_in_array=str(response).split("\n")
-				print("oooooooooooo")
-				print (response_in_array)
+				pass #print("oooooooooooo")
+				pass #print (response_in_array)
 			
 				if len(response.additional) == 0:
 					continue                           # root doesn't have top level domain information
@@ -279,54 +279,54 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 								response_code.append((" ".join(str(response2).split("\n"))))
 								response_array=str(response2).split("\n")
 								response_code_string=response_array[2].split(" ")[1]
-								print("This is what I received\n", response_array)
-								print ("\n\n\n\n\n\nthread number is ",thread_number)
-								print("\n\n\n\nstring  \n", response_code_string)
-								print("cond  \n", response_code_string=="REFUSED")
+								pass #print("This is what I received\n", response_array)
+								pass #print ("\n\n\n\n\n\nthread number is ",thread_number)
+								pass #print("\n\n\n\nstring  \n", response_code_string)
+								pass #print("cond  \n", response_code_string=="REFUSED")
 								if "REFUSED"==response_code_string:
 										stop_flag=True
-										#print(dir(response2.rcode))
-								#		print(response2.rcode)
-										print("")
+										#pass #print(dir(response2.rcode))
+								#		pass #print(response2.rcode)
+										pass #print("")
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
-										print("should go back")
+										pass #print("should go back")
 										return ""
 
 								if "SERVFAIL"==response_code_string:
 										stop_flag=True
-										#print(dir(response2.rcode))
-								#		print(response2.rcode)
-										print("")
+										#pass #print(dir(response2.rcode))
+								#		pass #print(response2.rcode)
+										pass #print("")
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
-										print("should go back")
+										pass #print("should go back")
 										return ""
 								if len(response2.authority)>0:
 									 
 									if "SOA" in str(response2.authority[0]):
-										print("''''''''''''''''''''''''''''''''''''''''''")
+										pass #print("''''''''''''''''''''''''''''''''''''''''''")
 										stop_flag=True
-										#print(dir(response2.rcode))
-								#		print(response2.rcode)
+										#pass #print(dir(response2.rcode))
+								#		pass #print(response2.rcode)
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
 										return ""
 
 									 
 
 								response = response2
-							 #   print("look")
-							  #  print(rrset)
+							 #   pass #print("look")
+							  #  pass #print(rrset)
 								final_person=rrset
-								#print("(!!!!!)")
+								#pass #print("(!!!!!)")
 								break
 							except Exception as e:
 								if str(e)=="Timeout":
-									print("Hostname which timed out "+hostname)
+									pass #print("Hostname which timed out "+hostname)
 									for one_record in response.additional:
 										name_servers_answered.append((hostname,str(one_record),"Could not get IP"))
 									return ""
-							   # print("whoop")
-							  #  print(e)
-								pass  # print('Oops! Authoratative server timeout, try next one. ', e)
+							   # pass #print("whoop")
+							  #  pass #print(e)
+								pass  # pass #print('Oops! Authoratative server timeout, try next one. ', e)
 					else:             # if both ANSWER and ADDITIONAL is empty, then find the IP of AUTHORITY  
 						ns = get_ns_from_authority(response)
 						 
@@ -342,7 +342,7 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 							return response   # hostname in AUTHORITY is not valid
 				if check_response(response, rdtype):  # ip is in the response
 					name_servers_answered.append((hostname,str(final_person),"IP"))
-				#    print(response)
+				#    pass #print(response)
 					return response
 
 				else:                         # CNAME is in the response
@@ -355,13 +355,13 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 			except Exception as e:
 				if str(e)=="Timeout":
 					return ""
-				pass   # print('Oops! Some error, start from a new root server.', e)
+				pass   # pass #print('Oops! Some error, start from a new root server.', e)
 	except Exception as e:
 		if str(e)=="Timeout":
 			pass
 			return ""
 			
-	print("hhehehe")    
+	pass #print("hhehehe")    
  #   signal.alarm(0)
 
 ### DNSSEC #############################################################################################
@@ -394,20 +394,20 @@ def output_sec(hostname, rdtype, response, elapsed, cnames):
 		cnames (list): cnames during a dns query
 	'''
   
-	print('\n', 'QUESTION:')
+	pass #print('\n', 'QUESTION:')
 	for i in response.question:
-		print(i.to_text())
+		pass #print(i.to_text())
 	
-	print('\n', 'ANSWER:')
+	pass #print('\n', 'ANSWER:')
 	for i in response.answer:
-		print(i.to_text())
+		pass #print(i.to_text())
 		
-	print('\n')
+	pass #print('\n')
 	
 	msg_size = str(len(myresponse.to_text()))
-	print('Query time: ' + str(int(elapsed * 1000)) + ' msec')
-	print('WHEN:', datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"))
-	print('MSG SIZE rcvd: ', msg_size, '\n')
+	pass #print('Query time: ' + str(int(elapsed * 1000)) + ' msec')
+	pass #print('WHEN:', datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Y"))
+	pass #print('MSG SIZE rcvd: ', msg_size, '\n')
 
 
  
@@ -443,7 +443,7 @@ def get_rrset(response, rdtype):
 					name = rrset.name
 			return ds_or_ns, rrsig, name
 	except Exception as e:
-		print('Oops! Bug in get_rrset')
+		pass #print('Oops! Bug in get_rrset')
 		raise e  
  
 
@@ -525,7 +525,7 @@ def dns_resolver_sec(hostname, rdtype, cnames):
 							response_dnskey = response_dnskey2
 							break
 						except Exception as e:
-							pass  #print('Oops!', e)
+							pass  #pass #print('Oops!', e)
 				else:             # if both ANSWER and ADDITIONAL is empty, then find the IP of AUTHORITY  
 					ns = get_ns_from_authority(response)
 					if check_hostname(ns):
@@ -543,7 +543,7 @@ def dns_resolver_sec(hostname, rdtype, cnames):
 					verify_a(response2, name_key, dnskey)
 					verify_zone(response_dnskey2, response)
 				except Exception as e:
-					print(e)
+					pass #print(e)
 					flag = Flag.VERIFY_FAIL
 					return flag, response2
 				else:
@@ -555,13 +555,13 @@ def dns_resolver_sec(hostname, rdtype, cnames):
 					return dns_resolver_sec(cname, rdtype, cnames)
 			break
 		except Exception as e:
-			print(e)
+			pass #print(e)
 
 ########################################################################################################
 
 def alias(array):
 	if len(array) == 3:
-		print("------------------------------")
+		pass #print("------------------------------")
 		thread_number=str(array[0])
 		hostname = array[1]
 		rdtype   = array[2]
@@ -583,15 +583,15 @@ def alias(array):
 		 
 		if myresponse!="" and myresponse is not None:
 			output(hostname, rdtype, myresponse, elapsed, cnames)
-		print("Name servers who responded with IP \n",name_servers_answered)
+		pass #print("Name servers who responded with IP \n",name_servers_answered)
 		length=len(name_servers_answered)
-		print("!!!!!!!!!!!!!!!!!!")
-		print(myresponse)
-		print("!!!!!!!!!!!!!!!!!!")
+		pass #print("!!!!!!!!!!!!!!!!!!")
+		pass #print(myresponse)
+		pass #print("!!!!!!!!!!!!!!!!!!")
 		if length!=0 and (name_servers_answered[length-1][2]=="IP") and myresponse:
 			one_name_server=name_servers_answered[length-1]
 			
-			print("This gave answer ",one_name_server[1].split()[4])
+			pass #print("This gave answer ",one_name_server[1].split()[4])
 			answers = []
 			for rrset in myresponse.answer:
 				for item in rrset.items:
@@ -607,13 +607,13 @@ def alias(array):
 					number = match.group(1)
 				number = str(number)
 				break
-			print("answer ",answers)
+			pass #print("answer ",answers)
 			with open(thread_number+"trac_domains_resolved",'a') as file1:
-				print ("CHECKKK THIISISISSISI ", name_servers_answered)
+				pass #print ("CHECKKK THIISISISSISI ", name_servers_answered)
 				file1.write(str(name_servers_answered[length-1][0])+" "+str(one_name_server[1].split()[4])+" "+str(answers[0])+" "+str(hostname)+"\n")
 		else:
 			pass
-			print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hostname)
+			pass #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hostname)
 			global timeout_flag
 			real_host=""
 			real_host_domain=""
@@ -625,31 +625,31 @@ def alias(array):
 				real_host_domain=cnames[len(cnames)-1]
 
 			for one_name_server in name_servers_answered:
-				print("one name server is ",one_name_server)
+				pass #print("one name server is ",one_name_server)
 				if one_name_server[2]=="Could not get IP" and one_name_server[0]==real_host_domain:
-					print("HELLO")
+					pass #print("HELLO")
 					# sometimes multiple nameserver comes delimited by \n but on file appar together
 					name_server_string=""
 					if '\n' in one_name_server[1]:
-						print("n present")
+						pass #print("n present")
 						separate=one_name_server[1].split("\n")
-						print(separate)
+						pass #print(separate)
 						for one_server in separate:
 
 							name_server_string=name_server_string+one_server+" "
-							print (one_server)
-							print("see below full string")
-							print(name_server_string)
+							pass #print (one_server)
+							pass #print("see below full string")
+							pass #print(name_server_string)
 					else:
-						print("n NOT present")
+						pass #print("n NOT present")
 						name_server_string=one_name_server[1]
-					print("appending this to final list",name_server_string)
+					pass #print("appending this to final list",name_server_string)
 					real_host=real_host+" "+name_server_string+" "
 			if len(response_code)>0:
 				message=""
 				message=real_host_domain+" "+str(response_code[len(response_code)-1])
-				print("++++++++++++++++++++++++++++++++++++++++++++++")
-				print(timeout_flag)
+				pass #print("++++++++++++++++++++++++++++++++++++++++++++++")
+				pass #print(timeout_flag)
 				if(timeout_flag):
 					message=message+" "+"Domain_timed_out"
 				message=message+"\n"	
@@ -663,17 +663,17 @@ def alias(array):
 			with open(thread_number+"trac_blocked_domain_ns_info.txt",'a') as file1:
 				file1.write(str(final_string)+" "+hostname+"\n")
 
-		print("\n\nAll servers contacted\n",name_servers)
-		print("\n cnames contacted \n",cnames)
+		pass #print("\n\nAll servers contacted\n",name_servers)
+		pass #print("\n cnames contacted \n",cnames)
 		if stop_flag==True:
-			print("\n\nCname for domain which timed out or SOA record\n",cnames)
+			pass #print("\n\nCname for domain which timed out or SOA record\n",cnames)
 
-		print("------------------------------") 
+		pass #print("------------------------------") 
 		stop_flag=False
 		timeout_flag=False
 		counter=0
 
 if __name__ == '__main__':
-	print()
+	pass #print()
 	alias(sys.argv)
 	

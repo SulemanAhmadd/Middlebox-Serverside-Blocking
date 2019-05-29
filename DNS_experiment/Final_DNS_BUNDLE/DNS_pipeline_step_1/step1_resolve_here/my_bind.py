@@ -12,8 +12,8 @@ import time
 
 def one_fun(my_list,num):
 	res = dns.resolver.Resolver(configure=False)
-	print("I am thread ",num)
-	print("my domains",my_list)
+	pass #print("I am thread ",num)
+	pass #print("my domains",my_list)
 	num=str(num)
 	start=time.time()
 	res.nameservers = ["127.0.0.1"]
@@ -27,9 +27,9 @@ def one_fun(my_list,num):
 	count=0
 	for i in range(2):
 		fail_str=""
-		print("stopppppppppp index\n",i)
+		pass #print("stopppppppppp index\n",i)
 		for domain in domain_list:
-			print("Thread num ",num,"count of sites ",count," Time elapsed ",(time.time()-start))
+			pass #print("Thread num ",num,"count of sites ",count," Time elapsed ",(time.time()-start))
 			count=count+1
 			
 
@@ -38,7 +38,7 @@ def one_fun(my_list,num):
 				with open(num+"_success.txt",'a') as file1:
 						file1.write(str(domain)+" ")
 				for i in resultDNS:
-					print("google's ans: " + str(i))
+					pass #print("google's ans: " + str(i))
 					with open(num+"_success.txt",'a') as file1:
 						file1.write(str(i)+",")
 				answer=''
@@ -46,12 +46,12 @@ def one_fun(my_list,num):
 				# 	resultant_str = ','.join([str(item), answer])
 				with open(num+"_success.txt",'a') as file1:
 					file1.write("\n")
-				print(num," pass ",domain)
+				pass #print(num," pass ",domain)
 			
 
 			except Exception as e:
 				fail_str=fail_str+domain+" "+str(e)+"\n"
-				print(num," Fail ",domain)
+				pass #print(num," Fail ",domain)
 				fail_domain.append(domain)
 		domain_list=fail_domain
 		fail_domain=[]
@@ -60,9 +60,9 @@ def one_fun(my_list,num):
 
 	with open(num+"_fail.txt",'w') as file1:
 					file1.write(fail_str)
-	print("total time ")
-	print(time.time()-start)
-	print("length of fails",len(fail_domain))
+	pass #print("total time ")
+	pass #print(time.time()-start)
+	pass #print("length of fails",len(fail_domain))
 	with open("time.txt",'a') as file5:
 		file5.write("Thread : "+num+" Time taken "+str(time.time()-start)+" failures "+str(len(fail_domain))+"\n")
 
