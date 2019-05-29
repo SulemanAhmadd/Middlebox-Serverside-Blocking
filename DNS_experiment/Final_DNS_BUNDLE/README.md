@@ -5,7 +5,7 @@ Explanation of what each directory does is given below
 - DNS_pipeline_step_1/ takes an input list of websites and uses the **BIND** server hosted on our machine to resolve all websites. After completion of step 1, next step is to investigate websites which our **BIND** server could not resolve. Our methodology which differentiates server side blocking from censorship requires that we know the IP address of authoritative name server of domains which did not resolve. So, if we manage to find the IP of authoritative name server of domains unavilable at DNS level, we record those domains in **have_auth_no_ip_extended.common_three_runs.txt**
 and format of each line is,
 
-```[CNAME of domain] [IP of authoritative name server of domain] [domain]```
+			```[CNAME of domain] [IP of authoritative name server of domain] [domain]```
 
 - DNS_pipeline_step_2/ uses **have_auth_no_ip_extended.common_three_runs.txt** as input list and then perform DNS traceroute. DNS traceroute data is in a sub directory step4_traceroute/. DNS_pipeline_step_2/ also performs spoofing check for domains in input list. **spoof_capture.pcap** contains all spoofed responses received. Please note that spoofed response received in this step are actually fake spoofed responses because source IP addresses of
 packets can not get spoofed from the machine which sends DNS responses.
