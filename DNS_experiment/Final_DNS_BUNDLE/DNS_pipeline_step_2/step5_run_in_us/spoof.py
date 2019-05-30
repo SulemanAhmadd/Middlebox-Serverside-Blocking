@@ -17,8 +17,8 @@ for one_dom_ip in domain_ip_arr:
 		continue
 	sep_arr=one_dom_ip.split(" ")
 	arr_domain=sep_arr[0]
-	arr_ip=sep_arr[1]
-	arr_ip=arr_ip.replace(",","")
+	arr_ip=sep_arr[1].split(",")[0]
+
 	domain_ip_map[arr_domain]=arr_ip
 domains=[]
 
@@ -30,7 +30,7 @@ for one_domain in domains_raw:
 			pass #print "hey"
 			pass #print separate[0]
 			pass #print domain_ip_map[separate[0]]
-			a=IP(dst=external_ip)/ UDP(sport=53,dport=43246)/DNS(id=0x6696,ancount=1,aa=1,an=DNSRR(rrname=separate[0],rdata=domain_ip_map[separate[0]]),qr=1L,qd=DNSQR(qname=separate[0]))
+			a=IP(dst=external_ip)/ UDP(sport=53,dport=43596)/DNS(id=0x6696,ancount=1,aa=1,an=DNSRR(rrname=separate[0],rdata=domain_ip_map[separate[0]]),qr=1L,qd=DNSQR(qname=separate[0]))
 			pass #print "here"
 			sr1(a,timeout=1,retry=3,verbose=0)
 			pass #print "haha"

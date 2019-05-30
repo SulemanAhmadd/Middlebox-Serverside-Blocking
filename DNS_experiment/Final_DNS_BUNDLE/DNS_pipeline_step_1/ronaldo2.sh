@@ -1,16 +1,8 @@
-mkdir run1
-mkdir run2
-mkdir run3
-echo 'finding server side blocked domains first before finding auth servers' >> record.txt
-date >> record.txt
-python3 ./step1_resolve_here/my_bind.py
-cat step1_resolve_here/*fail* | awk '{print$1}' > step3_resolve_again_get_ns/server_side_blocked.txt
-cat step1_resolve_here/*fail* | awk '{print$1}' > step1_resolve_here/blocked_domains.txt
-cat step1_resolve_here/*success* > step1_resolve_here/resolved_domains.txt
-rm step1_resolve_here/*success*
-rm step1_resolve_here/*fail*
-date >> record.txt
-echo 'first step completed. finding auth servers now 1st time' >> record.txt
+cd ./step1_resolve_here
+python get_server_side_blocked.py
+cd ..
+cat ./step1_resolve_here/active_set.txt > ../DNS_pipeline_step_2/step5_run_in_us/active_domains_to_ip_mapping.txt
+cat ./step1_resolve_here/active_set.txt > ../DNS_pipeline_step_3/step5_run_in_us/active_domains_to_ip_mapping.txt
 python3 ./step3_resolve_again_get_ns/get_nameservers.py
 cat ./step3_resolve_again_get_ns/*blocked_domain_ns_info.txt* > ./run1/blocked_domain_ns_info.txt
 cat ./step3_resolve_again_get_ns/*domains_resolved* > ./run1/domains_resolved
@@ -46,3 +38,13 @@ cat ./run3/blocked_domain_ns_info.txt | awk '{if($4!=""&& $1!="root" && $1!="The
 echo "CONGRATSSSSSSSSSSS!!! its done!">> record.txt
 date >> record.txt
 python compare_across_three_runs.py
+cp have_auth_no_ip_extended.common_three_runs.txt ../DNS_pipeline_step_2/step3_resolve_again_get_ns/
+cp have_auth_no_ip_extended.common_three_runs.txt ../DNS_pipeline_step_3/step3_resolve_again_get_ns/
+echo "Its time to start step 2" >> record.txt
+
+cd ../DNS_pipeline_step_2/
+bash ronaldo.sh 
+echo "Its time to start step 3" >> ../DNS_pipeline_step_1/record.txt
+cd ../DNS_pipeline_step_3
+bash ronaldo.sh
+echo "All done!" >> ../DNS_pipeline_step_1/record.txt

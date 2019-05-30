@@ -1,4 +1,4 @@
-Data collection process for DNS pipeline is divided into 4 steps. Each sub directory completes one step out of 4 steps.
+Data collection process for DNS pipeline is divided into 4 steps. Each sub directory completes one step.
 
 Explanation of what each directory does is given below
 

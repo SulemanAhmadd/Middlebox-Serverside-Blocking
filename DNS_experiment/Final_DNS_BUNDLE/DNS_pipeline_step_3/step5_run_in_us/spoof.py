@@ -17,8 +17,8 @@ for one_dom_ip in domain_ip_arr:
 		continue
 	sep_arr=one_dom_ip.split(" ")
 	arr_domain=sep_arr[0]
-	arr_ip=sep_arr[1]
-	arr_ip=arr_ip.replace(",","")
+	arr_ip=sep_arr[1].split(",")[0]
+
 	domain_ip_map[arr_domain]=arr_ip
 domains=[]
 
