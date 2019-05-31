@@ -1,0 +1,19 @@
+[19:21:08:976] scamper_fds_init: fd table size: 1024
+[19:21:08:977] addr2mac_add: ifindex 3 ip 192.168.100.1 mac 50:1d:93:43:b5:ab expire 1546889468
+[19:21:08:977] outfile_alloc: name - fd 1
+[19:21:08:977] scamper_sources_add: name default
+[19:21:09:028] fd_null: fd 6 type rtsock
+[19:21:09:028] fd_icmp: fd 7 type icmp4 192.168.100.6
+[19:21:09:028] fd_tcp: fd 8 type tcp4 44392
+[19:21:09:044] scamper_fd_dl: fd 9 type dl 3
+[19:21:09:044] fd_null: fd 10 type ifsock
+[19:21:09:078] tx: tcp 87.78.46.38, ttl 19, 44392:80 syn, ipid 0001, 0, len 40
+[19:21:09:265] from 87.78.46.38 size 56 ttl 52 tos 0xc8 ipid 0x0001 icmp unreach admin prohib to 87.78.46.38 size 40 ttl 1 tos 0x28 ipid 0x0001 proto TCP sport 44392 dport 80 seq 00000000
+[19:21:09:265] dlin_trace: hop 0.186277 dl_rec 0.186590 diff -313
+[19:21:09:265] source_free: name default
+[19:21:09:265] outfile_free: name - fd 1
+[19:21:09:265] fd_free: fd 6 type rtsock
+[19:21:09:265] fd_free: fd 10 type ifsock
+[19:21:09:291] fd_free: fd 9 type dl 3
+[19:21:09:292] fd_free: fd 7 type icmp4 192.168.100.6
+[19:21:09:292] fd_free: fd 8 type tcp4 44392
