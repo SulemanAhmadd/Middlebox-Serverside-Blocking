@@ -4,8 +4,8 @@ We can collect data for DNS pipeline in 3 steps which are listed below
 
 Now wait until first bash script is executing.
 
-- After **run1.sh** has collected data, run the command **bash run2.sh** to start DNS traceroutes and spoofing check on domains available in one of the control country but unavilable in test country.
+- After **run1.sh** has categorized input list into resolved and unresolved lists, run the command **bash run2.sh** to start DNS traceroutes and spoofing check on domains available in one of the control country but unavilable in test country.
 
 Now, again wait until **run2.sh** is executing.
 
-- Finall, run the **bash run3.sh** to do MDA DNS on master input list
+- Finally, run the **bash run3.sh** to do MDA DNS on master input list which is basically domains unavailable in any of the VPs.
