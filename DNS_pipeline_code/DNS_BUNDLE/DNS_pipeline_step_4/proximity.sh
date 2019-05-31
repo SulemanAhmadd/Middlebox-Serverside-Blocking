@@ -6,13 +6,13 @@ apt-get install sshpass -y
 #sshpass -p "&AYB&&D#H8#@" scp -o StrictHostKeyChecking=no root@108.62.49.40:/root/MDA_DNS_INPUT/have_auth_no_ip_extended.common_three_runs.txt .
 sleep 3
 sshpass -p "&AYB&&D#H8#@" scp -o StrictHostKeyChecking=no root@108.62.49.40:/root/DNS_SCAMPER/scamper .
-echo "stage 1"
+echo "stage 1 : We have downloaded scamper. Time to find commands for scamper." >> progress_logs.txt
 python find_commands.py
-echo "stage 2"
+echo "stage 2 : now we calculate time until which TCP-DUMP should keep sniffing." >> progress_logs.txt
 number_of_sites=$( cat have_auth_no_ip_extended.common_three_runs.txt | wc -l )
 time="$((number_of_sites*100))"
-echo "stage 3"
+echo "stage 3 : TCP-DUMP starting in background..." >> progress_logs.txt
 sudo timeout $time tcpdump icmp or udp -w MDA_DNS_tcpdump_logs.pcap &
-echo "stage 4"
+echo "stage 4 : Scamper starts sending probes." >> progress_logs.txt
 sudo ./scamper -o MDA_DNS_scamper_output.txt -O cmdfile -f scamper_commands.txt
-echo "Congrats! Data collection completed!"
+echo "Congrats! Data collection completed!" >> progress_logs.txt

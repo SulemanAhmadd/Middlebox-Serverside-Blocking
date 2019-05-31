@@ -82,7 +82,7 @@ def start_vpn():
 
 def transfer_bundle_to_all_machines(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
    
-	print "Starting data transfer for VP whose ip is ", vp_ip
+	print "Starting data transfer for VP whose name is ", vp_name
 
 	# Here we are transfering bundle to relevant EC2 machines
 	os.system("scp -i " + SSH_KEY_PATH + " -r " + vp_bundle_name +" "+ USERNAME+"@"\
@@ -102,7 +102,7 @@ def start_crawler_on_all_machines(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_
 	# copy the folder
 	
    
-	print "Starting data collection for VP whose bundle name is ", vp_bundle_name
+	print "Starting process of resolving domain through BIND server for VP whose  name is ", vp_name
 
 	'''
 	Here we are unzipping the bundles on remote machine before starting run.sh. Please note we first
@@ -113,30 +113,30 @@ def start_crawler_on_all_machines(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_
 
 	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
 		  "screen -m -d bash -c 'echo "Get ready! Crawler is about to start!";\
-		  cd /root/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_1/;\
+		  cd ~/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_1/;\
 		  bash ronaldo1.sh;'" """)
 
 def get_active_domain_set(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 	   
-	print "Getting active set for VP whose bundle name is ", vp_bundle_name
+	print "Getting active set for VP whose name is ", vp_name
 
 	os.system("scp -i " + SSH_KEY_PATH + " " + USERNAME+"@"\
-		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_pipeline_step_1/step1_resolve_here/resolved_domains.txt .")
+		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_pipeline_step_1/step1_resolve_here/resolved_domains.txt ./active_domains_of_each_VP/")
 
-	os.system("cat resolved_domains.txt >> active_set")
+	os.system("cat ./active_domains_of_each_VP/resolved_domains.txt > ./active_domains_of_each_VP/"+vp_name+"_active_set")
 
 
 def return_active_domain_set(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 	   
-	print "Getting active set for VP whose bundle name is ", vp_bundle_name
+	print "Transfering active set back to VP whose name is ",vp_name
 
-	os.system("scp -i " + SSH_KEY_PATH + " -r active_set.txt " + USERNAME+"@"\
+	os.system("scp -i " + SSH_KEY_PATH + " -r ./active_domains_of_each_VP/active_set.txt " + USERNAME+"@"\
 		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_pipeline_step_1/step1_resolve_here/")
 
 
 
 def start_DNS_traceroute_spoofing_check(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
-	print "Starting data DNS traceroute and spoofing chech for VP whose bundle name is ", vp_bundle_name
+	print "Starting DNS traceroute and spoofing chech for VP whose bundle name is ", vp_name
 
 	'''
 	Here we are unzipping the bundles on remote machine before starting run.sh. Please note we first
@@ -147,7 +147,7 @@ def start_DNS_traceroute_spoofing_check(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNA
 
 	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
 		  "screen -m -d bash -c 'echo "Get ready! Crawler is about to start!";\
-		  cd /root/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_1/;\
+		  cd ~/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_1/;\
 		  bash ronaldo2.sh;'" """)
 
 
@@ -164,11 +164,40 @@ def get_server_side_blocked(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 
 def return_server_side_blocked(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 	   
-	print "Getting server side blocked domains for VP whose VP name is ", vp_name
+	print "Returning server side blocked domains for VP whose VP name is ", vp_name
 
 	os.system("scp -i " + SSH_KEY_PATH + " -r ./server_side_blocked_of_each_VP/have_auth_no_ip_extended.common_three_runs.txt " + USERNAME+"@"\
 		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_pipeline_step_4/")
 
+
+def start_MDA_DNS(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
+	print "Starting MDA DNS for VP whose bundle name is ", vp_name
+
+	
+	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
+		  "screen -m -d bash -c 'echo "Get ready! Crawler is about to start!";\
+		  cd ~/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_4/;\
+		  bash proximity.sh;'" """)
+
+def start_path_stitching(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
+	print "Starting path stitching for VP whose bundle name is ", vp_name
+
+	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
+		  "screen -m -d bash -c 'echo "Get ready! Crawler is about to start!";\
+		  cd ~/"""+ vp_bundle_name[:-4]+"""/DNS_pipeline_step_4/;\
+		  bash data.sh;'" """)
+
+
+def zip_and_get_back_collected_data(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
+	print "Starting compressioon and data transfer back to local machine for VP whose bundle name is ", vp_name
+
+	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
+		  "echo "Get ready! Crawler is about to start!";\
+		  cd ~/"""+ vp_bundle_name[:-4]+"""/;\
+		  zip -r DNS_data_of_"""+vp_name+""".zip ./DNS_pipeline_step_2/step4_traceroute ./DNS_pipeline_step_2/spoof_capture.pcap ./DNS_pipeline_step_3/spoof_capture.pcap ./DNS_pipeline_step_4/process_parser/complete_stitched_paths;" """)
+
+	os.system("scp -i " + SSH_KEY_PATH + " -r " + USERNAME+"@"\
+		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_data_of_"+vp_name+".zip ./DNS_data_of_all_VPs/")
 
 if __name__ == "__main__":
 #	start_vpn()
@@ -176,20 +205,26 @@ if __name__ == "__main__":
 	# we wait for 100 seconds after starting VPN because once we start VPN command,  VPN starts working after 30 seconds or so
 	with open("vantages",'r') as vantages:
 		vantage_array=vantages.read().split("\n")
+
+	skip_for_NordVPN_VPs=[]#["SA","Australia","UK","Germany","Japan","China"]
+	skip_for_Cloud_VPs=[]#["US","Russia","Turkey","Germany","Japan","China","PK"]
 	MODE=int(sys.argv[1])
 	for one_vp in vantage_array:
 		if one_vp!="":
 			one_vp_array=one_vp.split(",")
 			vp_ip=one_vp_array[-1:][0]
 			vp_name="_".join(one_vp_array)
+			vp_country=one_vp_array[1]
 			vp_bundle_name="DNS_BUNDLE.zip"
-			print "\n\n",vp_bundle_name
 			'''
 			As we use one key to SSH into EC2 machines and the other to SSH into One provider machines, we made two separate functions
 			to start scripts in EC2 and One provider machines.
 			'''
 
 			if vp_name.find("NordVPN")>(-1):
+				if vp_country in skip_for_NordVPN_VPs:
+				#	print "Skipping running commands for ",vp_name
+					continue
 				if MODE==1:
 					transfer_bundle_to_all_machines(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
 				elif MODE==2:
@@ -200,9 +235,19 @@ if __name__ == "__main__":
 					start_DNS_traceroute_spoofing_check(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
 				elif MODE==5:
 					get_server_side_blocked(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
+				elif MODE==6:
+					start_MDA_DNS(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
+				elif MODE==7:
+					start_path_stitching(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
+				elif MODE==8:
+					zip_and_get_back_collected_data(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
+
 
 
 			if vp_name.find("Cloud")>(-1) or vp_name.find("Insitutional")>(-1):
+				if vp_country in skip_for_Cloud_VPs:
+				#	print "Skipping running commands for ",vp_name
+					continue
 				if MODE==1:
 			 		transfer_bundle_to_all_machines(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
 				elif MODE==2:
@@ -213,31 +258,41 @@ if __name__ == "__main__":
 					start_DNS_traceroute_spoofing_check(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
 				elif MODE==5:
 					get_server_side_blocked(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
+				elif MODE==6:
+					start_MDA_DNS(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
+				elif MODE==7:
+					start_path_stitching(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
+				elif MODE==8:
+					zip_and_get_back_collected_data(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
+
 
 
 
 	if MODE==3:
-		os.system("sort -u -k1,1 active_set> active_set.txt")
+		os.system("find ./active_domains_of_each_VP/*_active_set* | xargs -I{} sh -c \"cat {}; echo \'\'\" | sort -u -k1,1 | awk \' {if($1!=\"\")print} \'> ./active_domains_of_each_VP/active_set.txt")
 	elif MODE==5:
-
-		os.system("cat ./server_side_blocked_of_each_VP/*_have_auth*| sort -u -k2,2 > ./server_side_blocked_of_each_VP/have_auth_no_ip_extended.common_three_runs.txt" )
-
+		os.system("find ./server_side_blocked_of_each_VP/*_have_auth* | xargs -I{} sh -c \"cat {}; echo \'\'\"   | sort -u -k2,2 | awk \' {if($1!=\"\")print} \'> ./server_side_blocked_of_each_VP/have_auth_no_ip_extended.common_three_runs.txt" )
 
 	for one_vp in vantage_array:
 		if one_vp!="":
 			one_vp_array=one_vp.split(",")
 			vp_ip=one_vp_array[-1:][0]
 			vp_name="_".join(one_vp_array)
+			vp_country=one_vp_array[1]
 			vp_bundle_name="DNS_BUNDLE.zip"
-			print "\n\n",vp_bundle_name
-			
 
 			if vp_name.find("NordVPN")>(-1):
+				if vp_country in skip_for_NordVPN_VPs:
+				#	print "Skipping running commands for ",vp_name
+					continue
 				if MODE==3:
 					return_active_domain_set(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
 				elif MODE==5:
 					return_server_side_blocked(vp_ip,vp_bundle_name,"~/.ssh/2b-proxy.pem","ubuntu",vp_name)
 			if vp_name.find("Cloud")>(-1) or vp_name.find("Insitutional")>(-1):
+				if vp_country in skip_for_Cloud_VPs:
+				#	print "Skipping running commands for ",vp_name
+					continue
 				if MODE==3:
 					return_active_domain_set(vp_ip,vp_bundle_name,"~/.ssh/stardust-lums","root",vp_name)
 				elif MODE==5:

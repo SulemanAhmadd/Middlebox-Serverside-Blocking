@@ -11,7 +11,7 @@
 """
 import os
 import sys
-os.chdir(os.path.dirname(sys.argv[0]))
+#os.chdir(os.path.dirname(sys.argv[0]))
 from multiprocessing import Process
 from scapy.all import *
 from random import randint
@@ -202,6 +202,7 @@ def do_dns_traceroute(dest,payload):
 #		for snd,rcv in ans:
 #			f.write(str(snd.ttl) + " " + rcv.src + " " + snd.dst + " " + \
 #					get_packet_type(rcv) + "\n")
+	pass #print "DNS traceroute started for ",dest
 	for ttl in range(1,25):
    #     ans,unans=sr(IP(dst=dest["IP"], ttl=ttl,id=IP_ID)/ICMP(id=ICMP_ID-counter),timeout=20,retry=1)
 		ans, unans = sr(IP(dst = dest["IP"], 

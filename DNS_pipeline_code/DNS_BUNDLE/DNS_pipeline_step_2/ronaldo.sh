@@ -16,8 +16,10 @@ cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{print$3}' >.
 cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{print$2}' >./step4_traceroute/blocked_ip_list.txt
 
 
-echo -e 'eUbGc8ICNA'| sudo -S python ./step4_traceroute/collect_traceroute.py blocked_domains_with_ns.txt &
-
+#sudo python ./step4_traceroute/collect_traceroute.py blocked_domains_with_ns.txt &
+cd ./step4_traceroute
+screen -m -d bash -c 'sudo python collect_traceroute.py blocked_domains_with_ns.txt'
+cd ..
 echo "hey collect_traceroute already started" 
 echo '*************************************************'
 cat ./step3_resolve_again_get_ns/blocked_domain_ns_info.txt | awk '{print$1" "$2}' >./step5_run_in_us/transfer_to_us_blocked_domains_with_ns.txt
