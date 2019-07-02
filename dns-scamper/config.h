@@ -110,7 +110,7 @@
 /* #undef HAVE_NET_PFVAR_H */
 
 /* Define to 1 if you have OpenSSL */
-#define HAVE_OPENSSL 1
+/* #undef HAVE_OPENSSL */
 
 /* Define to 1 if you have the `poll' function. */
 #define HAVE_POLL 1
