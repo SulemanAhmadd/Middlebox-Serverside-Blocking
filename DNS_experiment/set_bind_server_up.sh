@@ -1,3 +1,5 @@
+sudo apt-get remove bind9 -y
+sudo apt-get remove --purge bind9 -y
 sudo apt-get update -y
 sudo apt-get install bind9 bind9utils bind9-doc -y
 cd /etc/bind

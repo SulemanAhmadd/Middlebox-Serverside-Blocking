@@ -1,0 +1,4 @@
+[13:08:47:589] scamper_fds_init: fd table size: 1024
+[13:08:47:589] addr2mac_add: ifindex 3 ip 192.168.100.1 mac a0:f4:79:24:e2:96 expire 1559740727
+[13:08:47:590] outfile_alloc: name - fd 1
+[13:08:47:590] outfile_free: name - fd 1
