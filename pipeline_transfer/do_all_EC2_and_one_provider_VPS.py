@@ -242,7 +242,7 @@ if __name__ == "__main__":
 		vantage_array=vantages.read().split("\n")
 
 	skip_for_NordVPN_VPs=["SA","Australia","UK","Germany","Japan","China","US","Turkey"]
-	skip_for_Cloud_VPs=[]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]#["SA"]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]
+	skip_for_Cloud_VPs=["SA","Australia","Germany","China"]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]#["SA"]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]
 	MODE=int(sys.argv[1])
 	'''
 	Mode 3, 5 and 9 get data from all VPs and store them in relevant directories. So, we need to clean directories with rm -rf command
