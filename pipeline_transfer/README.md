@@ -9,3 +9,7 @@ Now wait until first bash script is executing.
 Now, again wait until **run2.sh** is executing.
 
 - Finall, run the **bash run3.sh** to do MDA DNS on master input list
+
+Please find below the link to the google doc which explains all the steps in detail,
+
+**https://docs.google.com/document/d/1CcPmmrxvRsN6b0wGjR_E6jb9x8D3G1Ax31ZsJa0YFCM/edit**
