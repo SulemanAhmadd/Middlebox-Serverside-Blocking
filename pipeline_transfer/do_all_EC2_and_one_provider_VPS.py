@@ -99,7 +99,6 @@ def transfer_bundle_to_all_machines(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,v
 
 
 def start_crawler_on_all_machines(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
-	# copy the folder
 	
    
 	print "Starting process of resolving domain through BIND server for VP whose name is ", vp_name
@@ -124,7 +123,7 @@ def get_active_domain_set(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/DNS_pipeline_step_1/step1_resolve_here/resolved_domains.txt ./active_domains_of_each_VP/")
 
 	os.system("cat ./active_domains_of_each_VP/resolved_domains.txt > ./active_domains_of_each_VP/"+vp_name+"_active_set")
-
+	os.system("rm -rf ./active_domains_of_each_VP/resolved_domains.txt")
 
 def return_active_domain_set(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 	   
@@ -139,10 +138,8 @@ def start_DNS_traceroute_spoofing_check(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNA
 	print "Starting DNS traceroute and spoofing check for VP whose name is is ", vp_name
 
 	'''
-	Here we are unzipping the bundles on remote machine before starting run.sh. Please note we first
-	delete pre existing bundle data with rm -rf command. This is to ensure that when script starts
-	we always have the data which is obtained by running script. without rm -rf, its possible that
-	script gets struck and we end up thinking that old data was collected by the script we ran. 
+    Starting the DNS traceroute on server_side_blocked set. We are also starting process
+    of sending fake and actual spoofed packets towards machines in all VPs
 	'''
 
 	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
@@ -203,9 +200,7 @@ def zip_and_get_back_collected_data(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,v
 
 def start_get_summary(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 	print "Getting summary for VP whose name is is ", vp_name
-	# name odf resolved file resolved_domains.txt
 	column_names=vp_name+",Resolved domains,Unresolved domains, Blocked domains, DNS traceroutes colpleted,MDA DNS traceroute completed"
-	start=time.time()
 	os.system("""ssh -i """+SSH_KEY_PATH+""" """+USERNAME+"""@""" + vp_ip + """ \
 		  "screen -m -d bash -c 'cd ~/"""+ vp_bundle_name[:-4]+"""/;\
 		  rm -rf stats;\
@@ -223,7 +218,7 @@ def start_get_summary(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 		  tcpdump -r ./DNS_pipeline_step_2/fake_spoof_capture.pcap | wc -l >> stats;\
 		  tcpdump -r ./DNS_pipeline_step_3/actual_spoof_capture.pcap | wc -l >> stats;'" """)
 	#This time is for dig to get public ip of remote machine
-	time.sleep(1)
+	time.sleep(25)
 #	print "Time taken ",start-time.time()
 	os.system("scp -i " + SSH_KEY_PATH + " " + USERNAME+"@"\
 		+ vp_ip + ":~/"+vp_bundle_name[:-4]+"/stats ./summary/")
@@ -348,7 +343,11 @@ if __name__ == "__main__":
 		os.system("echo \"VP name,Resolved domains,Unresolved domains, Blocked domains,DNS traceroutes done ,MDA DNS done, Path stitched, Public IP of machine,Fake spoofed packets, Actual spoofed packets \" >> ./summary/stats.csv")
 		os.system("find ./summary/*_stats* | xargs -I{} sh -c \"cat {}; echo \'\'\" | sort -u -k1,1 | awk \' {if($1!=\"\")print} \'>> ./summary/stats.csv")
 		os.system("rm -rf ./summary/*.txt*")
-
+	'''
+    	Reason for the second loop is that some commands have to perform two tasks. They have to collect data 
+    	from all VPs initially in the first loop. Then they have to process that data and then distribute to 
+    	all the VPs in second task. That's why we need second loop.
+	'''
 	for one_vp in vantage_array:
 		if one_vp!="":
 			one_vp_array=one_vp.split(",")
