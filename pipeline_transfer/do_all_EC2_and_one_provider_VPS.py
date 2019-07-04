@@ -219,9 +219,9 @@ def start_get_summary(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 		  cd ..;\
 		  cat ./DNS_pipeline_step_4/MDA_DNS_scamper_output_temp.txt | grep nodes | wc -l >> stats ;\
 		  cat ./DNS_pipeline_step_4/process_parser/complete_stitched_paths/final_log | grep nodes | wc -l >> stats;\
+          dig +retry=5 +short myip.opendns.com @resolver1.opendns.com >> stats;\
 		  tcpdump -r ./DNS_pipeline_step_2/fake_spoof_capture.pcap | wc -l >> stats;\
-		  tcpdump -r ./DNS_pipeline_step_3/actual_spoof_capture.pcap | wc -l >> stats;\
-		  dig +retry=5 +short myip.opendns.com @resolver1.opendns.com >> stats;'" """)
+		  tcpdump -r ./DNS_pipeline_step_3/actual_spoof_capture.pcap | wc -l >> stats;'" """)
 	#This time is for dig to get public ip of remote machine
 	time.sleep(1)
 #	print "Time taken ",start-time.time()
@@ -234,6 +234,10 @@ def start_get_summary(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 
 
 if __name__ == "__main__":
+	directories_to_store_data=["active_domains_of_each_VP","DNS_data_of_all_VPs","server_side_blocked_of_each_VP","summary"]
+	for one_dir in directories_to_store_data:
+		if not one_dir in os.listdir("."):
+			os.system("mkdir "+one_dir)
 	#start_vpn()
 	#sys.exit()
 #	time.sleep(100)
@@ -262,6 +266,10 @@ if __name__ == "__main__":
 		os.system("rm -rf ./DNS_data_of_all_VPs/**")
 	elif MODE==9:
 		os.system("rm -rf ./summary/**")
+	elif MODE==10:
+		start_vpn()
+        
+    
 	for one_vp in vantage_array:
 		if one_vp!="":
 			one_vp_array=one_vp.split(",")
@@ -337,7 +345,7 @@ if __name__ == "__main__":
 		os.system("find ./server_side_blocked_of_each_VP/*_have_auth* | xargs -I{} sh -c \"cat {}; echo \'\'\"   | sort -u -k2,2 | awk \' {if($1!=\"\")print} \'> ./server_side_blocked_of_each_VP/have_auth_no_ip_extended.common_three_runs.txt" )
 	elif MODE==9:
 		os.system("rm -rf ./summary/stats.csv")
-		os.system("echo \"VP name,Resolved domains,Unresolved domains, Blocked domains,DNS traceroutes done ,MDA DNS done, Path stitched, Fake spoofed packets, Actual spoofed packets, Public IP of machine \" >> ./summary/stats.csv")
+		os.system("echo \"VP name,Resolved domains,Unresolved domains, Blocked domains,DNS traceroutes done ,MDA DNS done, Path stitched, Public IP of machine,Fake spoofed packets, Actual spoofed packets \" >> ./summary/stats.csv")
 		os.system("find ./summary/*_stats* | xargs -I{} sh -c \"cat {}; echo \'\'\" | sort -u -k1,1 | awk \' {if($1!=\"\")print} \'>> ./summary/stats.csv")
 		os.system("rm -rf ./summary/*.txt*")
 
