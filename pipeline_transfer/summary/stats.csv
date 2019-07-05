@@ -1,7 +1,0 @@
-VP name,Resolved domains,Unresolved domains, Blocked domains,DNS traceroutes done ,MDA DNS done, Path stitched, Public IP of machine,Fake spoofed packets, Actual spoofed packets 
-Asia_Japan_Tokyo_Cloud_103.75.118.253,94897,5103,22,23,0,0,103.75.118.253,46
-Asia_PK_Lahore_Insitutional_203.135.63.20,94504,5496,0,0,0,0,203.135.63.20,0,0
-Asia_Turkey_Bursa_Cloud_185.123.101.107,94769,5231,98,99,0,0,185.123.101.107,198,198
-Europe_Russia_Moscow_Cloud_91.218.115.15,94639,5361,212,213,0,0,91.218.115.15,426
-Europe_UK_London_Cloud_185.186.77.73,94892,5108,17,16,0,0,185.186.77.73,36,36
-NorthAmerica_US_NewYork_Cloud_108.62.49.40,94907,5093,12,13,0,0,108.62.49.40,26,26
