@@ -3,7 +3,6 @@ import time
 import sys
 
 PATH_TO_CONFIG_FILES_ON_LOCAL_COMP = "/Users/mjav/LUMS/research/tracerouter/SSB/nord_vpn_config_files/"
-
 VP_IP_map = {
 				"US" : "34.211.104.1",
 				#"Russia": "91.218.115.15",
@@ -225,7 +224,19 @@ def start_get_summary(vp_ip,vp_bundle_name,SSH_KEY_PATH,USERNAME,vp_name):
 
 	os.system(" cat ./summary/stats | xargs | sed -e \'s/ /,/g\' > ./summary/"+vp_name+"_stats.txt")
 
+def are_VPNs_connected(amazon_machines_IPs):
+	os.system("rm -rf ./summary/machines_not_connected_to_VPN.txt")
+	with open("./summary/stats.csv",'r') as summary:
+		summary_lines=summary.read().split("\n")
 
+	summary_lines=summary_lines[1:] # removing first line as that line is about names of columns
+	for one_summary_line in summary_lines:
+		if one_summary_line!="":
+			IP_of_VP=one_summary_line.split(",")[7]
+			if IP_of_VP in amazon_machines_IPs:
+				with open("./summary/machines_not_connected_to_VPN.txt",'a') as vpn_not_connected:
+					vpn_not_connected.write(one_summary_line.split(",")[0]+"\n")
+	
 
 
 if __name__ == "__main__":
@@ -239,7 +250,7 @@ if __name__ == "__main__":
 	# we wait for 100 seconds after starting VPN because once we start VPN command,  VPN starts working after 30 seconds or so
 	with open("vantages",'r') as vantages:
 		vantage_array=vantages.read().split("\n")
-
+	amazon_machines_IPs=[]
 	skip_for_NordVPN_VPs=["SA","Australia","UK","Germany","Japan","China","US","Turkey"]
 	skip_for_Cloud_VPs=["SA","Australia","Germany","China"]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]#["SA"]#["SA","UK","US","Australia","Russia","Turkey","Germany","Japan","China","PK"]
 	MODE=int(sys.argv[1])
@@ -278,6 +289,7 @@ if __name__ == "__main__":
 			'''
 
 			if vp_name.find("NordVPN")>(-1):
+				amazon_machines_IPs.append(vp_ip)
 				if vp_country in skip_for_NordVPN_VPs:
 				#	print "Skipping running commands for ",vp_name
 					continue
@@ -342,7 +354,8 @@ if __name__ == "__main__":
 		os.system("rm -rf ./summary/stats.csv")
 		os.system("echo \"VP name,Resolved domains,Unresolved domains, Blocked domains,DNS traceroutes done ,MDA DNS done, Path stitched, Public IP of machine,Fake spoofed packets, Actual spoofed packets \" >> ./summary/stats.csv")
 		os.system("find ./summary/*_stats* | xargs -I{} sh -c \"cat {}; echo \'\'\" | sort -u -k1,1 | awk \' {if($1!=\"\")print} \'>> ./summary/stats.csv")
-		os.system("rm -rf ./summary/*.txt*")
+		os.system("rm -rf ./summary/*.txt* ./summary/stats")
+		are_VPNs_connected(amazon_machines_IPs)
 	'''
     	Reason for the second loop is that some commands have to perform two tasks. They have to collect data 
     	from all VPs initially in the first loop. Then they have to process that data and then distribute to 
