@@ -247,6 +247,7 @@ def handler(signum, frame):
 	pass #pass #print("Query timeout!!!!!!!!!!!")
 	pass #pass #print(timeout_flag)
 	raise Exception("Timeout")
+
 def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,response_code,thread_number,start_time):
 	''' My DNS resolver version 0.3
 	
@@ -257,6 +258,19 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 		
 	Return:
 		response (dns.message.Message): response of this dns query
+
+	Argument of old function are written above. This function was changed alot due to the number of reasons which are listed below
+
+	i) This function was not handling the timeout cases. it used to get struck if the auth servers did not respond. Old function used
+	   to keep on querying auth servers. Function was changed to handle timeout cases.
+
+	ii) Old function was not handling different error codes or SOA record case. Function was changed to handle error codes.
+
+	iii)  Old function was not recording the authoritative servers contacted during name resolution process. Function was modified to
+	      store that information.
+
+	iv) There were some other minor bugs which were fixed when name resolution process failed for certain domains.	
+
 	'''
 	TIMEOUT_VALUE=20
 	try:
@@ -292,11 +306,7 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 					
 					if len(response.additional) > 0:   # use the IP in ADDITIONAL section
 						for rrset in response.additional:
-							next_ip = get_ip_from_rrset(rrset)
-							pass #print ("\n\n\nThread number below")
-							pass #print (thread_number)
-							pass #print ("hostname rn")
-							pass #print (hostname)
+							next_ip = get_ip_from_rrset(rrset)					
 							try:
 								Time_elapsed=time.time()-start_time
 								if (Time_elapsed)>TIMEOUT_VALUE:
@@ -308,54 +318,37 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 								response_code.append((" ".join(str(response2).split("\n"))))
 								response_array=str(response2).split("\n")
 								response_code_string=response_array[2].split(" ")[1]
-								pass #pass #print("This is what I received\n", response_array)
-								pass #pass #print ("\n\n\n\n\n\nthread number is ",thread_number)
-								pass #pass #print("\n\n\n\nstring  \n", response_code_string)
-								pass #pass #print("cond  \n", response_code_string=="REFUSED")
+							
 								if "REFUSED"==response_code_string:
 										stop_flag=True
-										#pass #pass #print(dir(response2.rcode))
-								#		pass #pass #print(response2.rcode)
-										pass #pass #print("")
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
-										pass #pass #print("should go back")
 										return ""
 
 								if "SERVFAIL"==response_code_string:
 										stop_flag=True
-										#pass #pass #print(dir(response2.rcode))
-								#		pass #pass #print(response2.rcode)
-										pass #pass #print("")
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
-										pass #pass #print("should go back")
 										return ""
 								if len(response2.authority)>0:
 									 
 									if "SOA" in str(response2.authority[0]):
 										pass #pass #print("''''''''''''''''''''''''''''''''''''''''''")
 										stop_flag=True
-										#pass #pass #print(dir(response2.rcode))
-								#		pass #pass #print(response2.rcode)
 										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
 										return ""
 
 									 
 
 								response = response2
-							 #   pass #pass #print("look")
-							  #  pass #pass #print(rrset)
 								final_person=rrset
-								#pass #pass #print("(!!!!!)")
 								break
 							except Exception as e:
 								if str(e)=="Timeout":
-									pass #pass #print("Hostname which timed out "+hostname)
+
 									for one_record in response.additional:
 										name_servers_answered.append((hostname,str(one_record),"Could not get IP"))
 									return ""
-							   # pass #pass #print("whoop")
-							  #  pass #pass #print(e)
-								pass  # pass #pass #print('Oops! Authoratative server timeout, try next one. ', e)
+
+								
 					else:             # if both ANSWER and ADDITIONAL is empty, then find the IP of AUTHORITY  
 						ns = get_ns_from_authority(response)
 						 
@@ -595,16 +588,27 @@ def alias(array):
 		hostname = array[1]
 		rdtype   = array[2]
 		hostname=hostname.split(" ")[0]
+
 		'''
-		Purpose of stop_flag is to help in implementation of timeout for DNS name resolution process.
-		name_servers are all the authoritative servers records we got during name resolution process. They include root
-		and TLD servers.
-		name_servers_answered are all the authoritative servers we got at the bottom most hiearchy of DNS.
-		name_servers_answered is an array of tuples. each tuple has 4 values. See below the description of 4 values in a tuple.
+		i) Purpose of stop_flag is to help in implementation of timeout for DNS name resolution process.
+		
+		ii) Name_servers are all the authoritative servers records we got during name resolution process. They include root
+		    and TLD servers.
+		
+		iii) Name_servers_answered are all the authoritative servers we got at the bottom most hiearchy of DNS.
+		     
+		iv) Name_servers_answered is an array of tuples. each tuple has 4 values. See below the description of 4 values in a tuple.
+
 			i) The name we queried authoritative server for
+
 			ii) NS record which is basically detail about the authoritative server
+
 			iii) What information we got from authoritative servers. e.g we might get an IP, we might be told name queried is
 			     a CNAME or we might not get an IP (Could not get IP)
+
+		v) Main function which performs DNS resolution is dns_resolver_3. Two main arguments it takes are hostname(domain which we want 		   to resolve) and record type(Type of DNS record we want for that domains e.g A, NS, CNAME)
+
+		vi) Apart from hostname and record type, main puprpose of almost all other variables is to record certain information during 			    name resolution processs. e.g cnames records all the cnames of hostname, name_servers record all the nameserver records we 			    received during name resolution process.
 		'''
 		global counter
 		global stop_flag
@@ -662,7 +666,7 @@ def alias(array):
 			'''				
 			with open(thread_number+"trac_domains_resolved",'a') as file1:
 				pass #print("First lets see name_server answered array\n",name_servers_answered,"\n",last_name_server,"\n",name_servers)
-				file1.write(str(last_name_server[0])+" "+str(last_name_server[1].split()[4])+" "+str(answers[0])+" "+str(hostname)+" "+final_name_server_string+"\n")
+				file1.write(str(last_name_server[0])+" "+str(last_name_server[1].split()[4])+" "+str(answers[0])+" "+str(hostname)+" "+final_name_server_string+"\n\n")
 		else:
 			pass
 			pass #pass #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",hostname)
@@ -679,8 +683,7 @@ def alias(array):
 			for one_name_server in name_servers_answered:
 				pass #pass #print("one name server is ",one_name_server)
 				if one_name_server[2]=="Could not get IP" and one_name_server[0]==real_host_domain:
-					pass #pass #print("HELLO")
-					# sometimes multiple nameserver comes delimited by \n but on file appar together
+					# sometimes multiple nameserver comes delimited by \n but on file appear together
 					name_server_string=""
 					if '\n' in one_name_server[1]:
 						pass #pass #print("n present")
@@ -689,9 +692,7 @@ def alias(array):
 						for one_server in separate:
 
 							name_server_string=name_server_string+one_server+" "
-							pass #pass #print (one_server)
-							pass #pass #print("see below full string")
-							pass #pass #print(name_server_string)
+		
 					else:
 						pass #pass #print("n NOT present")
 						name_server_string=one_name_server[1]
@@ -700,8 +701,6 @@ def alias(array):
 			if len(response_code)>0:
 				message=""
 				message=real_host_domain+" "+str(response_code[len(response_code)-1])
-				pass #pass #print("++++++++++++++++++++++++++++++++++++++++++++++")
-				pass #pass #print(timeout_flag)
 				if(timeout_flag):
 					message=message+" "+"Domain_timed_out"
 				message=message+"\n"	
@@ -715,8 +714,7 @@ def alias(array):
 			with open(thread_number+"trac_blocked_domain_ns_info.txt",'a') as file1:
 				file1.write(str(final_string)+" "+hostname+"\n")
 
-		pass #pass #print("\n\nAll servers contacted\n",name_servers)
-		pass #pass #print("\n cnames contacted \n",cnames)
+		
 		if stop_flag==True:
 			pass #pass #print("\n\nCname for domain which timed out or SOA record\n",cnames)
 
