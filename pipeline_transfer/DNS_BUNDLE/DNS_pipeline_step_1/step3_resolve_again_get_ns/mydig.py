@@ -659,6 +659,8 @@ def alias(array):
 			for i in name_server_string:
 				if i!='\n':
 					final_name_server_string=final_name_server_string+i
+				else:
+					final_name_server_string=final_name_server_string+" "
 			'''
 			In trac_domains_resolved file, we first record information about the last name server which returned us an IP.
 			Tuple which contains information about the last IP has 3 fields which are CNAME, NS record and IP.
