@@ -306,6 +306,7 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 					
 					if len(response.additional) > 0:   # use the IP in ADDITIONAL section
 						for rrset in response.additional:
+							print(response.additional)
 							next_ip = get_ip_from_rrset(rrset)					
 							try:
 								Time_elapsed=time.time()-start_time
@@ -331,9 +332,13 @@ def dns_resolver_3(hostname, rdtype, cnames, name_servers,name_servers_answered,
 								if len(response2.authority)>0:
 									 
 									if "SOA" in str(response2.authority[0]):
-										pass #pass #print("''''''''''''''''''''''''''''''''''''''''''")
+										print("!!!!!!!!!!!!!!!!!!!!!\n\n\n!!!!!!!")
 										stop_flag=True
-										name_servers_answered.append((hostname,str(rrset),"Could not get IP"))
+										print(response.additional)
+										for one_record in response.additional:
+											print (one_record)
+											name_servers_answered.append((hostname,str(one_record),"Could not get IP"))
+																				
 										return ""
 
 									 
@@ -583,7 +588,6 @@ def dns_resolver_sec(hostname, rdtype, cnames):
 
 def alias(array):
 	if len(array) == 3:
-		pass #pass #print("------------------------------")
 		thread_number=str(array[0])
 		hostname = array[1]
 		rdtype   = array[2]
@@ -617,7 +621,6 @@ def alias(array):
 		name_servers_answered=[]
 		response_code=[]
 		start_time = time.time()
-		pass
 	#	signal.signal(signal.SIGALRM, handler) We do not use alarm method anymore to implement timeout value
 	#	signal.alarm(20)
 		myresponse = dns_resolver_3(hostname, rdtype, cnames,name_servers,name_servers_answered,response_code,thread_number,start_time)
@@ -629,9 +632,7 @@ def alias(array):
 			output(hostname, rdtype, myresponse, elapsed, cnames)
 		pass #pass #print("Name servers who responded with IP \n",name_servers_answered)
 		length=len(name_servers_answered)
-		pass #pass #print("!!!!!!!!!!!!!!!!!!")
-		pass #pass #print(myresponse)
-		pass #pass #print("!!!!!!!!!!!!!!!!!!")
+		print("name_servers \n",name_servers,"\nname_servers_answered\n",name_servers_answered)
 		if length!=0 and (name_servers_answered[length-1][2]=="IP") and myresponse:
 			last_name_server=name_servers_answered[length-1]
 			
@@ -661,6 +662,7 @@ def alias(array):
 					final_name_server_string=final_name_server_string+i
 				else:
 					final_name_server_string=final_name_server_string+" "
+			print("Name of domain ",hostname,"\nName servers\n",name_servers,"\nNameservers asnwered\n",name_servers_answered)
 			'''
 			In trac_domains_resolved file, we first record information about the last name server which returned us an IP.
 			Tuple which contains information about the last IP has 3 fields which are CNAME, NS record and IP.
@@ -715,12 +717,7 @@ def alias(array):
 					final_string=final_string+i
 			with open(thread_number+"trac_blocked_domain_ns_info.txt",'a') as file1:
 				file1.write(str(final_string)+" "+hostname+"\n")
-
 		
-		if stop_flag==True:
-			pass #pass #print("\n\nCname for domain which timed out or SOA record\n",cnames)
-
-		pass #pass #print("------------------------------") 
 		stop_flag=False
 		timeout_flag=False
 		counter=0
