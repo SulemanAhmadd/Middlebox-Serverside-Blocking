@@ -642,8 +642,6 @@ def alias(array):
 				final_name_server_string=final_name_server_string+i
 			else:
 				final_name_server_string=final_name_server_string+" "
-		with open(thread_number+"trac_name_server_data",'a') as file1:
-                                 file1.write(str(hostname)+" "+final_name_server_string+"\n\n")
 		if length!=0 and (name_servers_answered[length-1][2]=="IP") and myresponse:
 			last_name_server=name_servers_answered[length-1]
 			
