@@ -203,12 +203,13 @@ def do_dns_traceroute(dest,payload):
 #			f.write(str(snd.ttl) + " " + rcv.src + " " + snd.dst + " " + \
 #					get_packet_type(rcv) + "\n")
 	pass #print "DNS traceroute started for ",dest
+	Probe_sport = randint(43675,45700)
 	for ttl in range(1,25):
    #     ans,unans=sr(IP(dst=dest["IP"], ttl=ttl,id=IP_ID)/ICMP(id=ICMP_ID-counter),timeout=20,retry=1)
 		ans, unans = sr(IP(dst = dest["IP"], 
 					   ttl = ttl,
 					   id  = ttl)/
-					UDP(sport = 43675, 
+					UDP(sport = Probe_sport, 
 						dport = 53)/
 					DNS(qd=DNSQR(qname=payload)), 
 					timeout = 15,
